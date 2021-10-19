@@ -1,6 +1,7 @@
 package client
 
 import (
+	"context"
 	"strings"
 	"testing"
 )
@@ -18,11 +19,16 @@ func TestParseFindProvsResp(t *testing.T) {
 }
 `
 	r := strings.NewReader(respStr)
-	ais, err := processProvResp(r)
-	if err != nil {
-		t.Fatal(err)
+	ch := make(chan FindProvidersAsyncResult, 2)
+	processFindProvidersAsyncResp(context.Background(), ch, r)
+	p1, ok := <-ch
+	if !ok {
+		t.Fatalf("expecting 1st provider")
 	}
-	t.Log(ais)
+	if p1.Err != nil {
+		t.Fatal(p1.Err)
+	}
+	t.Log(p1.AddrInfo)
 }
 
 /* WIP
@@ -55,4 +61,4 @@ func TestSimpleServer(t *testing.T) {
 		t.Fatal(err)
 	}
 }
- */
+*/
