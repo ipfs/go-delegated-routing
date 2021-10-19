@@ -33,7 +33,6 @@ func (c *client) FindProviders(ctx context.Context, cid cid.Cid) ([]peer.AddrInf
 	case <-ctx.Done():
 		return nil, fmt.Errorf("context aborted")
 	}
-	panic("unreachable")
 }
 
 type FindProvidersAsyncResult struct {
