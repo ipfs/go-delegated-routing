@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"net/url"
 
 	"github.com/ipfs/go-cid"
 	"github.com/ipfs/go-delegated-routing/parser"
@@ -52,9 +53,9 @@ func (c *client) FindProvidersAsync(ctx context.Context, cid cid.Cid) (<-chan Fi
 		return nil, err
 	}
 
-	// XXX: use GET
-	// XXX: encode query in URL
-	httpReq, err := http.NewRequestWithContext(ctx, "POST", c.endPoint, b)
+	// encode request in URL
+	url := fmt.Sprintf("%s?%s", c.endPoint, url.QueryEscape(b.String()))
+	httpReq, err := http.NewRequestWithContext(ctx, "GET", url, b)
 	if err != nil {
 		return nil, err
 	}
