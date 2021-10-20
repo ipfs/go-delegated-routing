@@ -25,16 +25,21 @@ func (c *client) FindProviders(ctx context.Context, cid cid.Cid) ([]peer.AddrInf
 	if err != nil {
 		return nil, err
 	}
-	select {
-	case r := <-ch:
-		cancel()
-		if r.Err != nil {
-			return nil, err
-		} else {
-			return r.AddrInfo, nil
+	var infos []peer.AddrInfo
+	for {
+		select {
+		case r, ok := <-ch:
+			if !ok {
+				cancel()
+				return infos, nil
+			} else {
+				if r.Err == nil {
+					infos = append(infos, r.AddrInfo...)
+				}
+			}
+		case <-ctx.Done():
+			return infos, ctx.Err()
 		}
-	case <-ctx.Done():
-		return nil, fmt.Errorf("context cancelled")
 	}
 }
 
