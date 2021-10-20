@@ -110,7 +110,6 @@ func processFindProvidersAsyncResp(ctx context.Context, ch chan<- FindProvidersA
 			}
 			ai, err := peer.AddrInfoFromP2pAddr(ma)
 			if err != nil {
-				println("XXX", err.Error())
 				continue
 			}
 			infos = append(infos, *ai)

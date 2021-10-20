@@ -10,6 +10,7 @@ import (
 	"github.com/ipfs/go-delegated-routing/client"
 	"github.com/ipfs/go-delegated-routing/parser"
 	"github.com/libp2p/go-libp2p-core/peer"
+	"github.com/multiformats/go-multiaddr"
 )
 
 type FindProvidersAsyncFunc func(cid.Cid, chan<- client.FindProvidersAsyncResult) error
@@ -84,7 +85,8 @@ func GenerateGetP2PProvideResponse(infos []peer.AddrInfo) *parser.GetP2PProvideR
 	resp := &parser.GetP2PProvideResponse{}
 	for _, info := range infos {
 		for _, addr := range info.Addrs {
-			resp.Peers = append(resp.Peers, parser.ToDJSpecialBytes(addr.Bytes()))
+			peerAddr := addr.Encapsulate(multiaddr.StringCast("/p2p/" + info.ID.String()))
+			resp.Peers = append(resp.Peers, parser.ToDJSpecialBytes(peerAddr.Bytes()))
 		}
 	}
 	return resp
