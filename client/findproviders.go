@@ -12,9 +12,12 @@ import (
 
 	"github.com/ipfs/go-cid"
 	"github.com/ipfs/go-delegated-routing/parser"
+	logging "github.com/ipfs/go-log"
 	"github.com/libp2p/go-libp2p-core/peer"
 	"github.com/multiformats/go-multiaddr"
 )
+
+var logger = logging.Logger("delegated-routing-client")
 
 func (c *client) FindProviders(ctx context.Context, cid cid.Cid) ([]peer.AddrInfo, error) {
 	ctx, cancel := context.WithCancel(ctx)
@@ -72,10 +75,8 @@ func (c *client) FindProvidersAsync(ctx context.Context, cid cid.Cid) (<-chan Fi
 func processFindProvidersAsyncResp(ctx context.Context, ch chan<- FindProvidersAsyncResult, r io.Reader) {
 	defer close(ch)
 	for {
-		select {
-		case <-ctx.Done():
+		if ctx.Err() != nil {
 			return
-		default:
 		}
 
 		dec := json.NewDecoder(r)
@@ -95,6 +96,7 @@ func processFindProvidersAsyncResp(ctx context.Context, ch chan<- FindProvidersA
 
 		provResp, ok := env.Payload.(*parser.GetP2PProvideResponse)
 		if !ok {
+			logger.Infof("possibly talking to a newer server, unknown response %v", env.Payload)
 			continue
 		}
 
@@ -102,14 +104,17 @@ func processFindProvidersAsyncResp(ctx context.Context, ch chan<- FindProvidersA
 		for _, maBytes := range provResp.Peers {
 			addrBytes, err := parser.FromDJSpecialBytes(maBytes)
 			if err != nil {
+				logger.Infof("cannot decode address bytes (%v)", err)
 				continue
 			}
 			ma, err := multiaddr.NewMultiaddrBytes(addrBytes)
 			if err != nil {
+				logger.Infof("cannot parse multiaddress (%v)", err)
 				continue
 			}
 			ai, err := peer.AddrInfoFromP2pAddr(ma)
 			if err != nil {
+				logger.Infof("cannot parse peer from multiaddress (%v)", err)
 				continue
 			}
 			infos = append(infos, *ai)
