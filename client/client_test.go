@@ -30,35 +30,3 @@ func TestParseFindProvsResp(t *testing.T) {
 	}
 	t.Log(p1.AddrInfo)
 }
-
-/* WIP
-func TestSimpleServer(t *testing.T) {
-	s := httptest.NewServer(http.HandlerFunc(func(writer http.ResponseWriter, request *http.Request) {
-		dec := json.NewDecoder(request.Body)
-		env := parser.Envelope{Payload: &parser.GetP2PProvideResponse{}}
-		err := dec.Decode(&env)
-		if errors.Is(err, io.EOF) {
-			return
-		}
-		if err != nil {
-			writer.WriteHeader(500)
-			return
-		}
-
-		switch env.Tag {
-		case parser.MethodGetP2PProvide:
-		default:
-			writer.WriteHeader(404)
-			return
-		}
-
-		env.Payload.
-	}))
-	defer s.Close()
-
-	drc, err := New(s.URL, WithHTTPClient(s.Client()))
-	if err != nil {
-		t.Fatal(err)
-	}
-}
-*/

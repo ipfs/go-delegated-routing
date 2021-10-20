@@ -31,7 +31,7 @@ func (c *client) FindProviders(ctx context.Context, cid cid.Cid) ([]peer.AddrInf
 			return r.AddrInfo, nil
 		}
 	case <-ctx.Done():
-		return nil, fmt.Errorf("context aborted")
+		return nil, fmt.Errorf("context cancelled")
 	}
 }
 
@@ -110,6 +110,7 @@ func processFindProvidersAsyncResp(ctx context.Context, ch chan<- FindProvidersA
 			}
 			ai, err := peer.AddrInfoFromP2pAddr(ma)
 			if err != nil {
+				println("XXX", err.Error())
 				continue
 			}
 			infos = append(infos, *ai)
