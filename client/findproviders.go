@@ -53,7 +53,7 @@ func (c *client) FindProvidersAsync(ctx context.Context, cid cid.Cid) (<-chan Fi
 	}
 
 	// encode request in URL
-	url := fmt.Sprintf("%s?%s", c.endPoint, url.QueryEscape(b.String()))
+	url := fmt.Sprintf("%s?q=%s", c.endPoint, url.QueryEscape(b.String()))
 	httpReq, err := http.NewRequestWithContext(ctx, "GET", url, b)
 	if err != nil {
 		return nil, err
