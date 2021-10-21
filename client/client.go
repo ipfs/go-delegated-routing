@@ -1,10 +1,17 @@
 package client
 
 import (
-	//"github.com/ipld/go-ipld-prime/codec/dagjson"
-
+	"context"
 	"net/http"
+
+	"github.com/ipfs/go-cid"
+	"github.com/libp2p/go-libp2p-core/peer"
 )
+
+type Client interface {
+	FindProviders(ctx context.Context, cid cid.Cid) ([]peer.AddrInfo, error)
+	FindProvidersAsync(ctx context.Context, cid cid.Cid) (<-chan FindProvidersAsyncResult, error)
+}
 
 type Option func(*client) error
 
