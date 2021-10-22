@@ -31,7 +31,7 @@ func FindProvidersAsyncHandler(f FindProvidersAsyncFunc) http.HandlerFunc {
 				writer.WriteHeader(400)
 				return
 			}
-			// extract cid
+			// extract key and return it in the form of a cid
 			parsedCid, err := ParseGetP2PProvideRequest(req)
 			if err != nil {
 				writer.WriteHeader(400)
@@ -64,6 +64,7 @@ func FindProvidersAsyncHandler(f FindProvidersAsyncFunc) http.HandlerFunc {
 	}
 }
 
+// ParseGetP2PProvideRequest parses a GetP2PProvideRequest and returns the included bytes key in the form of a cid.
 func ParseGetP2PProvideRequest(req *parser.GetP2PProvideRequest) (cid.Cid, error) {
 	mhBytes, err := parser.FromDJSpecialBytes(req.Key)
 	if err != nil {
