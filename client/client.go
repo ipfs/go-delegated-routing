@@ -3,6 +3,7 @@ package client
 import (
 	"context"
 	"net/http"
+	"net/url"
 
 	"github.com/ipfs/go-cid"
 	"github.com/libp2p/go-libp2p-core/peer"
@@ -17,7 +18,7 @@ type Option func(*client) error
 
 type client struct {
 	client   *http.Client
-	endPoint string
+	endpoint *url.URL
 }
 
 func WithHTTPClient(hc *http.Client) Option {
@@ -28,7 +29,11 @@ func WithHTTPClient(hc *http.Client) Option {
 }
 
 func New(endpoint string, opts ...Option) (*client, error) {
-	c := &client{endPoint: endpoint, client: http.DefaultClient}
+	u, err := url.Parse(endpoint)
+	if err != nil {
+		return nil, err
+	}
+	c := &client{endpoint: u, client: http.DefaultClient}
 	for _, o := range opts {
 		if err := o(c); err != nil {
 			return nil, err

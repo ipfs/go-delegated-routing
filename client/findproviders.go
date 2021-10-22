@@ -5,7 +5,6 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"fmt"
 	"io"
 	"net/http"
 	"net/url"
@@ -61,8 +60,12 @@ func (c *client) FindProvidersAsync(ctx context.Context, cid cid.Cid) (<-chan Fi
 	}
 
 	// encode request in URL
-	url := fmt.Sprintf("%s?q=%s", c.endPoint, url.QueryEscape(b.String()))
-	httpReq, err := http.NewRequestWithContext(ctx, "GET", url, b)
+	// url := fmt.Sprintf("%s?q=%s", c.endPoint, url.QueryEscape(b.String()))
+	u := *c.endpoint
+	q := url.Values{}
+	q.Set("q", b.String())
+	u.RawQuery = q.Encode()
+	httpReq, err := http.NewRequestWithContext(ctx, "GET", u.String(), b)
 	if err != nil {
 		return nil, err
 	}

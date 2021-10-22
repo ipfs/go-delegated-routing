@@ -4,8 +4,6 @@ import (
 	"bytes"
 	"encoding/json"
 	"net/http"
-	"net/url"
-	"strings"
 
 	"github.com/ipfs/go-cid"
 	"github.com/ipfs/go-delegated-routing/client"
@@ -18,18 +16,10 @@ type FindProvidersAsyncFunc func(cid.Cid, chan<- client.FindProvidersAsyncResult
 
 func FindProvidersAsyncHandler(f FindProvidersAsyncFunc) http.HandlerFunc {
 	return func(writer http.ResponseWriter, request *http.Request) {
-		if !strings.HasPrefix(request.URL.RawQuery, "q=") {
-			writer.WriteHeader(400)
-			return
-		}
-		msg, err := url.QueryUnescape(request.URL.RawQuery[2:])
-		if err != nil {
-			writer.WriteHeader(400)
-			return
-		}
+		msg := request.URL.Query().Get("q")
 		dec := json.NewDecoder(bytes.NewBufferString(msg))
 		env := parser.Envelope{Payload: &parser.GetP2PProvideRequest{}}
-		err = dec.Decode(&env)
+		err := dec.Decode(&env)
 		if err != nil {
 			writer.WriteHeader(400)
 			return
