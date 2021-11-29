@@ -1,0 +1,24 @@
+
+type Envelope union {
+     | GetP2PProvideRequest "get-p2p-provide-request"
+     | GetP2PProvideResponse "get-p2p-provide-response"
+} representation keyed
+
+type GetP2PProvideRequest struct {
+     key Bytes
+}
+
+type GetP2PProvideResponse struct {
+     providers [Provider]
+}
+
+type Provider union {
+     | Peer "peer"
+} representation keyed
+
+type Peer struct {
+     Multiaddress [Bytes]
+}
+
+# XXX: can we have a union representation that tries to parse in order of rules?
+# XXX: how to accomplish pass through? can struct deser place out-of-schema data in a "leftover" field?
