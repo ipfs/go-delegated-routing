@@ -4,12 +4,30 @@ type Envelope union {
      | GetP2PProvideResponse "get-p2p-provide-response"
 } representation keyed
 
+type Multihash Bytes
+
 type GetP2PProvideRequest struct {
-     key Bytes
+     Multihashes [Multihash]
 }
 
 type GetP2PProvideResponse struct {
-     providers [Provider]
+     MultihashResults [MultihashResult]
+}
+
+type MultihashResult struct {
+     Multihash Multihash
+     ProviderResults [ProviderResult]
+}
+
+type ProviderResult struct {
+     Metadata Metadata
+     Provider Provider
+}
+
+# XXX: represent as union of known options
+type Metadata struct {
+     ProtocolID Int
+     Data Bytes
 }
 
 type Provider union {
@@ -17,7 +35,8 @@ type Provider union {
 } representation keyed
 
 type Peer struct {
-     Multiaddress [Bytes]
+     ID Bytes
+     Addrs [Bytes]
 }
 
 # XXX: can we have a union representation that tries to parse in order of rules?
