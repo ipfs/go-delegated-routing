@@ -20,35 +20,54 @@ var _ datamodel.Node = nil // suppress errors when this dependency is not refere
 var Type typeSlab
 
 type typeSlab struct {
-	Bool                        _Bool__Prototype
-	Bool__Repr                  _Bool__ReprPrototype
-	Bytes                       _Bytes__Prototype
-	Bytes__Repr                 _Bytes__ReprPrototype
-	Envelope                    _Envelope__Prototype
-	Envelope__Repr              _Envelope__ReprPrototype
-	Float                       _Float__Prototype
-	Float__Repr                 _Float__ReprPrototype
-	GetP2PProvideRequest        _GetP2PProvideRequest__Prototype
-	GetP2PProvideRequest__Repr  _GetP2PProvideRequest__ReprPrototype
-	GetP2PProvideResponse       _GetP2PProvideResponse__Prototype
-	GetP2PProvideResponse__Repr _GetP2PProvideResponse__ReprPrototype
-	Int                         _Int__Prototype
-	Int__Repr                   _Int__ReprPrototype
-	Link                        _Link__Prototype
-	Link__Repr                  _Link__ReprPrototype
-	List__Bytes                 _List__Bytes__Prototype
-	List__Bytes__Repr           _List__Bytes__ReprPrototype
-	List__Provider              _List__Provider__Prototype
-	List__Provider__Repr        _List__Provider__ReprPrototype
-	Peer                        _Peer__Prototype
-	Peer__Repr                  _Peer__ReprPrototype
-	Provider                    _Provider__Prototype
-	Provider__Repr              _Provider__ReprPrototype
-	String                      _String__Prototype
-	String__Repr                _String__ReprPrototype
+	BitswapTransfer                _BitswapTransfer__Prototype
+	BitswapTransfer__Repr          _BitswapTransfer__ReprPrototype
+	Bool                           _Bool__Prototype
+	Bool__Repr                     _Bool__ReprPrototype
+	Bytes                          _Bytes__Prototype
+	Bytes__Repr                    _Bytes__ReprPrototype
+	Envelope                       _Envelope__Prototype
+	Envelope__Repr                 _Envelope__ReprPrototype
+	Float                          _Float__Prototype
+	Float__Repr                    _Float__ReprPrototype
+	GetP2PProvideRequest           _GetP2PProvideRequest__Prototype
+	GetP2PProvideRequest__Repr     _GetP2PProvideRequest__ReprPrototype
+	GetP2PProvideResponse          _GetP2PProvideResponse__Prototype
+	GetP2PProvideResponse__Repr    _GetP2PProvideResponse__ReprPrototype
+	Int                            _Int__Prototype
+	Int__Repr                      _Int__ReprPrototype
+	Link                           _Link__Prototype
+	Link__Repr                     _Link__ReprPrototype
+	List__Bytes                    _List__Bytes__Prototype
+	List__Bytes__Repr              _List__Bytes__ReprPrototype
+	List__Multihash                _List__Multihash__Prototype
+	List__Multihash__Repr          _List__Multihash__ReprPrototype
+	List__Node                     _List__Node__Prototype
+	List__Node__Repr               _List__Node__ReprPrototype
+	List__TransferProtocol         _List__TransferProtocol__Prototype
+	List__TransferProtocol__Repr   _List__TransferProtocol__ReprPrototype
+	Map__Multihash__Provider       _Map__Multihash__Provider__Prototype
+	Map__Multihash__Provider__Repr _Map__Multihash__Provider__ReprPrototype
+	Multihash                      _Multihash__Prototype
+	Multihash__Repr                _Multihash__ReprPrototype
+	Node                           _Node__Prototype
+	Node__Repr                     _Node__ReprPrototype
+	Peer                           _Peer__Prototype
+	Peer__Repr                     _Peer__ReprPrototype
+	Provider                       _Provider__Prototype
+	Provider__Repr                 _Provider__ReprPrototype
+	String                         _String__Prototype
+	String__Repr                   _String__ReprPrototype
+	TransferProtocol               _TransferProtocol__Prototype
+	TransferProtocol__Repr         _TransferProtocol__ReprPrototype
 }
 
 // --- type definitions follow ---
+
+// BitswapTransfer matches the IPLD Schema type "BitswapTransfer".  It has struct type-kind, and may be interrogated like map kind.
+type BitswapTransfer = *_BitswapTransfer
+type _BitswapTransfer struct {
+}
 
 // Bool matches the IPLD Schema type "Bool".  It has bool kind.
 type Bool = *_Bool
@@ -80,13 +99,13 @@ type _Float struct{ x float64 }
 // GetP2PProvideRequest matches the IPLD Schema type "GetP2PProvideRequest".  It has struct type-kind, and may be interrogated like map kind.
 type GetP2PProvideRequest = *_GetP2PProvideRequest
 type _GetP2PProvideRequest struct {
-	key _Bytes
+	Keys _List__Multihash
 }
 
 // GetP2PProvideResponse matches the IPLD Schema type "GetP2PProvideResponse".  It has struct type-kind, and may be interrogated like map kind.
 type GetP2PProvideResponse = *_GetP2PProvideResponse
 type _GetP2PProvideResponse struct {
-	providers _List__Provider
+	ProvidersByKey _Map__Multihash__Provider
 }
 
 // Int matches the IPLD Schema type "Int".  It has int kind.
@@ -103,31 +122,81 @@ type _List__Bytes struct {
 	x []_Bytes
 }
 
-// List__Provider matches the IPLD Schema type "List__Provider".  It has list kind.
-type List__Provider = *_List__Provider
-type _List__Provider struct {
-	x []_Provider
+// List__Multihash matches the IPLD Schema type "List__Multihash".  It has list kind.
+type List__Multihash = *_List__Multihash
+type _List__Multihash struct {
+	x []_Multihash
 }
+
+// List__Node matches the IPLD Schema type "List__Node".  It has list kind.
+type List__Node = *_List__Node
+type _List__Node struct {
+	x []_Node
+}
+
+// List__TransferProtocol matches the IPLD Schema type "List__TransferProtocol".  It has list kind.
+type List__TransferProtocol = *_List__TransferProtocol
+type _List__TransferProtocol struct {
+	x []_TransferProtocol
+}
+
+// Map__Multihash__Provider matches the IPLD Schema type "Map__Multihash__Provider".  It has map kind.
+type Map__Multihash__Provider = *_Map__Multihash__Provider
+type _Map__Multihash__Provider struct {
+	m map[_Multihash]*_Provider
+	t []_Map__Multihash__Provider__entry
+}
+type _Map__Multihash__Provider__entry struct {
+	k _Multihash
+	v _Provider
+}
+
+// Multihash matches the IPLD Schema type "Multihash".  It has struct type-kind, and may be interrogated like map kind.
+type Multihash = *_Multihash
+type _Multihash struct {
+	Bytes _Bytes
+}
+
+// Node matches the IPLD Schema type "Node".
+// Node has union typekind, which means its data model behaviors are that of a map kind.
+type Node = *_Node
+type _Node struct {
+	tag uint
+	x1  _Peer
+}
+type _Node__iface interface {
+	_Node__member()
+}
+
+func (_Peer) _Node__member() {}
 
 // Peer matches the IPLD Schema type "Peer".  It has struct type-kind, and may be interrogated like map kind.
 type Peer = *_Peer
 type _Peer struct {
-	Multiaddress _List__Bytes
+	ID             _Bytes
+	Multiaddresses _List__Bytes
 }
 
-// Provider matches the IPLD Schema type "Provider".
-// Provider has union typekind, which means its data model behaviors are that of a map kind.
+// Provider matches the IPLD Schema type "Provider".  It has struct type-kind, and may be interrogated like map kind.
 type Provider = *_Provider
 type _Provider struct {
-	tag uint
-	x1  _Peer
+	Node  _List__Node
+	Proto _List__TransferProtocol
 }
-type _Provider__iface interface {
-	_Provider__member()
-}
-
-func (_Peer) _Provider__member() {}
 
 // String matches the IPLD Schema type "String".  It has string kind.
 type String = *_String
 type _String struct{ x string }
+
+// TransferProtocol matches the IPLD Schema type "TransferProtocol".
+// TransferProtocol has union typekind, which means its data model behaviors are that of a map kind.
+type TransferProtocol = *_TransferProtocol
+type _TransferProtocol struct {
+	tag uint
+	x1  _BitswapTransfer
+}
+type _TransferProtocol__iface interface {
+	_TransferProtocol__member()
+}
+
+func (_BitswapTransfer) _TransferProtocol__member() {}
