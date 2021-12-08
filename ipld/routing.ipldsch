@@ -4,21 +4,40 @@ type Envelope union {
      | GetP2PProvideResponse "get-p2p-provide-response"
 } representation keyed
 
+type Multihash struct {
+     Bytes Bytes
+}
+
 type GetP2PProvideRequest struct {
-     key Bytes
+     Keys [Multihash]   # multihash vs raw?
 }
 
 type GetP2PProvideResponse struct {
-     providers [Provider]
+     ProvidersByKey {Multihash : Provider}
 }
 
-type Provider union {
+type Provider struct {
+     Node [Node]
+     Proto [TransferProtocol]
+     # can include other provider record meta here, e.g. the provenance of the provider record itself
+}
+
+# Node describes a node (identity, network address, authentication, whatever else applies)
+# We expect different types of nodes, e.g. peer, miner, public IP, etc.
+type Node union {
      | Peer "peer"
 } representation keyed
 
 type Peer struct {
-     Multiaddress [Bytes]
+     ID Bytes
+     Multiaddresses [Bytes]
 }
+
+type TransferProtocol union {
+     | BitswapTransfer "bitswap"
+} representation keyed
+
+type BitswapTransfer struct {}
 
 # XXX: can we have a union representation that tries to parse in order of rules?
 # XXX: how to accomplish pass through? can struct deser place out-of-schema data in a "leftover" field?

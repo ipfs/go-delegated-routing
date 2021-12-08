@@ -8,6 +8,729 @@ import (
 	"github.com/ipld/go-ipld-prime/schema"
 )
 
+type _BitswapTransfer__Maybe struct {
+	m schema.Maybe
+	v BitswapTransfer
+}
+type MaybeBitswapTransfer = *_BitswapTransfer__Maybe
+
+func (m MaybeBitswapTransfer) IsNull() bool {
+	return m.m == schema.Maybe_Null
+}
+func (m MaybeBitswapTransfer) IsAbsent() bool {
+	return m.m == schema.Maybe_Absent
+}
+func (m MaybeBitswapTransfer) Exists() bool {
+	return m.m == schema.Maybe_Value
+}
+func (m MaybeBitswapTransfer) AsNode() datamodel.Node {
+	switch m.m {
+	case schema.Maybe_Absent:
+		return datamodel.Absent
+	case schema.Maybe_Null:
+		return datamodel.Null
+	case schema.Maybe_Value:
+		return m.v
+	default:
+		panic("unreachable")
+	}
+}
+func (m MaybeBitswapTransfer) Must() BitswapTransfer {
+	if !m.Exists() {
+		panic("unbox of a maybe rejected")
+	}
+	return m.v
+}
+
+var ()
+var _ datamodel.Node = (BitswapTransfer)(&_BitswapTransfer{})
+var _ schema.TypedNode = (BitswapTransfer)(&_BitswapTransfer{})
+
+func (BitswapTransfer) Kind() datamodel.Kind {
+	return datamodel.Kind_Map
+}
+func (n BitswapTransfer) LookupByString(key string) (datamodel.Node, error) {
+	switch key {
+	default:
+		return nil, schema.ErrNoSuchField{Type: nil /*TODO*/, Field: datamodel.PathSegmentOfString(key)}
+	}
+}
+func (n BitswapTransfer) LookupByNode(key datamodel.Node) (datamodel.Node, error) {
+	ks, err := key.AsString()
+	if err != nil {
+		return nil, err
+	}
+	return n.LookupByString(ks)
+}
+func (BitswapTransfer) LookupByIndex(idx int64) (datamodel.Node, error) {
+	return mixins.Map{TypeName: "ipldsch.BitswapTransfer"}.LookupByIndex(0)
+}
+func (n BitswapTransfer) LookupBySegment(seg datamodel.PathSegment) (datamodel.Node, error) {
+	return n.LookupByString(seg.String())
+}
+func (n BitswapTransfer) MapIterator() datamodel.MapIterator {
+	return &_BitswapTransfer__MapItr{n, 0}
+}
+
+type _BitswapTransfer__MapItr struct {
+	n   BitswapTransfer
+	idx int
+}
+
+func (itr *_BitswapTransfer__MapItr) Next() (k datamodel.Node, v datamodel.Node, _ error) {
+	return nil, nil, datamodel.ErrIteratorOverread{}
+
+}
+func (itr *_BitswapTransfer__MapItr) Done() bool {
+	return itr.idx >= 0
+}
+
+func (BitswapTransfer) ListIterator() datamodel.ListIterator {
+	return nil
+}
+func (BitswapTransfer) Length() int64 {
+	return 0
+}
+func (BitswapTransfer) IsAbsent() bool {
+	return false
+}
+func (BitswapTransfer) IsNull() bool {
+	return false
+}
+func (BitswapTransfer) AsBool() (bool, error) {
+	return mixins.Map{TypeName: "ipldsch.BitswapTransfer"}.AsBool()
+}
+func (BitswapTransfer) AsInt() (int64, error) {
+	return mixins.Map{TypeName: "ipldsch.BitswapTransfer"}.AsInt()
+}
+func (BitswapTransfer) AsFloat() (float64, error) {
+	return mixins.Map{TypeName: "ipldsch.BitswapTransfer"}.AsFloat()
+}
+func (BitswapTransfer) AsString() (string, error) {
+	return mixins.Map{TypeName: "ipldsch.BitswapTransfer"}.AsString()
+}
+func (BitswapTransfer) AsBytes() ([]byte, error) {
+	return mixins.Map{TypeName: "ipldsch.BitswapTransfer"}.AsBytes()
+}
+func (BitswapTransfer) AsLink() (datamodel.Link, error) {
+	return mixins.Map{TypeName: "ipldsch.BitswapTransfer"}.AsLink()
+}
+func (BitswapTransfer) Prototype() datamodel.NodePrototype {
+	return _BitswapTransfer__Prototype{}
+}
+
+type _BitswapTransfer__Prototype struct{}
+
+func (_BitswapTransfer__Prototype) NewBuilder() datamodel.NodeBuilder {
+	var nb _BitswapTransfer__Builder
+	nb.Reset()
+	return &nb
+}
+
+type _BitswapTransfer__Builder struct {
+	_BitswapTransfer__Assembler
+}
+
+func (nb *_BitswapTransfer__Builder) Build() datamodel.Node {
+	if *nb.m != schema.Maybe_Value {
+		panic("invalid state: cannot call Build on an assembler that's not finished")
+	}
+	return nb.w
+}
+func (nb *_BitswapTransfer__Builder) Reset() {
+	var w _BitswapTransfer
+	var m schema.Maybe
+	*nb = _BitswapTransfer__Builder{_BitswapTransfer__Assembler{w: &w, m: &m}}
+}
+
+type _BitswapTransfer__Assembler struct {
+	w     *_BitswapTransfer
+	m     *schema.Maybe
+	state maState
+	s     int
+	f     int
+
+	cm schema.Maybe
+}
+
+func (na *_BitswapTransfer__Assembler) reset() {
+	na.state = maState_initial
+	na.s = 0
+}
+
+var (
+	fieldBits__BitswapTransfer_sufficient = 0
+)
+
+func (na *_BitswapTransfer__Assembler) BeginMap(int64) (datamodel.MapAssembler, error) {
+	switch *na.m {
+	case schema.Maybe_Value, schema.Maybe_Null:
+		panic("invalid state: cannot assign into assembler that's already finished")
+	case midvalue:
+		panic("invalid state: it makes no sense to 'begin' twice on the same assembler!")
+	}
+	*na.m = midvalue
+	if na.w == nil {
+		na.w = &_BitswapTransfer{}
+	}
+	return na, nil
+}
+func (_BitswapTransfer__Assembler) BeginList(sizeHint int64) (datamodel.ListAssembler, error) {
+	return mixins.MapAssembler{TypeName: "ipldsch.BitswapTransfer"}.BeginList(0)
+}
+func (na *_BitswapTransfer__Assembler) AssignNull() error {
+	switch *na.m {
+	case allowNull:
+		*na.m = schema.Maybe_Null
+		return nil
+	case schema.Maybe_Absent:
+		return mixins.MapAssembler{TypeName: "ipldsch.BitswapTransfer"}.AssignNull()
+	case schema.Maybe_Value, schema.Maybe_Null:
+		panic("invalid state: cannot assign into assembler that's already finished")
+	case midvalue:
+		panic("invalid state: cannot assign null into an assembler that's already begun working on recursive structures!")
+	}
+	panic("unreachable")
+}
+func (_BitswapTransfer__Assembler) AssignBool(bool) error {
+	return mixins.MapAssembler{TypeName: "ipldsch.BitswapTransfer"}.AssignBool(false)
+}
+func (_BitswapTransfer__Assembler) AssignInt(int64) error {
+	return mixins.MapAssembler{TypeName: "ipldsch.BitswapTransfer"}.AssignInt(0)
+}
+func (_BitswapTransfer__Assembler) AssignFloat(float64) error {
+	return mixins.MapAssembler{TypeName: "ipldsch.BitswapTransfer"}.AssignFloat(0)
+}
+func (_BitswapTransfer__Assembler) AssignString(string) error {
+	return mixins.MapAssembler{TypeName: "ipldsch.BitswapTransfer"}.AssignString("")
+}
+func (_BitswapTransfer__Assembler) AssignBytes([]byte) error {
+	return mixins.MapAssembler{TypeName: "ipldsch.BitswapTransfer"}.AssignBytes(nil)
+}
+func (_BitswapTransfer__Assembler) AssignLink(datamodel.Link) error {
+	return mixins.MapAssembler{TypeName: "ipldsch.BitswapTransfer"}.AssignLink(nil)
+}
+func (na *_BitswapTransfer__Assembler) AssignNode(v datamodel.Node) error {
+	if v.IsNull() {
+		return na.AssignNull()
+	}
+	if v2, ok := v.(*_BitswapTransfer); ok {
+		switch *na.m {
+		case schema.Maybe_Value, schema.Maybe_Null:
+			panic("invalid state: cannot assign into assembler that's already finished")
+		case midvalue:
+			panic("invalid state: cannot assign null into an assembler that's already begun working on recursive structures!")
+		}
+		if na.w == nil {
+			na.w = v2
+			*na.m = schema.Maybe_Value
+			return nil
+		}
+		*na.w = *v2
+		*na.m = schema.Maybe_Value
+		return nil
+	}
+	if v.Kind() != datamodel.Kind_Map {
+		return datamodel.ErrWrongKind{TypeName: "ipldsch.BitswapTransfer", MethodName: "AssignNode", AppropriateKind: datamodel.KindSet_JustMap, ActualKind: v.Kind()}
+	}
+	itr := v.MapIterator()
+	for !itr.Done() {
+		k, v, err := itr.Next()
+		if err != nil {
+			return err
+		}
+		if err := na.AssembleKey().AssignNode(k); err != nil {
+			return err
+		}
+		if err := na.AssembleValue().AssignNode(v); err != nil {
+			return err
+		}
+	}
+	return na.Finish()
+}
+func (_BitswapTransfer__Assembler) Prototype() datamodel.NodePrototype {
+	return _BitswapTransfer__Prototype{}
+}
+func (ma *_BitswapTransfer__Assembler) valueFinishTidy() bool {
+	switch ma.f {
+	default:
+		panic("unreachable")
+	}
+}
+func (ma *_BitswapTransfer__Assembler) AssembleEntry(k string) (datamodel.NodeAssembler, error) {
+	switch ma.state {
+	case maState_initial:
+		// carry on
+	case maState_midKey:
+		panic("invalid state: AssembleEntry cannot be called when in the middle of assembling another key")
+	case maState_expectValue:
+		panic("invalid state: AssembleEntry cannot be called when expecting start of value assembly")
+	case maState_midValue:
+		if !ma.valueFinishTidy() {
+			panic("invalid state: AssembleEntry cannot be called when in the middle of assembling a value")
+		} // if tidy success: carry on
+	case maState_finished:
+		panic("invalid state: AssembleEntry cannot be called on an assembler that's already finished")
+	}
+	return nil, schema.ErrInvalidKey{TypeName: "ipldsch.BitswapTransfer", Key: &_String{k}}
+}
+func (ma *_BitswapTransfer__Assembler) AssembleKey() datamodel.NodeAssembler {
+	switch ma.state {
+	case maState_initial:
+		// carry on
+	case maState_midKey:
+		panic("invalid state: AssembleKey cannot be called when in the middle of assembling another key")
+	case maState_expectValue:
+		panic("invalid state: AssembleKey cannot be called when expecting start of value assembly")
+	case maState_midValue:
+		if !ma.valueFinishTidy() {
+			panic("invalid state: AssembleKey cannot be called when in the middle of assembling a value")
+		} // if tidy success: carry on
+	case maState_finished:
+		panic("invalid state: AssembleKey cannot be called on an assembler that's already finished")
+	}
+	ma.state = maState_midKey
+	return (*_BitswapTransfer__KeyAssembler)(ma)
+}
+func (ma *_BitswapTransfer__Assembler) AssembleValue() datamodel.NodeAssembler {
+	switch ma.state {
+	case maState_initial:
+		panic("invalid state: AssembleValue cannot be called when no key is primed")
+	case maState_midKey:
+		panic("invalid state: AssembleValue cannot be called when in the middle of assembling a key")
+	case maState_expectValue:
+		// carry on
+	case maState_midValue:
+		panic("invalid state: AssembleValue cannot be called when in the middle of assembling another value")
+	case maState_finished:
+		panic("invalid state: AssembleValue cannot be called on an assembler that's already finished")
+	}
+	ma.state = maState_midValue
+	switch ma.f {
+	default:
+		panic("unreachable")
+	}
+}
+func (ma *_BitswapTransfer__Assembler) Finish() error {
+	switch ma.state {
+	case maState_initial:
+		// carry on
+	case maState_midKey:
+		panic("invalid state: Finish cannot be called when in the middle of assembling a key")
+	case maState_expectValue:
+		panic("invalid state: Finish cannot be called when expecting start of value assembly")
+	case maState_midValue:
+		if !ma.valueFinishTidy() {
+			panic("invalid state: Finish cannot be called when in the middle of assembling a value")
+		} // if tidy success: carry on
+	case maState_finished:
+		panic("invalid state: Finish cannot be called on an assembler that's already finished")
+	}
+	if ma.s&fieldBits__BitswapTransfer_sufficient != fieldBits__BitswapTransfer_sufficient {
+		err := schema.ErrMissingRequiredField{Missing: make([]string, 0)}
+		return err
+	}
+	ma.state = maState_finished
+	*ma.m = schema.Maybe_Value
+	return nil
+}
+func (ma *_BitswapTransfer__Assembler) KeyPrototype() datamodel.NodePrototype {
+	return _String__Prototype{}
+}
+func (ma *_BitswapTransfer__Assembler) ValuePrototype(k string) datamodel.NodePrototype {
+	panic("todo structbuilder mapassembler valueprototype")
+}
+
+type _BitswapTransfer__KeyAssembler _BitswapTransfer__Assembler
+
+func (_BitswapTransfer__KeyAssembler) BeginMap(sizeHint int64) (datamodel.MapAssembler, error) {
+	return mixins.StringAssembler{TypeName: "ipldsch.BitswapTransfer.KeyAssembler"}.BeginMap(0)
+}
+func (_BitswapTransfer__KeyAssembler) BeginList(sizeHint int64) (datamodel.ListAssembler, error) {
+	return mixins.StringAssembler{TypeName: "ipldsch.BitswapTransfer.KeyAssembler"}.BeginList(0)
+}
+func (na *_BitswapTransfer__KeyAssembler) AssignNull() error {
+	return mixins.StringAssembler{TypeName: "ipldsch.BitswapTransfer.KeyAssembler"}.AssignNull()
+}
+func (_BitswapTransfer__KeyAssembler) AssignBool(bool) error {
+	return mixins.StringAssembler{TypeName: "ipldsch.BitswapTransfer.KeyAssembler"}.AssignBool(false)
+}
+func (_BitswapTransfer__KeyAssembler) AssignInt(int64) error {
+	return mixins.StringAssembler{TypeName: "ipldsch.BitswapTransfer.KeyAssembler"}.AssignInt(0)
+}
+func (_BitswapTransfer__KeyAssembler) AssignFloat(float64) error {
+	return mixins.StringAssembler{TypeName: "ipldsch.BitswapTransfer.KeyAssembler"}.AssignFloat(0)
+}
+func (ka *_BitswapTransfer__KeyAssembler) AssignString(k string) error {
+	if ka.state != maState_midKey {
+		panic("misuse: KeyAssembler held beyond its valid lifetime")
+	}
+	switch k {
+	default:
+		return schema.ErrInvalidKey{TypeName: "ipldsch.BitswapTransfer", Key: &_String{k}}
+	}
+}
+func (_BitswapTransfer__KeyAssembler) AssignBytes([]byte) error {
+	return mixins.StringAssembler{TypeName: "ipldsch.BitswapTransfer.KeyAssembler"}.AssignBytes(nil)
+}
+func (_BitswapTransfer__KeyAssembler) AssignLink(datamodel.Link) error {
+	return mixins.StringAssembler{TypeName: "ipldsch.BitswapTransfer.KeyAssembler"}.AssignLink(nil)
+}
+func (ka *_BitswapTransfer__KeyAssembler) AssignNode(v datamodel.Node) error {
+	if v2, err := v.AsString(); err != nil {
+		return err
+	} else {
+		return ka.AssignString(v2)
+	}
+}
+func (_BitswapTransfer__KeyAssembler) Prototype() datamodel.NodePrototype {
+	return _String__Prototype{}
+}
+func (BitswapTransfer) Type() schema.Type {
+	return nil /*TODO:typelit*/
+}
+func (n BitswapTransfer) Representation() datamodel.Node {
+	return (*_BitswapTransfer__Repr)(n)
+}
+
+type _BitswapTransfer__Repr _BitswapTransfer
+
+var ()
+var _ datamodel.Node = &_BitswapTransfer__Repr{}
+
+func (_BitswapTransfer__Repr) Kind() datamodel.Kind {
+	return datamodel.Kind_Map
+}
+func (n *_BitswapTransfer__Repr) LookupByString(key string) (datamodel.Node, error) {
+	switch key {
+	default:
+		return nil, schema.ErrNoSuchField{Type: nil /*TODO*/, Field: datamodel.PathSegmentOfString(key)}
+	}
+}
+func (n *_BitswapTransfer__Repr) LookupByNode(key datamodel.Node) (datamodel.Node, error) {
+	ks, err := key.AsString()
+	if err != nil {
+		return nil, err
+	}
+	return n.LookupByString(ks)
+}
+func (_BitswapTransfer__Repr) LookupByIndex(idx int64) (datamodel.Node, error) {
+	return mixins.Map{TypeName: "ipldsch.BitswapTransfer.Repr"}.LookupByIndex(0)
+}
+func (n _BitswapTransfer__Repr) LookupBySegment(seg datamodel.PathSegment) (datamodel.Node, error) {
+	return n.LookupByString(seg.String())
+}
+func (n *_BitswapTransfer__Repr) MapIterator() datamodel.MapIterator {
+	return &_BitswapTransfer__ReprMapItr{n, 0}
+}
+
+type _BitswapTransfer__ReprMapItr struct {
+	n   *_BitswapTransfer__Repr
+	idx int
+}
+
+func (itr *_BitswapTransfer__ReprMapItr) Next() (k datamodel.Node, v datamodel.Node, _ error) {
+	return nil, nil, datamodel.ErrIteratorOverread{}
+
+}
+func (itr *_BitswapTransfer__ReprMapItr) Done() bool {
+	return itr.idx >= 0
+}
+func (_BitswapTransfer__Repr) ListIterator() datamodel.ListIterator {
+	return nil
+}
+func (rn *_BitswapTransfer__Repr) Length() int64 {
+	l := 0
+	return int64(l)
+}
+func (_BitswapTransfer__Repr) IsAbsent() bool {
+	return false
+}
+func (_BitswapTransfer__Repr) IsNull() bool {
+	return false
+}
+func (_BitswapTransfer__Repr) AsBool() (bool, error) {
+	return mixins.Map{TypeName: "ipldsch.BitswapTransfer.Repr"}.AsBool()
+}
+func (_BitswapTransfer__Repr) AsInt() (int64, error) {
+	return mixins.Map{TypeName: "ipldsch.BitswapTransfer.Repr"}.AsInt()
+}
+func (_BitswapTransfer__Repr) AsFloat() (float64, error) {
+	return mixins.Map{TypeName: "ipldsch.BitswapTransfer.Repr"}.AsFloat()
+}
+func (_BitswapTransfer__Repr) AsString() (string, error) {
+	return mixins.Map{TypeName: "ipldsch.BitswapTransfer.Repr"}.AsString()
+}
+func (_BitswapTransfer__Repr) AsBytes() ([]byte, error) {
+	return mixins.Map{TypeName: "ipldsch.BitswapTransfer.Repr"}.AsBytes()
+}
+func (_BitswapTransfer__Repr) AsLink() (datamodel.Link, error) {
+	return mixins.Map{TypeName: "ipldsch.BitswapTransfer.Repr"}.AsLink()
+}
+func (_BitswapTransfer__Repr) Prototype() datamodel.NodePrototype {
+	return _BitswapTransfer__ReprPrototype{}
+}
+
+type _BitswapTransfer__ReprPrototype struct{}
+
+func (_BitswapTransfer__ReprPrototype) NewBuilder() datamodel.NodeBuilder {
+	var nb _BitswapTransfer__ReprBuilder
+	nb.Reset()
+	return &nb
+}
+
+type _BitswapTransfer__ReprBuilder struct {
+	_BitswapTransfer__ReprAssembler
+}
+
+func (nb *_BitswapTransfer__ReprBuilder) Build() datamodel.Node {
+	if *nb.m != schema.Maybe_Value {
+		panic("invalid state: cannot call Build on an assembler that's not finished")
+	}
+	return nb.w
+}
+func (nb *_BitswapTransfer__ReprBuilder) Reset() {
+	var w _BitswapTransfer
+	var m schema.Maybe
+	*nb = _BitswapTransfer__ReprBuilder{_BitswapTransfer__ReprAssembler{w: &w, m: &m}}
+}
+
+type _BitswapTransfer__ReprAssembler struct {
+	w     *_BitswapTransfer
+	m     *schema.Maybe
+	state maState
+	s     int
+	f     int
+
+	cm schema.Maybe
+}
+
+func (na *_BitswapTransfer__ReprAssembler) reset() {
+	na.state = maState_initial
+	na.s = 0
+}
+func (na *_BitswapTransfer__ReprAssembler) BeginMap(int64) (datamodel.MapAssembler, error) {
+	switch *na.m {
+	case schema.Maybe_Value, schema.Maybe_Null:
+		panic("invalid state: cannot assign into assembler that's already finished")
+	case midvalue:
+		panic("invalid state: it makes no sense to 'begin' twice on the same assembler!")
+	}
+	*na.m = midvalue
+	if na.w == nil {
+		na.w = &_BitswapTransfer{}
+	}
+	return na, nil
+}
+func (_BitswapTransfer__ReprAssembler) BeginList(sizeHint int64) (datamodel.ListAssembler, error) {
+	return mixins.MapAssembler{TypeName: "ipldsch.BitswapTransfer.Repr"}.BeginList(0)
+}
+func (na *_BitswapTransfer__ReprAssembler) AssignNull() error {
+	switch *na.m {
+	case allowNull:
+		*na.m = schema.Maybe_Null
+		return nil
+	case schema.Maybe_Absent:
+		return mixins.MapAssembler{TypeName: "ipldsch.BitswapTransfer.Repr.Repr"}.AssignNull()
+	case schema.Maybe_Value, schema.Maybe_Null:
+		panic("invalid state: cannot assign into assembler that's already finished")
+	case midvalue:
+		panic("invalid state: cannot assign null into an assembler that's already begun working on recursive structures!")
+	}
+	panic("unreachable")
+}
+func (_BitswapTransfer__ReprAssembler) AssignBool(bool) error {
+	return mixins.MapAssembler{TypeName: "ipldsch.BitswapTransfer.Repr"}.AssignBool(false)
+}
+func (_BitswapTransfer__ReprAssembler) AssignInt(int64) error {
+	return mixins.MapAssembler{TypeName: "ipldsch.BitswapTransfer.Repr"}.AssignInt(0)
+}
+func (_BitswapTransfer__ReprAssembler) AssignFloat(float64) error {
+	return mixins.MapAssembler{TypeName: "ipldsch.BitswapTransfer.Repr"}.AssignFloat(0)
+}
+func (_BitswapTransfer__ReprAssembler) AssignString(string) error {
+	return mixins.MapAssembler{TypeName: "ipldsch.BitswapTransfer.Repr"}.AssignString("")
+}
+func (_BitswapTransfer__ReprAssembler) AssignBytes([]byte) error {
+	return mixins.MapAssembler{TypeName: "ipldsch.BitswapTransfer.Repr"}.AssignBytes(nil)
+}
+func (_BitswapTransfer__ReprAssembler) AssignLink(datamodel.Link) error {
+	return mixins.MapAssembler{TypeName: "ipldsch.BitswapTransfer.Repr"}.AssignLink(nil)
+}
+func (na *_BitswapTransfer__ReprAssembler) AssignNode(v datamodel.Node) error {
+	if v.IsNull() {
+		return na.AssignNull()
+	}
+	if v2, ok := v.(*_BitswapTransfer); ok {
+		switch *na.m {
+		case schema.Maybe_Value, schema.Maybe_Null:
+			panic("invalid state: cannot assign into assembler that's already finished")
+		case midvalue:
+			panic("invalid state: cannot assign null into an assembler that's already begun working on recursive structures!")
+		}
+		if na.w == nil {
+			na.w = v2
+			*na.m = schema.Maybe_Value
+			return nil
+		}
+		*na.w = *v2
+		*na.m = schema.Maybe_Value
+		return nil
+	}
+	if v.Kind() != datamodel.Kind_Map {
+		return datamodel.ErrWrongKind{TypeName: "ipldsch.BitswapTransfer.Repr", MethodName: "AssignNode", AppropriateKind: datamodel.KindSet_JustMap, ActualKind: v.Kind()}
+	}
+	itr := v.MapIterator()
+	for !itr.Done() {
+		k, v, err := itr.Next()
+		if err != nil {
+			return err
+		}
+		if err := na.AssembleKey().AssignNode(k); err != nil {
+			return err
+		}
+		if err := na.AssembleValue().AssignNode(v); err != nil {
+			return err
+		}
+	}
+	return na.Finish()
+}
+func (_BitswapTransfer__ReprAssembler) Prototype() datamodel.NodePrototype {
+	return _BitswapTransfer__ReprPrototype{}
+}
+func (ma *_BitswapTransfer__ReprAssembler) valueFinishTidy() bool {
+	switch ma.f {
+	default:
+		panic("unreachable")
+	}
+}
+func (ma *_BitswapTransfer__ReprAssembler) AssembleEntry(k string) (datamodel.NodeAssembler, error) {
+	switch ma.state {
+	case maState_initial:
+		// carry on
+	case maState_midKey:
+		panic("invalid state: AssembleEntry cannot be called when in the middle of assembling another key")
+	case maState_expectValue:
+		panic("invalid state: AssembleEntry cannot be called when expecting start of value assembly")
+	case maState_midValue:
+		if !ma.valueFinishTidy() {
+			panic("invalid state: AssembleEntry cannot be called when in the middle of assembling a value")
+		} // if tidy success: carry on
+	case maState_finished:
+		panic("invalid state: AssembleEntry cannot be called on an assembler that's already finished")
+	}
+	return nil, schema.ErrInvalidKey{TypeName: "ipldsch.BitswapTransfer.Repr", Key: &_String{k}}
+}
+func (ma *_BitswapTransfer__ReprAssembler) AssembleKey() datamodel.NodeAssembler {
+	switch ma.state {
+	case maState_initial:
+		// carry on
+	case maState_midKey:
+		panic("invalid state: AssembleKey cannot be called when in the middle of assembling another key")
+	case maState_expectValue:
+		panic("invalid state: AssembleKey cannot be called when expecting start of value assembly")
+	case maState_midValue:
+		if !ma.valueFinishTidy() {
+			panic("invalid state: AssembleKey cannot be called when in the middle of assembling a value")
+		} // if tidy success: carry on
+	case maState_finished:
+		panic("invalid state: AssembleKey cannot be called on an assembler that's already finished")
+	}
+	ma.state = maState_midKey
+	return (*_BitswapTransfer__ReprKeyAssembler)(ma)
+}
+func (ma *_BitswapTransfer__ReprAssembler) AssembleValue() datamodel.NodeAssembler {
+	switch ma.state {
+	case maState_initial:
+		panic("invalid state: AssembleValue cannot be called when no key is primed")
+	case maState_midKey:
+		panic("invalid state: AssembleValue cannot be called when in the middle of assembling a key")
+	case maState_expectValue:
+		// carry on
+	case maState_midValue:
+		panic("invalid state: AssembleValue cannot be called when in the middle of assembling another value")
+	case maState_finished:
+		panic("invalid state: AssembleValue cannot be called on an assembler that's already finished")
+	}
+	ma.state = maState_midValue
+	switch ma.f {
+	default:
+		panic("unreachable")
+	}
+}
+func (ma *_BitswapTransfer__ReprAssembler) Finish() error {
+	switch ma.state {
+	case maState_initial:
+		// carry on
+	case maState_midKey:
+		panic("invalid state: Finish cannot be called when in the middle of assembling a key")
+	case maState_expectValue:
+		panic("invalid state: Finish cannot be called when expecting start of value assembly")
+	case maState_midValue:
+		if !ma.valueFinishTidy() {
+			panic("invalid state: Finish cannot be called when in the middle of assembling a value")
+		} // if tidy success: carry on
+	case maState_finished:
+		panic("invalid state: Finish cannot be called on an assembler that's already finished")
+	}
+	if ma.s&fieldBits__BitswapTransfer_sufficient != fieldBits__BitswapTransfer_sufficient {
+		err := schema.ErrMissingRequiredField{Missing: make([]string, 0)}
+		return err
+	}
+	ma.state = maState_finished
+	*ma.m = schema.Maybe_Value
+	return nil
+}
+func (ma *_BitswapTransfer__ReprAssembler) KeyPrototype() datamodel.NodePrototype {
+	return _String__Prototype{}
+}
+func (ma *_BitswapTransfer__ReprAssembler) ValuePrototype(k string) datamodel.NodePrototype {
+	panic("todo structbuilder mapassembler repr valueprototype")
+}
+
+type _BitswapTransfer__ReprKeyAssembler _BitswapTransfer__ReprAssembler
+
+func (_BitswapTransfer__ReprKeyAssembler) BeginMap(sizeHint int64) (datamodel.MapAssembler, error) {
+	return mixins.StringAssembler{TypeName: "ipldsch.BitswapTransfer.Repr.KeyAssembler"}.BeginMap(0)
+}
+func (_BitswapTransfer__ReprKeyAssembler) BeginList(sizeHint int64) (datamodel.ListAssembler, error) {
+	return mixins.StringAssembler{TypeName: "ipldsch.BitswapTransfer.Repr.KeyAssembler"}.BeginList(0)
+}
+func (na *_BitswapTransfer__ReprKeyAssembler) AssignNull() error {
+	return mixins.StringAssembler{TypeName: "ipldsch.BitswapTransfer.Repr.KeyAssembler"}.AssignNull()
+}
+func (_BitswapTransfer__ReprKeyAssembler) AssignBool(bool) error {
+	return mixins.StringAssembler{TypeName: "ipldsch.BitswapTransfer.Repr.KeyAssembler"}.AssignBool(false)
+}
+func (_BitswapTransfer__ReprKeyAssembler) AssignInt(int64) error {
+	return mixins.StringAssembler{TypeName: "ipldsch.BitswapTransfer.Repr.KeyAssembler"}.AssignInt(0)
+}
+func (_BitswapTransfer__ReprKeyAssembler) AssignFloat(float64) error {
+	return mixins.StringAssembler{TypeName: "ipldsch.BitswapTransfer.Repr.KeyAssembler"}.AssignFloat(0)
+}
+func (ka *_BitswapTransfer__ReprKeyAssembler) AssignString(k string) error {
+	if ka.state != maState_midKey {
+		panic("misuse: KeyAssembler held beyond its valid lifetime")
+	}
+	return schema.ErrInvalidKey{TypeName: "ipldsch.BitswapTransfer.Repr", Key: &_String{k}}
+}
+func (_BitswapTransfer__ReprKeyAssembler) AssignBytes([]byte) error {
+	return mixins.StringAssembler{TypeName: "ipldsch.BitswapTransfer.Repr.KeyAssembler"}.AssignBytes(nil)
+}
+func (_BitswapTransfer__ReprKeyAssembler) AssignLink(datamodel.Link) error {
+	return mixins.StringAssembler{TypeName: "ipldsch.BitswapTransfer.Repr.KeyAssembler"}.AssignLink(nil)
+}
+func (ka *_BitswapTransfer__ReprKeyAssembler) AssignNode(v datamodel.Node) error {
+	if v2, err := v.AsString(); err != nil {
+		return err
+	} else {
+		return ka.AssignString(v2)
+	}
+}
+func (_BitswapTransfer__ReprKeyAssembler) Prototype() datamodel.NodePrototype {
+	return _String__Prototype{}
+}
+
 func (n Bool) Bool() bool {
 	return n.x
 }
@@ -1527,8 +2250,8 @@ var _ datamodel.Node = &_Float__Repr{}
 type _Float__ReprPrototype = _Float__Prototype
 type _Float__ReprAssembler = _Float__Assembler
 
-func (n _GetP2PProvideRequest) FieldKey() Bytes {
-	return &n.key
+func (n _GetP2PProvideRequest) FieldKeys() List__Multihash {
+	return &n.Keys
 }
 
 type _GetP2PProvideRequest__Maybe struct {
@@ -1566,7 +2289,7 @@ func (m MaybeGetP2PProvideRequest) Must() GetP2PProvideRequest {
 }
 
 var (
-	fieldName__GetP2PProvideRequest_Key = _String{"key"}
+	fieldName__GetP2PProvideRequest_Keys = _String{"Keys"}
 )
 var _ datamodel.Node = (GetP2PProvideRequest)(&_GetP2PProvideRequest{})
 var _ schema.TypedNode = (GetP2PProvideRequest)(&_GetP2PProvideRequest{})
@@ -1576,8 +2299,8 @@ func (GetP2PProvideRequest) Kind() datamodel.Kind {
 }
 func (n GetP2PProvideRequest) LookupByString(key string) (datamodel.Node, error) {
 	switch key {
-	case "key":
-		return &n.key, nil
+	case "Keys":
+		return &n.Keys, nil
 	default:
 		return nil, schema.ErrNoSuchField{Type: nil /*TODO*/, Field: datamodel.PathSegmentOfString(key)}
 	}
@@ -1610,8 +2333,8 @@ func (itr *_GetP2PProvideRequest__MapItr) Next() (k datamodel.Node, v datamodel.
 	}
 	switch itr.idx {
 	case 0:
-		k = &fieldName__GetP2PProvideRequest_Key
-		v = &itr.n.key
+		k = &fieldName__GetP2PProvideRequest_Keys
+		v = &itr.n.Keys
 	default:
 		panic("unreachable")
 	}
@@ -1687,18 +2410,18 @@ type _GetP2PProvideRequest__Assembler struct {
 	s     int
 	f     int
 
-	cm     schema.Maybe
-	ca_key _Bytes__Assembler
+	cm      schema.Maybe
+	ca_Keys _List__Multihash__Assembler
 }
 
 func (na *_GetP2PProvideRequest__Assembler) reset() {
 	na.state = maState_initial
 	na.s = 0
-	na.ca_key.reset()
+	na.ca_Keys.reset()
 }
 
 var (
-	fieldBit__GetP2PProvideRequest_Key         = 1 << 0
+	fieldBit__GetP2PProvideRequest_Keys        = 1 << 0
 	fieldBits__GetP2PProvideRequest_sufficient = 0 + 1<<0
 )
 
@@ -1796,7 +2519,7 @@ func (ma *_GetP2PProvideRequest__Assembler) valueFinishTidy() bool {
 	case 0:
 		switch ma.cm {
 		case schema.Maybe_Value:
-			ma.ca_key.w = nil
+			ma.ca_Keys.w = nil
 			ma.cm = schema.Maybe_Absent
 			ma.state = maState_initial
 			return true
@@ -1823,16 +2546,16 @@ func (ma *_GetP2PProvideRequest__Assembler) AssembleEntry(k string) (datamodel.N
 		panic("invalid state: AssembleEntry cannot be called on an assembler that's already finished")
 	}
 	switch k {
-	case "key":
-		if ma.s&fieldBit__GetP2PProvideRequest_Key != 0 {
-			return nil, datamodel.ErrRepeatedMapKey{Key: &fieldName__GetP2PProvideRequest_Key}
+	case "Keys":
+		if ma.s&fieldBit__GetP2PProvideRequest_Keys != 0 {
+			return nil, datamodel.ErrRepeatedMapKey{Key: &fieldName__GetP2PProvideRequest_Keys}
 		}
-		ma.s += fieldBit__GetP2PProvideRequest_Key
+		ma.s += fieldBit__GetP2PProvideRequest_Keys
 		ma.state = maState_midValue
 		ma.f = 0
-		ma.ca_key.w = &ma.w.key
-		ma.ca_key.m = &ma.cm
-		return &ma.ca_key, nil
+		ma.ca_Keys.w = &ma.w.Keys
+		ma.ca_Keys.m = &ma.cm
+		return &ma.ca_Keys, nil
 	}
 	return nil, schema.ErrInvalidKey{TypeName: "ipldsch.GetP2PProvideRequest", Key: &_String{k}}
 }
@@ -1870,9 +2593,9 @@ func (ma *_GetP2PProvideRequest__Assembler) AssembleValue() datamodel.NodeAssemb
 	ma.state = maState_midValue
 	switch ma.f {
 	case 0:
-		ma.ca_key.w = &ma.w.key
-		ma.ca_key.m = &ma.cm
-		return &ma.ca_key
+		ma.ca_Keys.w = &ma.w.Keys
+		ma.ca_Keys.m = &ma.cm
+		return &ma.ca_Keys
 	default:
 		panic("unreachable")
 	}
@@ -1894,8 +2617,8 @@ func (ma *_GetP2PProvideRequest__Assembler) Finish() error {
 	}
 	if ma.s&fieldBits__GetP2PProvideRequest_sufficient != fieldBits__GetP2PProvideRequest_sufficient {
 		err := schema.ErrMissingRequiredField{Missing: make([]string, 0)}
-		if ma.s&fieldBit__GetP2PProvideRequest_Key == 0 {
-			err.Missing = append(err.Missing, "key")
+		if ma.s&fieldBit__GetP2PProvideRequest_Keys == 0 {
+			err.Missing = append(err.Missing, "Keys")
 		}
 		return err
 	}
@@ -1935,11 +2658,11 @@ func (ka *_GetP2PProvideRequest__KeyAssembler) AssignString(k string) error {
 		panic("misuse: KeyAssembler held beyond its valid lifetime")
 	}
 	switch k {
-	case "key":
-		if ka.s&fieldBit__GetP2PProvideRequest_Key != 0 {
-			return datamodel.ErrRepeatedMapKey{Key: &fieldName__GetP2PProvideRequest_Key}
+	case "Keys":
+		if ka.s&fieldBit__GetP2PProvideRequest_Keys != 0 {
+			return datamodel.ErrRepeatedMapKey{Key: &fieldName__GetP2PProvideRequest_Keys}
 		}
-		ka.s += fieldBit__GetP2PProvideRequest_Key
+		ka.s += fieldBit__GetP2PProvideRequest_Keys
 		ka.state = maState_expectValue
 		ka.f = 0
 		return nil
@@ -1973,7 +2696,7 @@ func (n GetP2PProvideRequest) Representation() datamodel.Node {
 type _GetP2PProvideRequest__Repr _GetP2PProvideRequest
 
 var (
-	fieldName__GetP2PProvideRequest_Key_serial = _String{"key"}
+	fieldName__GetP2PProvideRequest_Keys_serial = _String{"Keys"}
 )
 var _ datamodel.Node = &_GetP2PProvideRequest__Repr{}
 
@@ -1982,8 +2705,8 @@ func (_GetP2PProvideRequest__Repr) Kind() datamodel.Kind {
 }
 func (n *_GetP2PProvideRequest__Repr) LookupByString(key string) (datamodel.Node, error) {
 	switch key {
-	case "key":
-		return n.key.Representation(), nil
+	case "Keys":
+		return n.Keys.Representation(), nil
 	default:
 		return nil, schema.ErrNoSuchField{Type: nil /*TODO*/, Field: datamodel.PathSegmentOfString(key)}
 	}
@@ -2016,8 +2739,8 @@ func (itr *_GetP2PProvideRequest__ReprMapItr) Next() (k datamodel.Node, v datamo
 	}
 	switch itr.idx {
 	case 0:
-		k = &fieldName__GetP2PProvideRequest_Key_serial
-		v = itr.n.key.Representation()
+		k = &fieldName__GetP2PProvideRequest_Keys_serial
+		v = itr.n.Keys.Representation()
 	default:
 		panic("unreachable")
 	}
@@ -2093,14 +2816,14 @@ type _GetP2PProvideRequest__ReprAssembler struct {
 	s     int
 	f     int
 
-	cm     schema.Maybe
-	ca_key _Bytes__ReprAssembler
+	cm      schema.Maybe
+	ca_Keys _List__Multihash__ReprAssembler
 }
 
 func (na *_GetP2PProvideRequest__ReprAssembler) reset() {
 	na.state = maState_initial
 	na.s = 0
-	na.ca_key.reset()
+	na.ca_Keys.reset()
 }
 func (na *_GetP2PProvideRequest__ReprAssembler) BeginMap(int64) (datamodel.MapAssembler, error) {
 	switch *na.m {
@@ -2222,16 +2945,16 @@ func (ma *_GetP2PProvideRequest__ReprAssembler) AssembleEntry(k string) (datamod
 		panic("invalid state: AssembleEntry cannot be called on an assembler that's already finished")
 	}
 	switch k {
-	case "key":
-		if ma.s&fieldBit__GetP2PProvideRequest_Key != 0 {
-			return nil, datamodel.ErrRepeatedMapKey{Key: &fieldName__GetP2PProvideRequest_Key_serial}
+	case "Keys":
+		if ma.s&fieldBit__GetP2PProvideRequest_Keys != 0 {
+			return nil, datamodel.ErrRepeatedMapKey{Key: &fieldName__GetP2PProvideRequest_Keys_serial}
 		}
-		ma.s += fieldBit__GetP2PProvideRequest_Key
+		ma.s += fieldBit__GetP2PProvideRequest_Keys
 		ma.state = maState_midValue
 		ma.f = 0
-		ma.ca_key.w = &ma.w.key
-		ma.ca_key.m = &ma.cm
-		return &ma.ca_key, nil
+		ma.ca_Keys.w = &ma.w.Keys
+		ma.ca_Keys.m = &ma.cm
+		return &ma.ca_Keys, nil
 	default:
 	}
 	return nil, schema.ErrInvalidKey{TypeName: "ipldsch.GetP2PProvideRequest.Repr", Key: &_String{k}}
@@ -2270,9 +2993,9 @@ func (ma *_GetP2PProvideRequest__ReprAssembler) AssembleValue() datamodel.NodeAs
 	ma.state = maState_midValue
 	switch ma.f {
 	case 0:
-		ma.ca_key.w = &ma.w.key
-		ma.ca_key.m = &ma.cm
-		return &ma.ca_key
+		ma.ca_Keys.w = &ma.w.Keys
+		ma.ca_Keys.m = &ma.cm
+		return &ma.ca_Keys
 	default:
 		panic("unreachable")
 	}
@@ -2294,8 +3017,8 @@ func (ma *_GetP2PProvideRequest__ReprAssembler) Finish() error {
 	}
 	if ma.s&fieldBits__GetP2PProvideRequest_sufficient != fieldBits__GetP2PProvideRequest_sufficient {
 		err := schema.ErrMissingRequiredField{Missing: make([]string, 0)}
-		if ma.s&fieldBit__GetP2PProvideRequest_Key == 0 {
-			err.Missing = append(err.Missing, "key")
+		if ma.s&fieldBit__GetP2PProvideRequest_Keys == 0 {
+			err.Missing = append(err.Missing, "Keys")
 		}
 		return err
 	}
@@ -2335,11 +3058,11 @@ func (ka *_GetP2PProvideRequest__ReprKeyAssembler) AssignString(k string) error 
 		panic("misuse: KeyAssembler held beyond its valid lifetime")
 	}
 	switch k {
-	case "key":
-		if ka.s&fieldBit__GetP2PProvideRequest_Key != 0 {
-			return datamodel.ErrRepeatedMapKey{Key: &fieldName__GetP2PProvideRequest_Key_serial}
+	case "Keys":
+		if ka.s&fieldBit__GetP2PProvideRequest_Keys != 0 {
+			return datamodel.ErrRepeatedMapKey{Key: &fieldName__GetP2PProvideRequest_Keys_serial}
 		}
-		ka.s += fieldBit__GetP2PProvideRequest_Key
+		ka.s += fieldBit__GetP2PProvideRequest_Keys
 		ka.state = maState_expectValue
 		ka.f = 0
 		return nil
@@ -2363,8 +3086,8 @@ func (_GetP2PProvideRequest__ReprKeyAssembler) Prototype() datamodel.NodePrototy
 	return _String__Prototype{}
 }
 
-func (n _GetP2PProvideResponse) FieldProviders() List__Provider {
-	return &n.providers
+func (n _GetP2PProvideResponse) FieldProvidersByKey() Map__Multihash__Provider {
+	return &n.ProvidersByKey
 }
 
 type _GetP2PProvideResponse__Maybe struct {
@@ -2402,7 +3125,7 @@ func (m MaybeGetP2PProvideResponse) Must() GetP2PProvideResponse {
 }
 
 var (
-	fieldName__GetP2PProvideResponse_Providers = _String{"providers"}
+	fieldName__GetP2PProvideResponse_ProvidersByKey = _String{"ProvidersByKey"}
 )
 var _ datamodel.Node = (GetP2PProvideResponse)(&_GetP2PProvideResponse{})
 var _ schema.TypedNode = (GetP2PProvideResponse)(&_GetP2PProvideResponse{})
@@ -2412,8 +3135,8 @@ func (GetP2PProvideResponse) Kind() datamodel.Kind {
 }
 func (n GetP2PProvideResponse) LookupByString(key string) (datamodel.Node, error) {
 	switch key {
-	case "providers":
-		return &n.providers, nil
+	case "ProvidersByKey":
+		return &n.ProvidersByKey, nil
 	default:
 		return nil, schema.ErrNoSuchField{Type: nil /*TODO*/, Field: datamodel.PathSegmentOfString(key)}
 	}
@@ -2446,8 +3169,8 @@ func (itr *_GetP2PProvideResponse__MapItr) Next() (k datamodel.Node, v datamodel
 	}
 	switch itr.idx {
 	case 0:
-		k = &fieldName__GetP2PProvideResponse_Providers
-		v = &itr.n.providers
+		k = &fieldName__GetP2PProvideResponse_ProvidersByKey
+		v = &itr.n.ProvidersByKey
 	default:
 		panic("unreachable")
 	}
@@ -2523,19 +3246,19 @@ type _GetP2PProvideResponse__Assembler struct {
 	s     int
 	f     int
 
-	cm           schema.Maybe
-	ca_providers _List__Provider__Assembler
+	cm                schema.Maybe
+	ca_ProvidersByKey _Map__Multihash__Provider__Assembler
 }
 
 func (na *_GetP2PProvideResponse__Assembler) reset() {
 	na.state = maState_initial
 	na.s = 0
-	na.ca_providers.reset()
+	na.ca_ProvidersByKey.reset()
 }
 
 var (
-	fieldBit__GetP2PProvideResponse_Providers   = 1 << 0
-	fieldBits__GetP2PProvideResponse_sufficient = 0 + 1<<0
+	fieldBit__GetP2PProvideResponse_ProvidersByKey = 1 << 0
+	fieldBits__GetP2PProvideResponse_sufficient    = 0 + 1<<0
 )
 
 func (na *_GetP2PProvideResponse__Assembler) BeginMap(int64) (datamodel.MapAssembler, error) {
@@ -2632,7 +3355,7 @@ func (ma *_GetP2PProvideResponse__Assembler) valueFinishTidy() bool {
 	case 0:
 		switch ma.cm {
 		case schema.Maybe_Value:
-			ma.ca_providers.w = nil
+			ma.ca_ProvidersByKey.w = nil
 			ma.cm = schema.Maybe_Absent
 			ma.state = maState_initial
 			return true
@@ -2659,16 +3382,16 @@ func (ma *_GetP2PProvideResponse__Assembler) AssembleEntry(k string) (datamodel.
 		panic("invalid state: AssembleEntry cannot be called on an assembler that's already finished")
 	}
 	switch k {
-	case "providers":
-		if ma.s&fieldBit__GetP2PProvideResponse_Providers != 0 {
-			return nil, datamodel.ErrRepeatedMapKey{Key: &fieldName__GetP2PProvideResponse_Providers}
+	case "ProvidersByKey":
+		if ma.s&fieldBit__GetP2PProvideResponse_ProvidersByKey != 0 {
+			return nil, datamodel.ErrRepeatedMapKey{Key: &fieldName__GetP2PProvideResponse_ProvidersByKey}
 		}
-		ma.s += fieldBit__GetP2PProvideResponse_Providers
+		ma.s += fieldBit__GetP2PProvideResponse_ProvidersByKey
 		ma.state = maState_midValue
 		ma.f = 0
-		ma.ca_providers.w = &ma.w.providers
-		ma.ca_providers.m = &ma.cm
-		return &ma.ca_providers, nil
+		ma.ca_ProvidersByKey.w = &ma.w.ProvidersByKey
+		ma.ca_ProvidersByKey.m = &ma.cm
+		return &ma.ca_ProvidersByKey, nil
 	}
 	return nil, schema.ErrInvalidKey{TypeName: "ipldsch.GetP2PProvideResponse", Key: &_String{k}}
 }
@@ -2706,9 +3429,9 @@ func (ma *_GetP2PProvideResponse__Assembler) AssembleValue() datamodel.NodeAssem
 	ma.state = maState_midValue
 	switch ma.f {
 	case 0:
-		ma.ca_providers.w = &ma.w.providers
-		ma.ca_providers.m = &ma.cm
-		return &ma.ca_providers
+		ma.ca_ProvidersByKey.w = &ma.w.ProvidersByKey
+		ma.ca_ProvidersByKey.m = &ma.cm
+		return &ma.ca_ProvidersByKey
 	default:
 		panic("unreachable")
 	}
@@ -2730,8 +3453,8 @@ func (ma *_GetP2PProvideResponse__Assembler) Finish() error {
 	}
 	if ma.s&fieldBits__GetP2PProvideResponse_sufficient != fieldBits__GetP2PProvideResponse_sufficient {
 		err := schema.ErrMissingRequiredField{Missing: make([]string, 0)}
-		if ma.s&fieldBit__GetP2PProvideResponse_Providers == 0 {
-			err.Missing = append(err.Missing, "providers")
+		if ma.s&fieldBit__GetP2PProvideResponse_ProvidersByKey == 0 {
+			err.Missing = append(err.Missing, "ProvidersByKey")
 		}
 		return err
 	}
@@ -2771,11 +3494,11 @@ func (ka *_GetP2PProvideResponse__KeyAssembler) AssignString(k string) error {
 		panic("misuse: KeyAssembler held beyond its valid lifetime")
 	}
 	switch k {
-	case "providers":
-		if ka.s&fieldBit__GetP2PProvideResponse_Providers != 0 {
-			return datamodel.ErrRepeatedMapKey{Key: &fieldName__GetP2PProvideResponse_Providers}
+	case "ProvidersByKey":
+		if ka.s&fieldBit__GetP2PProvideResponse_ProvidersByKey != 0 {
+			return datamodel.ErrRepeatedMapKey{Key: &fieldName__GetP2PProvideResponse_ProvidersByKey}
 		}
-		ka.s += fieldBit__GetP2PProvideResponse_Providers
+		ka.s += fieldBit__GetP2PProvideResponse_ProvidersByKey
 		ka.state = maState_expectValue
 		ka.f = 0
 		return nil
@@ -2809,7 +3532,7 @@ func (n GetP2PProvideResponse) Representation() datamodel.Node {
 type _GetP2PProvideResponse__Repr _GetP2PProvideResponse
 
 var (
-	fieldName__GetP2PProvideResponse_Providers_serial = _String{"providers"}
+	fieldName__GetP2PProvideResponse_ProvidersByKey_serial = _String{"ProvidersByKey"}
 )
 var _ datamodel.Node = &_GetP2PProvideResponse__Repr{}
 
@@ -2818,8 +3541,8 @@ func (_GetP2PProvideResponse__Repr) Kind() datamodel.Kind {
 }
 func (n *_GetP2PProvideResponse__Repr) LookupByString(key string) (datamodel.Node, error) {
 	switch key {
-	case "providers":
-		return n.providers.Representation(), nil
+	case "ProvidersByKey":
+		return n.ProvidersByKey.Representation(), nil
 	default:
 		return nil, schema.ErrNoSuchField{Type: nil /*TODO*/, Field: datamodel.PathSegmentOfString(key)}
 	}
@@ -2852,8 +3575,8 @@ func (itr *_GetP2PProvideResponse__ReprMapItr) Next() (k datamodel.Node, v datam
 	}
 	switch itr.idx {
 	case 0:
-		k = &fieldName__GetP2PProvideResponse_Providers_serial
-		v = itr.n.providers.Representation()
+		k = &fieldName__GetP2PProvideResponse_ProvidersByKey_serial
+		v = itr.n.ProvidersByKey.Representation()
 	default:
 		panic("unreachable")
 	}
@@ -2929,14 +3652,14 @@ type _GetP2PProvideResponse__ReprAssembler struct {
 	s     int
 	f     int
 
-	cm           schema.Maybe
-	ca_providers _List__Provider__ReprAssembler
+	cm                schema.Maybe
+	ca_ProvidersByKey _Map__Multihash__Provider__ReprAssembler
 }
 
 func (na *_GetP2PProvideResponse__ReprAssembler) reset() {
 	na.state = maState_initial
 	na.s = 0
-	na.ca_providers.reset()
+	na.ca_ProvidersByKey.reset()
 }
 func (na *_GetP2PProvideResponse__ReprAssembler) BeginMap(int64) (datamodel.MapAssembler, error) {
 	switch *na.m {
@@ -3058,16 +3781,16 @@ func (ma *_GetP2PProvideResponse__ReprAssembler) AssembleEntry(k string) (datamo
 		panic("invalid state: AssembleEntry cannot be called on an assembler that's already finished")
 	}
 	switch k {
-	case "providers":
-		if ma.s&fieldBit__GetP2PProvideResponse_Providers != 0 {
-			return nil, datamodel.ErrRepeatedMapKey{Key: &fieldName__GetP2PProvideResponse_Providers_serial}
+	case "ProvidersByKey":
+		if ma.s&fieldBit__GetP2PProvideResponse_ProvidersByKey != 0 {
+			return nil, datamodel.ErrRepeatedMapKey{Key: &fieldName__GetP2PProvideResponse_ProvidersByKey_serial}
 		}
-		ma.s += fieldBit__GetP2PProvideResponse_Providers
+		ma.s += fieldBit__GetP2PProvideResponse_ProvidersByKey
 		ma.state = maState_midValue
 		ma.f = 0
-		ma.ca_providers.w = &ma.w.providers
-		ma.ca_providers.m = &ma.cm
-		return &ma.ca_providers, nil
+		ma.ca_ProvidersByKey.w = &ma.w.ProvidersByKey
+		ma.ca_ProvidersByKey.m = &ma.cm
+		return &ma.ca_ProvidersByKey, nil
 	default:
 	}
 	return nil, schema.ErrInvalidKey{TypeName: "ipldsch.GetP2PProvideResponse.Repr", Key: &_String{k}}
@@ -3106,9 +3829,9 @@ func (ma *_GetP2PProvideResponse__ReprAssembler) AssembleValue() datamodel.NodeA
 	ma.state = maState_midValue
 	switch ma.f {
 	case 0:
-		ma.ca_providers.w = &ma.w.providers
-		ma.ca_providers.m = &ma.cm
-		return &ma.ca_providers
+		ma.ca_ProvidersByKey.w = &ma.w.ProvidersByKey
+		ma.ca_ProvidersByKey.m = &ma.cm
+		return &ma.ca_ProvidersByKey
 	default:
 		panic("unreachable")
 	}
@@ -3130,8 +3853,8 @@ func (ma *_GetP2PProvideResponse__ReprAssembler) Finish() error {
 	}
 	if ma.s&fieldBits__GetP2PProvideResponse_sufficient != fieldBits__GetP2PProvideResponse_sufficient {
 		err := schema.ErrMissingRequiredField{Missing: make([]string, 0)}
-		if ma.s&fieldBit__GetP2PProvideResponse_Providers == 0 {
-			err.Missing = append(err.Missing, "providers")
+		if ma.s&fieldBit__GetP2PProvideResponse_ProvidersByKey == 0 {
+			err.Missing = append(err.Missing, "ProvidersByKey")
 		}
 		return err
 	}
@@ -3171,11 +3894,11 @@ func (ka *_GetP2PProvideResponse__ReprKeyAssembler) AssignString(k string) error
 		panic("misuse: KeyAssembler held beyond its valid lifetime")
 	}
 	switch k {
-	case "providers":
-		if ka.s&fieldBit__GetP2PProvideResponse_Providers != 0 {
-			return datamodel.ErrRepeatedMapKey{Key: &fieldName__GetP2PProvideResponse_Providers_serial}
+	case "ProvidersByKey":
+		if ka.s&fieldBit__GetP2PProvideResponse_ProvidersByKey != 0 {
+			return datamodel.ErrRepeatedMapKey{Key: &fieldName__GetP2PProvideResponse_ProvidersByKey_serial}
 		}
-		ka.s += fieldBit__GetP2PProvideResponse_Providers
+		ka.s += fieldBit__GetP2PProvideResponse_ProvidersByKey
 		ka.state = maState_expectValue
 		ka.f = 0
 		return nil
@@ -4200,36 +4923,36 @@ func (la *_List__Bytes__ReprAssembler) ValuePrototype(_ int64) datamodel.NodePro
 	return _Bytes__ReprPrototype{}
 }
 
-func (n *_List__Provider) Lookup(idx int64) Provider {
+func (n *_List__Multihash) Lookup(idx int64) Multihash {
 	if n.Length() <= idx {
 		return nil
 	}
 	v := &n.x[idx]
 	return v
 }
-func (n *_List__Provider) LookupMaybe(idx int64) MaybeProvider {
+func (n *_List__Multihash) LookupMaybe(idx int64) MaybeMultihash {
 	if n.Length() <= idx {
 		return nil
 	}
 	v := &n.x[idx]
-	return &_Provider__Maybe{
+	return &_Multihash__Maybe{
 		m: schema.Maybe_Value,
 		v: v,
 	}
 }
 
-var _List__Provider__valueAbsent = _Provider__Maybe{m: schema.Maybe_Absent}
+var _List__Multihash__valueAbsent = _Multihash__Maybe{m: schema.Maybe_Absent}
 
-func (n List__Provider) Iterator() *List__Provider__Itr {
-	return &List__Provider__Itr{n, 0}
+func (n List__Multihash) Iterator() *List__Multihash__Itr {
+	return &List__Multihash__Itr{n, 0}
 }
 
-type List__Provider__Itr struct {
-	n   List__Provider
+type List__Multihash__Itr struct {
+	n   List__Multihash
 	idx int
 }
 
-func (itr *List__Provider__Itr) Next() (idx int64, v Provider) {
+func (itr *List__Multihash__Itr) Next() (idx int64, v Multihash) {
 	if itr.idx >= len(itr.n.x) {
 		return -1, nil
 	}
@@ -4238,26 +4961,26 @@ func (itr *List__Provider__Itr) Next() (idx int64, v Provider) {
 	itr.idx++
 	return
 }
-func (itr *List__Provider__Itr) Done() bool {
+func (itr *List__Multihash__Itr) Done() bool {
 	return itr.idx >= len(itr.n.x)
 }
 
-type _List__Provider__Maybe struct {
+type _List__Multihash__Maybe struct {
 	m schema.Maybe
-	v _List__Provider
+	v _List__Multihash
 }
-type MaybeList__Provider = *_List__Provider__Maybe
+type MaybeList__Multihash = *_List__Multihash__Maybe
 
-func (m MaybeList__Provider) IsNull() bool {
+func (m MaybeList__Multihash) IsNull() bool {
 	return m.m == schema.Maybe_Null
 }
-func (m MaybeList__Provider) IsAbsent() bool {
+func (m MaybeList__Multihash) IsAbsent() bool {
 	return m.m == schema.Maybe_Absent
 }
-func (m MaybeList__Provider) Exists() bool {
+func (m MaybeList__Multihash) Exists() bool {
 	return m.m == schema.Maybe_Value
 }
-func (m MaybeList__Provider) AsNode() datamodel.Node {
+func (m MaybeList__Multihash) AsNode() datamodel.Node {
 	switch m.m {
 	case schema.Maybe_Absent:
 		return datamodel.Absent
@@ -4269,56 +4992,56 @@ func (m MaybeList__Provider) AsNode() datamodel.Node {
 		panic("unreachable")
 	}
 }
-func (m MaybeList__Provider) Must() List__Provider {
+func (m MaybeList__Multihash) Must() List__Multihash {
 	if !m.Exists() {
 		panic("unbox of a maybe rejected")
 	}
 	return &m.v
 }
 
-var _ datamodel.Node = (List__Provider)(&_List__Provider{})
-var _ schema.TypedNode = (List__Provider)(&_List__Provider{})
+var _ datamodel.Node = (List__Multihash)(&_List__Multihash{})
+var _ schema.TypedNode = (List__Multihash)(&_List__Multihash{})
 
-func (List__Provider) Kind() datamodel.Kind {
+func (List__Multihash) Kind() datamodel.Kind {
 	return datamodel.Kind_List
 }
-func (List__Provider) LookupByString(string) (datamodel.Node, error) {
-	return mixins.List{TypeName: "ipldsch.List__Provider"}.LookupByString("")
+func (List__Multihash) LookupByString(string) (datamodel.Node, error) {
+	return mixins.List{TypeName: "ipldsch.List__Multihash"}.LookupByString("")
 }
-func (n List__Provider) LookupByNode(k datamodel.Node) (datamodel.Node, error) {
+func (n List__Multihash) LookupByNode(k datamodel.Node) (datamodel.Node, error) {
 	idx, err := k.AsInt()
 	if err != nil {
 		return nil, err
 	}
 	return n.LookupByIndex(idx)
 }
-func (n List__Provider) LookupByIndex(idx int64) (datamodel.Node, error) {
+func (n List__Multihash) LookupByIndex(idx int64) (datamodel.Node, error) {
 	if n.Length() <= idx {
 		return nil, datamodel.ErrNotExists{Segment: datamodel.PathSegmentOfInt(idx)}
 	}
 	v := &n.x[idx]
 	return v, nil
 }
-func (n List__Provider) LookupBySegment(seg datamodel.PathSegment) (datamodel.Node, error) {
+func (n List__Multihash) LookupBySegment(seg datamodel.PathSegment) (datamodel.Node, error) {
 	i, err := seg.Index()
 	if err != nil {
-		return nil, datamodel.ErrInvalidSegmentForList{TypeName: "ipldsch.List__Provider", TroubleSegment: seg, Reason: err}
+		return nil, datamodel.ErrInvalidSegmentForList{TypeName: "ipldsch.List__Multihash", TroubleSegment: seg, Reason: err}
 	}
 	return n.LookupByIndex(i)
 }
-func (List__Provider) MapIterator() datamodel.MapIterator {
+func (List__Multihash) MapIterator() datamodel.MapIterator {
 	return nil
 }
-func (n List__Provider) ListIterator() datamodel.ListIterator {
-	return &_List__Provider__ListItr{n, 0}
+func (n List__Multihash) ListIterator() datamodel.ListIterator {
+	return &_List__Multihash__ListItr{n, 0}
 }
 
-type _List__Provider__ListItr struct {
-	n   List__Provider
+type _List__Multihash__ListItr struct {
+	n   List__Multihash
 	idx int
 }
 
-func (itr *_List__Provider__ListItr) Next() (idx int64, v datamodel.Node, _ error) {
+func (itr *_List__Multihash__ListItr) Next() (idx int64, v datamodel.Node, _ error) {
 	if itr.idx >= len(itr.n.x) {
 		return -1, nil, datamodel.ErrIteratorOverread{}
 	}
@@ -4328,82 +5051,82 @@ func (itr *_List__Provider__ListItr) Next() (idx int64, v datamodel.Node, _ erro
 	itr.idx++
 	return
 }
-func (itr *_List__Provider__ListItr) Done() bool {
+func (itr *_List__Multihash__ListItr) Done() bool {
 	return itr.idx >= len(itr.n.x)
 }
 
-func (n List__Provider) Length() int64 {
+func (n List__Multihash) Length() int64 {
 	return int64(len(n.x))
 }
-func (List__Provider) IsAbsent() bool {
+func (List__Multihash) IsAbsent() bool {
 	return false
 }
-func (List__Provider) IsNull() bool {
+func (List__Multihash) IsNull() bool {
 	return false
 }
-func (List__Provider) AsBool() (bool, error) {
-	return mixins.List{TypeName: "ipldsch.List__Provider"}.AsBool()
+func (List__Multihash) AsBool() (bool, error) {
+	return mixins.List{TypeName: "ipldsch.List__Multihash"}.AsBool()
 }
-func (List__Provider) AsInt() (int64, error) {
-	return mixins.List{TypeName: "ipldsch.List__Provider"}.AsInt()
+func (List__Multihash) AsInt() (int64, error) {
+	return mixins.List{TypeName: "ipldsch.List__Multihash"}.AsInt()
 }
-func (List__Provider) AsFloat() (float64, error) {
-	return mixins.List{TypeName: "ipldsch.List__Provider"}.AsFloat()
+func (List__Multihash) AsFloat() (float64, error) {
+	return mixins.List{TypeName: "ipldsch.List__Multihash"}.AsFloat()
 }
-func (List__Provider) AsString() (string, error) {
-	return mixins.List{TypeName: "ipldsch.List__Provider"}.AsString()
+func (List__Multihash) AsString() (string, error) {
+	return mixins.List{TypeName: "ipldsch.List__Multihash"}.AsString()
 }
-func (List__Provider) AsBytes() ([]byte, error) {
-	return mixins.List{TypeName: "ipldsch.List__Provider"}.AsBytes()
+func (List__Multihash) AsBytes() ([]byte, error) {
+	return mixins.List{TypeName: "ipldsch.List__Multihash"}.AsBytes()
 }
-func (List__Provider) AsLink() (datamodel.Link, error) {
-	return mixins.List{TypeName: "ipldsch.List__Provider"}.AsLink()
+func (List__Multihash) AsLink() (datamodel.Link, error) {
+	return mixins.List{TypeName: "ipldsch.List__Multihash"}.AsLink()
 }
-func (List__Provider) Prototype() datamodel.NodePrototype {
-	return _List__Provider__Prototype{}
+func (List__Multihash) Prototype() datamodel.NodePrototype {
+	return _List__Multihash__Prototype{}
 }
 
-type _List__Provider__Prototype struct{}
+type _List__Multihash__Prototype struct{}
 
-func (_List__Provider__Prototype) NewBuilder() datamodel.NodeBuilder {
-	var nb _List__Provider__Builder
+func (_List__Multihash__Prototype) NewBuilder() datamodel.NodeBuilder {
+	var nb _List__Multihash__Builder
 	nb.Reset()
 	return &nb
 }
 
-type _List__Provider__Builder struct {
-	_List__Provider__Assembler
+type _List__Multihash__Builder struct {
+	_List__Multihash__Assembler
 }
 
-func (nb *_List__Provider__Builder) Build() datamodel.Node {
+func (nb *_List__Multihash__Builder) Build() datamodel.Node {
 	if *nb.m != schema.Maybe_Value {
 		panic("invalid state: cannot call Build on an assembler that's not finished")
 	}
 	return nb.w
 }
-func (nb *_List__Provider__Builder) Reset() {
-	var w _List__Provider
+func (nb *_List__Multihash__Builder) Reset() {
+	var w _List__Multihash
 	var m schema.Maybe
-	*nb = _List__Provider__Builder{_List__Provider__Assembler{w: &w, m: &m}}
+	*nb = _List__Multihash__Builder{_List__Multihash__Assembler{w: &w, m: &m}}
 }
 
-type _List__Provider__Assembler struct {
-	w     *_List__Provider
+type _List__Multihash__Assembler struct {
+	w     *_List__Multihash
 	m     *schema.Maybe
 	state laState
 
 	cm schema.Maybe
-	va _Provider__Assembler
+	va _Multihash__Assembler
 }
 
-func (na *_List__Provider__Assembler) reset() {
+func (na *_List__Multihash__Assembler) reset() {
 	na.state = laState_initial
 	na.va.reset()
 }
-func (_List__Provider__Assembler) BeginMap(sizeHint int64) (datamodel.MapAssembler, error) {
-	return mixins.ListAssembler{TypeName: "ipldsch.List__Provider"}.BeginMap(0)
+func (_List__Multihash__Assembler) BeginMap(sizeHint int64) (datamodel.MapAssembler, error) {
+	return mixins.ListAssembler{TypeName: "ipldsch.List__Multihash"}.BeginMap(0)
 }
-func (na *_List__Provider__Assembler) BeginList(sizeHint int64) (datamodel.ListAssembler, error) {
+func (na *_List__Multihash__Assembler) BeginList(sizeHint int64) (datamodel.ListAssembler, error) {
 	switch *na.m {
 	case schema.Maybe_Value, schema.Maybe_Null:
 		panic("invalid state: cannot assign into assembler that's already finished")
@@ -4415,17 +5138,17 @@ func (na *_List__Provider__Assembler) BeginList(sizeHint int64) (datamodel.ListA
 		sizeHint = 0
 	}
 	if sizeHint > 0 {
-		na.w.x = make([]_Provider, 0, sizeHint)
+		na.w.x = make([]_Multihash, 0, sizeHint)
 	}
 	return na, nil
 }
-func (na *_List__Provider__Assembler) AssignNull() error {
+func (na *_List__Multihash__Assembler) AssignNull() error {
 	switch *na.m {
 	case allowNull:
 		*na.m = schema.Maybe_Null
 		return nil
 	case schema.Maybe_Absent:
-		return mixins.ListAssembler{TypeName: "ipldsch.List__Provider"}.AssignNull()
+		return mixins.ListAssembler{TypeName: "ipldsch.List__Multihash"}.AssignNull()
 	case schema.Maybe_Value, schema.Maybe_Null:
 		panic("invalid state: cannot assign into assembler that's already finished")
 	case midvalue:
@@ -4433,29 +5156,29 @@ func (na *_List__Provider__Assembler) AssignNull() error {
 	}
 	panic("unreachable")
 }
-func (_List__Provider__Assembler) AssignBool(bool) error {
-	return mixins.ListAssembler{TypeName: "ipldsch.List__Provider"}.AssignBool(false)
+func (_List__Multihash__Assembler) AssignBool(bool) error {
+	return mixins.ListAssembler{TypeName: "ipldsch.List__Multihash"}.AssignBool(false)
 }
-func (_List__Provider__Assembler) AssignInt(int64) error {
-	return mixins.ListAssembler{TypeName: "ipldsch.List__Provider"}.AssignInt(0)
+func (_List__Multihash__Assembler) AssignInt(int64) error {
+	return mixins.ListAssembler{TypeName: "ipldsch.List__Multihash"}.AssignInt(0)
 }
-func (_List__Provider__Assembler) AssignFloat(float64) error {
-	return mixins.ListAssembler{TypeName: "ipldsch.List__Provider"}.AssignFloat(0)
+func (_List__Multihash__Assembler) AssignFloat(float64) error {
+	return mixins.ListAssembler{TypeName: "ipldsch.List__Multihash"}.AssignFloat(0)
 }
-func (_List__Provider__Assembler) AssignString(string) error {
-	return mixins.ListAssembler{TypeName: "ipldsch.List__Provider"}.AssignString("")
+func (_List__Multihash__Assembler) AssignString(string) error {
+	return mixins.ListAssembler{TypeName: "ipldsch.List__Multihash"}.AssignString("")
 }
-func (_List__Provider__Assembler) AssignBytes([]byte) error {
-	return mixins.ListAssembler{TypeName: "ipldsch.List__Provider"}.AssignBytes(nil)
+func (_List__Multihash__Assembler) AssignBytes([]byte) error {
+	return mixins.ListAssembler{TypeName: "ipldsch.List__Multihash"}.AssignBytes(nil)
 }
-func (_List__Provider__Assembler) AssignLink(datamodel.Link) error {
-	return mixins.ListAssembler{TypeName: "ipldsch.List__Provider"}.AssignLink(nil)
+func (_List__Multihash__Assembler) AssignLink(datamodel.Link) error {
+	return mixins.ListAssembler{TypeName: "ipldsch.List__Multihash"}.AssignLink(nil)
 }
-func (na *_List__Provider__Assembler) AssignNode(v datamodel.Node) error {
+func (na *_List__Multihash__Assembler) AssignNode(v datamodel.Node) error {
 	if v.IsNull() {
 		return na.AssignNull()
 	}
-	if v2, ok := v.(*_List__Provider); ok {
+	if v2, ok := v.(*_List__Multihash); ok {
 		switch *na.m {
 		case schema.Maybe_Value, schema.Maybe_Null:
 			panic("invalid state: cannot assign into assembler that's already finished")
@@ -4467,7 +5190,7 @@ func (na *_List__Provider__Assembler) AssignNode(v datamodel.Node) error {
 		return nil
 	}
 	if v.Kind() != datamodel.Kind_List {
-		return datamodel.ErrWrongKind{TypeName: "ipldsch.List__Provider", MethodName: "AssignNode", AppropriateKind: datamodel.KindSet_JustList, ActualKind: v.Kind()}
+		return datamodel.ErrWrongKind{TypeName: "ipldsch.List__Multihash", MethodName: "AssignNode", AppropriateKind: datamodel.KindSet_JustList, ActualKind: v.Kind()}
 	}
 	itr := v.ListIterator()
 	for !itr.Done() {
@@ -4481,10 +5204,10 @@ func (na *_List__Provider__Assembler) AssignNode(v datamodel.Node) error {
 	}
 	return na.Finish()
 }
-func (_List__Provider__Assembler) Prototype() datamodel.NodePrototype {
-	return _List__Provider__Prototype{}
+func (_List__Multihash__Assembler) Prototype() datamodel.NodePrototype {
+	return _List__Multihash__Prototype{}
 }
-func (la *_List__Provider__Assembler) valueFinishTidy() bool {
+func (la *_List__Multihash__Assembler) valueFinishTidy() bool {
 	switch la.cm {
 	case schema.Maybe_Value:
 		la.va.w = nil
@@ -4496,7 +5219,7 @@ func (la *_List__Provider__Assembler) valueFinishTidy() bool {
 		return false
 	}
 }
-func (la *_List__Provider__Assembler) AssembleValue() datamodel.NodeAssembler {
+func (la *_List__Multihash__Assembler) AssembleValue() datamodel.NodeAssembler {
 	switch la.state {
 	case laState_initial:
 		// carry on
@@ -4507,14 +5230,14 @@ func (la *_List__Provider__Assembler) AssembleValue() datamodel.NodeAssembler {
 	case laState_finished:
 		panic("invalid state: AssembleValue cannot be called on an assembler that's already finished")
 	}
-	la.w.x = append(la.w.x, _Provider{})
+	la.w.x = append(la.w.x, _Multihash{})
 	la.state = laState_midValue
 	row := &la.w.x[len(la.w.x)-1]
 	la.va.w = row
 	la.va.m = &la.cm
 	return &la.va
 }
-func (la *_List__Provider__Assembler) Finish() error {
+func (la *_List__Multihash__Assembler) Finish() error {
 	switch la.state {
 	case laState_initial:
 		// carry on
@@ -4529,139 +5252,139 @@ func (la *_List__Provider__Assembler) Finish() error {
 	*la.m = schema.Maybe_Value
 	return nil
 }
-func (la *_List__Provider__Assembler) ValuePrototype(_ int64) datamodel.NodePrototype {
-	return _Provider__Prototype{}
+func (la *_List__Multihash__Assembler) ValuePrototype(_ int64) datamodel.NodePrototype {
+	return _Multihash__Prototype{}
 }
-func (List__Provider) Type() schema.Type {
+func (List__Multihash) Type() schema.Type {
 	return nil /*TODO:typelit*/
 }
-func (n List__Provider) Representation() datamodel.Node {
-	return (*_List__Provider__Repr)(n)
+func (n List__Multihash) Representation() datamodel.Node {
+	return (*_List__Multihash__Repr)(n)
 }
 
-type _List__Provider__Repr _List__Provider
+type _List__Multihash__Repr _List__Multihash
 
-var _ datamodel.Node = &_List__Provider__Repr{}
+var _ datamodel.Node = &_List__Multihash__Repr{}
 
-func (_List__Provider__Repr) Kind() datamodel.Kind {
+func (_List__Multihash__Repr) Kind() datamodel.Kind {
 	return datamodel.Kind_List
 }
-func (_List__Provider__Repr) LookupByString(string) (datamodel.Node, error) {
-	return mixins.List{TypeName: "ipldsch.List__Provider.Repr"}.LookupByString("")
+func (_List__Multihash__Repr) LookupByString(string) (datamodel.Node, error) {
+	return mixins.List{TypeName: "ipldsch.List__Multihash.Repr"}.LookupByString("")
 }
-func (nr *_List__Provider__Repr) LookupByNode(k datamodel.Node) (datamodel.Node, error) {
-	v, err := (List__Provider)(nr).LookupByNode(k)
+func (nr *_List__Multihash__Repr) LookupByNode(k datamodel.Node) (datamodel.Node, error) {
+	v, err := (List__Multihash)(nr).LookupByNode(k)
 	if err != nil || v == datamodel.Null {
 		return v, err
 	}
-	return v.(Provider).Representation(), nil
+	return v.(Multihash).Representation(), nil
 }
-func (nr *_List__Provider__Repr) LookupByIndex(idx int64) (datamodel.Node, error) {
-	v, err := (List__Provider)(nr).LookupByIndex(idx)
+func (nr *_List__Multihash__Repr) LookupByIndex(idx int64) (datamodel.Node, error) {
+	v, err := (List__Multihash)(nr).LookupByIndex(idx)
 	if err != nil || v == datamodel.Null {
 		return v, err
 	}
-	return v.(Provider).Representation(), nil
+	return v.(Multihash).Representation(), nil
 }
-func (n _List__Provider__Repr) LookupBySegment(seg datamodel.PathSegment) (datamodel.Node, error) {
+func (n _List__Multihash__Repr) LookupBySegment(seg datamodel.PathSegment) (datamodel.Node, error) {
 	i, err := seg.Index()
 	if err != nil {
-		return nil, datamodel.ErrInvalidSegmentForList{TypeName: "ipldsch.List__Provider.Repr", TroubleSegment: seg, Reason: err}
+		return nil, datamodel.ErrInvalidSegmentForList{TypeName: "ipldsch.List__Multihash.Repr", TroubleSegment: seg, Reason: err}
 	}
 	return n.LookupByIndex(i)
 }
-func (_List__Provider__Repr) MapIterator() datamodel.MapIterator {
+func (_List__Multihash__Repr) MapIterator() datamodel.MapIterator {
 	return nil
 }
-func (nr *_List__Provider__Repr) ListIterator() datamodel.ListIterator {
-	return &_List__Provider__ReprListItr{(List__Provider)(nr), 0}
+func (nr *_List__Multihash__Repr) ListIterator() datamodel.ListIterator {
+	return &_List__Multihash__ReprListItr{(List__Multihash)(nr), 0}
 }
 
-type _List__Provider__ReprListItr _List__Provider__ListItr
+type _List__Multihash__ReprListItr _List__Multihash__ListItr
 
-func (itr *_List__Provider__ReprListItr) Next() (idx int64, v datamodel.Node, err error) {
-	idx, v, err = (*_List__Provider__ListItr)(itr).Next()
+func (itr *_List__Multihash__ReprListItr) Next() (idx int64, v datamodel.Node, err error) {
+	idx, v, err = (*_List__Multihash__ListItr)(itr).Next()
 	if err != nil || v == datamodel.Null {
 		return
 	}
-	return idx, v.(Provider).Representation(), nil
+	return idx, v.(Multihash).Representation(), nil
 }
-func (itr *_List__Provider__ReprListItr) Done() bool {
-	return (*_List__Provider__ListItr)(itr).Done()
+func (itr *_List__Multihash__ReprListItr) Done() bool {
+	return (*_List__Multihash__ListItr)(itr).Done()
 }
 
-func (rn *_List__Provider__Repr) Length() int64 {
+func (rn *_List__Multihash__Repr) Length() int64 {
 	return int64(len(rn.x))
 }
-func (_List__Provider__Repr) IsAbsent() bool {
+func (_List__Multihash__Repr) IsAbsent() bool {
 	return false
 }
-func (_List__Provider__Repr) IsNull() bool {
+func (_List__Multihash__Repr) IsNull() bool {
 	return false
 }
-func (_List__Provider__Repr) AsBool() (bool, error) {
-	return mixins.List{TypeName: "ipldsch.List__Provider.Repr"}.AsBool()
+func (_List__Multihash__Repr) AsBool() (bool, error) {
+	return mixins.List{TypeName: "ipldsch.List__Multihash.Repr"}.AsBool()
 }
-func (_List__Provider__Repr) AsInt() (int64, error) {
-	return mixins.List{TypeName: "ipldsch.List__Provider.Repr"}.AsInt()
+func (_List__Multihash__Repr) AsInt() (int64, error) {
+	return mixins.List{TypeName: "ipldsch.List__Multihash.Repr"}.AsInt()
 }
-func (_List__Provider__Repr) AsFloat() (float64, error) {
-	return mixins.List{TypeName: "ipldsch.List__Provider.Repr"}.AsFloat()
+func (_List__Multihash__Repr) AsFloat() (float64, error) {
+	return mixins.List{TypeName: "ipldsch.List__Multihash.Repr"}.AsFloat()
 }
-func (_List__Provider__Repr) AsString() (string, error) {
-	return mixins.List{TypeName: "ipldsch.List__Provider.Repr"}.AsString()
+func (_List__Multihash__Repr) AsString() (string, error) {
+	return mixins.List{TypeName: "ipldsch.List__Multihash.Repr"}.AsString()
 }
-func (_List__Provider__Repr) AsBytes() ([]byte, error) {
-	return mixins.List{TypeName: "ipldsch.List__Provider.Repr"}.AsBytes()
+func (_List__Multihash__Repr) AsBytes() ([]byte, error) {
+	return mixins.List{TypeName: "ipldsch.List__Multihash.Repr"}.AsBytes()
 }
-func (_List__Provider__Repr) AsLink() (datamodel.Link, error) {
-	return mixins.List{TypeName: "ipldsch.List__Provider.Repr"}.AsLink()
+func (_List__Multihash__Repr) AsLink() (datamodel.Link, error) {
+	return mixins.List{TypeName: "ipldsch.List__Multihash.Repr"}.AsLink()
 }
-func (_List__Provider__Repr) Prototype() datamodel.NodePrototype {
-	return _List__Provider__ReprPrototype{}
+func (_List__Multihash__Repr) Prototype() datamodel.NodePrototype {
+	return _List__Multihash__ReprPrototype{}
 }
 
-type _List__Provider__ReprPrototype struct{}
+type _List__Multihash__ReprPrototype struct{}
 
-func (_List__Provider__ReprPrototype) NewBuilder() datamodel.NodeBuilder {
-	var nb _List__Provider__ReprBuilder
+func (_List__Multihash__ReprPrototype) NewBuilder() datamodel.NodeBuilder {
+	var nb _List__Multihash__ReprBuilder
 	nb.Reset()
 	return &nb
 }
 
-type _List__Provider__ReprBuilder struct {
-	_List__Provider__ReprAssembler
+type _List__Multihash__ReprBuilder struct {
+	_List__Multihash__ReprAssembler
 }
 
-func (nb *_List__Provider__ReprBuilder) Build() datamodel.Node {
+func (nb *_List__Multihash__ReprBuilder) Build() datamodel.Node {
 	if *nb.m != schema.Maybe_Value {
 		panic("invalid state: cannot call Build on an assembler that's not finished")
 	}
 	return nb.w
 }
-func (nb *_List__Provider__ReprBuilder) Reset() {
-	var w _List__Provider
+func (nb *_List__Multihash__ReprBuilder) Reset() {
+	var w _List__Multihash
 	var m schema.Maybe
-	*nb = _List__Provider__ReprBuilder{_List__Provider__ReprAssembler{w: &w, m: &m}}
+	*nb = _List__Multihash__ReprBuilder{_List__Multihash__ReprAssembler{w: &w, m: &m}}
 }
 
-type _List__Provider__ReprAssembler struct {
-	w     *_List__Provider
+type _List__Multihash__ReprAssembler struct {
+	w     *_List__Multihash
 	m     *schema.Maybe
 	state laState
 
 	cm schema.Maybe
-	va _Provider__ReprAssembler
+	va _Multihash__ReprAssembler
 }
 
-func (na *_List__Provider__ReprAssembler) reset() {
+func (na *_List__Multihash__ReprAssembler) reset() {
 	na.state = laState_initial
 	na.va.reset()
 }
-func (_List__Provider__ReprAssembler) BeginMap(sizeHint int64) (datamodel.MapAssembler, error) {
-	return mixins.ListAssembler{TypeName: "ipldsch.List__Provider.Repr"}.BeginMap(0)
+func (_List__Multihash__ReprAssembler) BeginMap(sizeHint int64) (datamodel.MapAssembler, error) {
+	return mixins.ListAssembler{TypeName: "ipldsch.List__Multihash.Repr"}.BeginMap(0)
 }
-func (na *_List__Provider__ReprAssembler) BeginList(sizeHint int64) (datamodel.ListAssembler, error) {
+func (na *_List__Multihash__ReprAssembler) BeginList(sizeHint int64) (datamodel.ListAssembler, error) {
 	switch *na.m {
 	case schema.Maybe_Value, schema.Maybe_Null:
 		panic("invalid state: cannot assign into assembler that's already finished")
@@ -4673,17 +5396,17 @@ func (na *_List__Provider__ReprAssembler) BeginList(sizeHint int64) (datamodel.L
 		sizeHint = 0
 	}
 	if sizeHint > 0 {
-		na.w.x = make([]_Provider, 0, sizeHint)
+		na.w.x = make([]_Multihash, 0, sizeHint)
 	}
 	return na, nil
 }
-func (na *_List__Provider__ReprAssembler) AssignNull() error {
+func (na *_List__Multihash__ReprAssembler) AssignNull() error {
 	switch *na.m {
 	case allowNull:
 		*na.m = schema.Maybe_Null
 		return nil
 	case schema.Maybe_Absent:
-		return mixins.ListAssembler{TypeName: "ipldsch.List__Provider.Repr.Repr"}.AssignNull()
+		return mixins.ListAssembler{TypeName: "ipldsch.List__Multihash.Repr.Repr"}.AssignNull()
 	case schema.Maybe_Value, schema.Maybe_Null:
 		panic("invalid state: cannot assign into assembler that's already finished")
 	case midvalue:
@@ -4691,29 +5414,29 @@ func (na *_List__Provider__ReprAssembler) AssignNull() error {
 	}
 	panic("unreachable")
 }
-func (_List__Provider__ReprAssembler) AssignBool(bool) error {
-	return mixins.ListAssembler{TypeName: "ipldsch.List__Provider.Repr"}.AssignBool(false)
+func (_List__Multihash__ReprAssembler) AssignBool(bool) error {
+	return mixins.ListAssembler{TypeName: "ipldsch.List__Multihash.Repr"}.AssignBool(false)
 }
-func (_List__Provider__ReprAssembler) AssignInt(int64) error {
-	return mixins.ListAssembler{TypeName: "ipldsch.List__Provider.Repr"}.AssignInt(0)
+func (_List__Multihash__ReprAssembler) AssignInt(int64) error {
+	return mixins.ListAssembler{TypeName: "ipldsch.List__Multihash.Repr"}.AssignInt(0)
 }
-func (_List__Provider__ReprAssembler) AssignFloat(float64) error {
-	return mixins.ListAssembler{TypeName: "ipldsch.List__Provider.Repr"}.AssignFloat(0)
+func (_List__Multihash__ReprAssembler) AssignFloat(float64) error {
+	return mixins.ListAssembler{TypeName: "ipldsch.List__Multihash.Repr"}.AssignFloat(0)
 }
-func (_List__Provider__ReprAssembler) AssignString(string) error {
-	return mixins.ListAssembler{TypeName: "ipldsch.List__Provider.Repr"}.AssignString("")
+func (_List__Multihash__ReprAssembler) AssignString(string) error {
+	return mixins.ListAssembler{TypeName: "ipldsch.List__Multihash.Repr"}.AssignString("")
 }
-func (_List__Provider__ReprAssembler) AssignBytes([]byte) error {
-	return mixins.ListAssembler{TypeName: "ipldsch.List__Provider.Repr"}.AssignBytes(nil)
+func (_List__Multihash__ReprAssembler) AssignBytes([]byte) error {
+	return mixins.ListAssembler{TypeName: "ipldsch.List__Multihash.Repr"}.AssignBytes(nil)
 }
-func (_List__Provider__ReprAssembler) AssignLink(datamodel.Link) error {
-	return mixins.ListAssembler{TypeName: "ipldsch.List__Provider.Repr"}.AssignLink(nil)
+func (_List__Multihash__ReprAssembler) AssignLink(datamodel.Link) error {
+	return mixins.ListAssembler{TypeName: "ipldsch.List__Multihash.Repr"}.AssignLink(nil)
 }
-func (na *_List__Provider__ReprAssembler) AssignNode(v datamodel.Node) error {
+func (na *_List__Multihash__ReprAssembler) AssignNode(v datamodel.Node) error {
 	if v.IsNull() {
 		return na.AssignNull()
 	}
-	if v2, ok := v.(*_List__Provider); ok {
+	if v2, ok := v.(*_List__Multihash); ok {
 		switch *na.m {
 		case schema.Maybe_Value, schema.Maybe_Null:
 			panic("invalid state: cannot assign into assembler that's already finished")
@@ -4725,7 +5448,7 @@ func (na *_List__Provider__ReprAssembler) AssignNode(v datamodel.Node) error {
 		return nil
 	}
 	if v.Kind() != datamodel.Kind_List {
-		return datamodel.ErrWrongKind{TypeName: "ipldsch.List__Provider.Repr", MethodName: "AssignNode", AppropriateKind: datamodel.KindSet_JustList, ActualKind: v.Kind()}
+		return datamodel.ErrWrongKind{TypeName: "ipldsch.List__Multihash.Repr", MethodName: "AssignNode", AppropriateKind: datamodel.KindSet_JustList, ActualKind: v.Kind()}
 	}
 	itr := v.ListIterator()
 	for !itr.Done() {
@@ -4739,10 +5462,10 @@ func (na *_List__Provider__ReprAssembler) AssignNode(v datamodel.Node) error {
 	}
 	return na.Finish()
 }
-func (_List__Provider__ReprAssembler) Prototype() datamodel.NodePrototype {
-	return _List__Provider__ReprPrototype{}
+func (_List__Multihash__ReprAssembler) Prototype() datamodel.NodePrototype {
+	return _List__Multihash__ReprPrototype{}
 }
-func (la *_List__Provider__ReprAssembler) valueFinishTidy() bool {
+func (la *_List__Multihash__ReprAssembler) valueFinishTidy() bool {
 	switch la.cm {
 	case schema.Maybe_Value:
 		la.va.w = nil
@@ -4754,7 +5477,7 @@ func (la *_List__Provider__ReprAssembler) valueFinishTidy() bool {
 		return false
 	}
 }
-func (la *_List__Provider__ReprAssembler) AssembleValue() datamodel.NodeAssembler {
+func (la *_List__Multihash__ReprAssembler) AssembleValue() datamodel.NodeAssembler {
 	switch la.state {
 	case laState_initial:
 		// carry on
@@ -4765,14 +5488,14 @@ func (la *_List__Provider__ReprAssembler) AssembleValue() datamodel.NodeAssemble
 	case laState_finished:
 		panic("invalid state: AssembleValue cannot be called on an assembler that's already finished")
 	}
-	la.w.x = append(la.w.x, _Provider{})
+	la.w.x = append(la.w.x, _Multihash{})
 	la.state = laState_midValue
 	row := &la.w.x[len(la.w.x)-1]
 	la.va.w = row
 	la.va.m = &la.cm
 	return &la.va
 }
-func (la *_List__Provider__ReprAssembler) Finish() error {
+func (la *_List__Multihash__ReprAssembler) Finish() error {
 	switch la.state {
 	case laState_initial:
 		// carry on
@@ -4787,12 +5510,3626 @@ func (la *_List__Provider__ReprAssembler) Finish() error {
 	*la.m = schema.Maybe_Value
 	return nil
 }
-func (la *_List__Provider__ReprAssembler) ValuePrototype(_ int64) datamodel.NodePrototype {
+func (la *_List__Multihash__ReprAssembler) ValuePrototype(_ int64) datamodel.NodePrototype {
+	return _Multihash__ReprPrototype{}
+}
+
+func (n *_List__Node) Lookup(idx int64) Node {
+	if n.Length() <= idx {
+		return nil
+	}
+	v := &n.x[idx]
+	return v
+}
+func (n *_List__Node) LookupMaybe(idx int64) MaybeNode {
+	if n.Length() <= idx {
+		return nil
+	}
+	v := &n.x[idx]
+	return &_Node__Maybe{
+		m: schema.Maybe_Value,
+		v: v,
+	}
+}
+
+var _List__Node__valueAbsent = _Node__Maybe{m: schema.Maybe_Absent}
+
+func (n List__Node) Iterator() *List__Node__Itr {
+	return &List__Node__Itr{n, 0}
+}
+
+type List__Node__Itr struct {
+	n   List__Node
+	idx int
+}
+
+func (itr *List__Node__Itr) Next() (idx int64, v Node) {
+	if itr.idx >= len(itr.n.x) {
+		return -1, nil
+	}
+	idx = int64(itr.idx)
+	v = &itr.n.x[itr.idx]
+	itr.idx++
+	return
+}
+func (itr *List__Node__Itr) Done() bool {
+	return itr.idx >= len(itr.n.x)
+}
+
+type _List__Node__Maybe struct {
+	m schema.Maybe
+	v _List__Node
+}
+type MaybeList__Node = *_List__Node__Maybe
+
+func (m MaybeList__Node) IsNull() bool {
+	return m.m == schema.Maybe_Null
+}
+func (m MaybeList__Node) IsAbsent() bool {
+	return m.m == schema.Maybe_Absent
+}
+func (m MaybeList__Node) Exists() bool {
+	return m.m == schema.Maybe_Value
+}
+func (m MaybeList__Node) AsNode() datamodel.Node {
+	switch m.m {
+	case schema.Maybe_Absent:
+		return datamodel.Absent
+	case schema.Maybe_Null:
+		return datamodel.Null
+	case schema.Maybe_Value:
+		return &m.v
+	default:
+		panic("unreachable")
+	}
+}
+func (m MaybeList__Node) Must() List__Node {
+	if !m.Exists() {
+		panic("unbox of a maybe rejected")
+	}
+	return &m.v
+}
+
+var _ datamodel.Node = (List__Node)(&_List__Node{})
+var _ schema.TypedNode = (List__Node)(&_List__Node{})
+
+func (List__Node) Kind() datamodel.Kind {
+	return datamodel.Kind_List
+}
+func (List__Node) LookupByString(string) (datamodel.Node, error) {
+	return mixins.List{TypeName: "ipldsch.List__Node"}.LookupByString("")
+}
+func (n List__Node) LookupByNode(k datamodel.Node) (datamodel.Node, error) {
+	idx, err := k.AsInt()
+	if err != nil {
+		return nil, err
+	}
+	return n.LookupByIndex(idx)
+}
+func (n List__Node) LookupByIndex(idx int64) (datamodel.Node, error) {
+	if n.Length() <= idx {
+		return nil, datamodel.ErrNotExists{Segment: datamodel.PathSegmentOfInt(idx)}
+	}
+	v := &n.x[idx]
+	return v, nil
+}
+func (n List__Node) LookupBySegment(seg datamodel.PathSegment) (datamodel.Node, error) {
+	i, err := seg.Index()
+	if err != nil {
+		return nil, datamodel.ErrInvalidSegmentForList{TypeName: "ipldsch.List__Node", TroubleSegment: seg, Reason: err}
+	}
+	return n.LookupByIndex(i)
+}
+func (List__Node) MapIterator() datamodel.MapIterator {
+	return nil
+}
+func (n List__Node) ListIterator() datamodel.ListIterator {
+	return &_List__Node__ListItr{n, 0}
+}
+
+type _List__Node__ListItr struct {
+	n   List__Node
+	idx int
+}
+
+func (itr *_List__Node__ListItr) Next() (idx int64, v datamodel.Node, _ error) {
+	if itr.idx >= len(itr.n.x) {
+		return -1, nil, datamodel.ErrIteratorOverread{}
+	}
+	idx = int64(itr.idx)
+	x := &itr.n.x[itr.idx]
+	v = x
+	itr.idx++
+	return
+}
+func (itr *_List__Node__ListItr) Done() bool {
+	return itr.idx >= len(itr.n.x)
+}
+
+func (n List__Node) Length() int64 {
+	return int64(len(n.x))
+}
+func (List__Node) IsAbsent() bool {
+	return false
+}
+func (List__Node) IsNull() bool {
+	return false
+}
+func (List__Node) AsBool() (bool, error) {
+	return mixins.List{TypeName: "ipldsch.List__Node"}.AsBool()
+}
+func (List__Node) AsInt() (int64, error) {
+	return mixins.List{TypeName: "ipldsch.List__Node"}.AsInt()
+}
+func (List__Node) AsFloat() (float64, error) {
+	return mixins.List{TypeName: "ipldsch.List__Node"}.AsFloat()
+}
+func (List__Node) AsString() (string, error) {
+	return mixins.List{TypeName: "ipldsch.List__Node"}.AsString()
+}
+func (List__Node) AsBytes() ([]byte, error) {
+	return mixins.List{TypeName: "ipldsch.List__Node"}.AsBytes()
+}
+func (List__Node) AsLink() (datamodel.Link, error) {
+	return mixins.List{TypeName: "ipldsch.List__Node"}.AsLink()
+}
+func (List__Node) Prototype() datamodel.NodePrototype {
+	return _List__Node__Prototype{}
+}
+
+type _List__Node__Prototype struct{}
+
+func (_List__Node__Prototype) NewBuilder() datamodel.NodeBuilder {
+	var nb _List__Node__Builder
+	nb.Reset()
+	return &nb
+}
+
+type _List__Node__Builder struct {
+	_List__Node__Assembler
+}
+
+func (nb *_List__Node__Builder) Build() datamodel.Node {
+	if *nb.m != schema.Maybe_Value {
+		panic("invalid state: cannot call Build on an assembler that's not finished")
+	}
+	return nb.w
+}
+func (nb *_List__Node__Builder) Reset() {
+	var w _List__Node
+	var m schema.Maybe
+	*nb = _List__Node__Builder{_List__Node__Assembler{w: &w, m: &m}}
+}
+
+type _List__Node__Assembler struct {
+	w     *_List__Node
+	m     *schema.Maybe
+	state laState
+
+	cm schema.Maybe
+	va _Node__Assembler
+}
+
+func (na *_List__Node__Assembler) reset() {
+	na.state = laState_initial
+	na.va.reset()
+}
+func (_List__Node__Assembler) BeginMap(sizeHint int64) (datamodel.MapAssembler, error) {
+	return mixins.ListAssembler{TypeName: "ipldsch.List__Node"}.BeginMap(0)
+}
+func (na *_List__Node__Assembler) BeginList(sizeHint int64) (datamodel.ListAssembler, error) {
+	switch *na.m {
+	case schema.Maybe_Value, schema.Maybe_Null:
+		panic("invalid state: cannot assign into assembler that's already finished")
+	case midvalue:
+		panic("invalid state: it makes no sense to 'begin' twice on the same assembler!")
+	}
+	*na.m = midvalue
+	if sizeHint < 0 {
+		sizeHint = 0
+	}
+	if sizeHint > 0 {
+		na.w.x = make([]_Node, 0, sizeHint)
+	}
+	return na, nil
+}
+func (na *_List__Node__Assembler) AssignNull() error {
+	switch *na.m {
+	case allowNull:
+		*na.m = schema.Maybe_Null
+		return nil
+	case schema.Maybe_Absent:
+		return mixins.ListAssembler{TypeName: "ipldsch.List__Node"}.AssignNull()
+	case schema.Maybe_Value, schema.Maybe_Null:
+		panic("invalid state: cannot assign into assembler that's already finished")
+	case midvalue:
+		panic("invalid state: cannot assign null into an assembler that's already begun working on recursive structures!")
+	}
+	panic("unreachable")
+}
+func (_List__Node__Assembler) AssignBool(bool) error {
+	return mixins.ListAssembler{TypeName: "ipldsch.List__Node"}.AssignBool(false)
+}
+func (_List__Node__Assembler) AssignInt(int64) error {
+	return mixins.ListAssembler{TypeName: "ipldsch.List__Node"}.AssignInt(0)
+}
+func (_List__Node__Assembler) AssignFloat(float64) error {
+	return mixins.ListAssembler{TypeName: "ipldsch.List__Node"}.AssignFloat(0)
+}
+func (_List__Node__Assembler) AssignString(string) error {
+	return mixins.ListAssembler{TypeName: "ipldsch.List__Node"}.AssignString("")
+}
+func (_List__Node__Assembler) AssignBytes([]byte) error {
+	return mixins.ListAssembler{TypeName: "ipldsch.List__Node"}.AssignBytes(nil)
+}
+func (_List__Node__Assembler) AssignLink(datamodel.Link) error {
+	return mixins.ListAssembler{TypeName: "ipldsch.List__Node"}.AssignLink(nil)
+}
+func (na *_List__Node__Assembler) AssignNode(v datamodel.Node) error {
+	if v.IsNull() {
+		return na.AssignNull()
+	}
+	if v2, ok := v.(*_List__Node); ok {
+		switch *na.m {
+		case schema.Maybe_Value, schema.Maybe_Null:
+			panic("invalid state: cannot assign into assembler that's already finished")
+		case midvalue:
+			panic("invalid state: cannot assign null into an assembler that's already begun working on recursive structures!")
+		}
+		*na.w = *v2
+		*na.m = schema.Maybe_Value
+		return nil
+	}
+	if v.Kind() != datamodel.Kind_List {
+		return datamodel.ErrWrongKind{TypeName: "ipldsch.List__Node", MethodName: "AssignNode", AppropriateKind: datamodel.KindSet_JustList, ActualKind: v.Kind()}
+	}
+	itr := v.ListIterator()
+	for !itr.Done() {
+		_, v, err := itr.Next()
+		if err != nil {
+			return err
+		}
+		if err := na.AssembleValue().AssignNode(v); err != nil {
+			return err
+		}
+	}
+	return na.Finish()
+}
+func (_List__Node__Assembler) Prototype() datamodel.NodePrototype {
+	return _List__Node__Prototype{}
+}
+func (la *_List__Node__Assembler) valueFinishTidy() bool {
+	switch la.cm {
+	case schema.Maybe_Value:
+		la.va.w = nil
+		la.cm = schema.Maybe_Absent
+		la.state = laState_initial
+		la.va.reset()
+		return true
+	default:
+		return false
+	}
+}
+func (la *_List__Node__Assembler) AssembleValue() datamodel.NodeAssembler {
+	switch la.state {
+	case laState_initial:
+		// carry on
+	case laState_midValue:
+		if !la.valueFinishTidy() {
+			panic("invalid state: AssembleValue cannot be called when still in the middle of assembling the previous value")
+		} // if tidy success: carry on
+	case laState_finished:
+		panic("invalid state: AssembleValue cannot be called on an assembler that's already finished")
+	}
+	la.w.x = append(la.w.x, _Node{})
+	la.state = laState_midValue
+	row := &la.w.x[len(la.w.x)-1]
+	la.va.w = row
+	la.va.m = &la.cm
+	return &la.va
+}
+func (la *_List__Node__Assembler) Finish() error {
+	switch la.state {
+	case laState_initial:
+		// carry on
+	case laState_midValue:
+		if !la.valueFinishTidy() {
+			panic("invalid state: Finish cannot be called when in the middle of assembling a value")
+		} // if tidy success: carry on
+	case laState_finished:
+		panic("invalid state: Finish cannot be called on an assembler that's already finished")
+	}
+	la.state = laState_finished
+	*la.m = schema.Maybe_Value
+	return nil
+}
+func (la *_List__Node__Assembler) ValuePrototype(_ int64) datamodel.NodePrototype {
+	return _Node__Prototype{}
+}
+func (List__Node) Type() schema.Type {
+	return nil /*TODO:typelit*/
+}
+func (n List__Node) Representation() datamodel.Node {
+	return (*_List__Node__Repr)(n)
+}
+
+type _List__Node__Repr _List__Node
+
+var _ datamodel.Node = &_List__Node__Repr{}
+
+func (_List__Node__Repr) Kind() datamodel.Kind {
+	return datamodel.Kind_List
+}
+func (_List__Node__Repr) LookupByString(string) (datamodel.Node, error) {
+	return mixins.List{TypeName: "ipldsch.List__Node.Repr"}.LookupByString("")
+}
+func (nr *_List__Node__Repr) LookupByNode(k datamodel.Node) (datamodel.Node, error) {
+	v, err := (List__Node)(nr).LookupByNode(k)
+	if err != nil || v == datamodel.Null {
+		return v, err
+	}
+	return v.(Node).Representation(), nil
+}
+func (nr *_List__Node__Repr) LookupByIndex(idx int64) (datamodel.Node, error) {
+	v, err := (List__Node)(nr).LookupByIndex(idx)
+	if err != nil || v == datamodel.Null {
+		return v, err
+	}
+	return v.(Node).Representation(), nil
+}
+func (n _List__Node__Repr) LookupBySegment(seg datamodel.PathSegment) (datamodel.Node, error) {
+	i, err := seg.Index()
+	if err != nil {
+		return nil, datamodel.ErrInvalidSegmentForList{TypeName: "ipldsch.List__Node.Repr", TroubleSegment: seg, Reason: err}
+	}
+	return n.LookupByIndex(i)
+}
+func (_List__Node__Repr) MapIterator() datamodel.MapIterator {
+	return nil
+}
+func (nr *_List__Node__Repr) ListIterator() datamodel.ListIterator {
+	return &_List__Node__ReprListItr{(List__Node)(nr), 0}
+}
+
+type _List__Node__ReprListItr _List__Node__ListItr
+
+func (itr *_List__Node__ReprListItr) Next() (idx int64, v datamodel.Node, err error) {
+	idx, v, err = (*_List__Node__ListItr)(itr).Next()
+	if err != nil || v == datamodel.Null {
+		return
+	}
+	return idx, v.(Node).Representation(), nil
+}
+func (itr *_List__Node__ReprListItr) Done() bool {
+	return (*_List__Node__ListItr)(itr).Done()
+}
+
+func (rn *_List__Node__Repr) Length() int64 {
+	return int64(len(rn.x))
+}
+func (_List__Node__Repr) IsAbsent() bool {
+	return false
+}
+func (_List__Node__Repr) IsNull() bool {
+	return false
+}
+func (_List__Node__Repr) AsBool() (bool, error) {
+	return mixins.List{TypeName: "ipldsch.List__Node.Repr"}.AsBool()
+}
+func (_List__Node__Repr) AsInt() (int64, error) {
+	return mixins.List{TypeName: "ipldsch.List__Node.Repr"}.AsInt()
+}
+func (_List__Node__Repr) AsFloat() (float64, error) {
+	return mixins.List{TypeName: "ipldsch.List__Node.Repr"}.AsFloat()
+}
+func (_List__Node__Repr) AsString() (string, error) {
+	return mixins.List{TypeName: "ipldsch.List__Node.Repr"}.AsString()
+}
+func (_List__Node__Repr) AsBytes() ([]byte, error) {
+	return mixins.List{TypeName: "ipldsch.List__Node.Repr"}.AsBytes()
+}
+func (_List__Node__Repr) AsLink() (datamodel.Link, error) {
+	return mixins.List{TypeName: "ipldsch.List__Node.Repr"}.AsLink()
+}
+func (_List__Node__Repr) Prototype() datamodel.NodePrototype {
+	return _List__Node__ReprPrototype{}
+}
+
+type _List__Node__ReprPrototype struct{}
+
+func (_List__Node__ReprPrototype) NewBuilder() datamodel.NodeBuilder {
+	var nb _List__Node__ReprBuilder
+	nb.Reset()
+	return &nb
+}
+
+type _List__Node__ReprBuilder struct {
+	_List__Node__ReprAssembler
+}
+
+func (nb *_List__Node__ReprBuilder) Build() datamodel.Node {
+	if *nb.m != schema.Maybe_Value {
+		panic("invalid state: cannot call Build on an assembler that's not finished")
+	}
+	return nb.w
+}
+func (nb *_List__Node__ReprBuilder) Reset() {
+	var w _List__Node
+	var m schema.Maybe
+	*nb = _List__Node__ReprBuilder{_List__Node__ReprAssembler{w: &w, m: &m}}
+}
+
+type _List__Node__ReprAssembler struct {
+	w     *_List__Node
+	m     *schema.Maybe
+	state laState
+
+	cm schema.Maybe
+	va _Node__ReprAssembler
+}
+
+func (na *_List__Node__ReprAssembler) reset() {
+	na.state = laState_initial
+	na.va.reset()
+}
+func (_List__Node__ReprAssembler) BeginMap(sizeHint int64) (datamodel.MapAssembler, error) {
+	return mixins.ListAssembler{TypeName: "ipldsch.List__Node.Repr"}.BeginMap(0)
+}
+func (na *_List__Node__ReprAssembler) BeginList(sizeHint int64) (datamodel.ListAssembler, error) {
+	switch *na.m {
+	case schema.Maybe_Value, schema.Maybe_Null:
+		panic("invalid state: cannot assign into assembler that's already finished")
+	case midvalue:
+		panic("invalid state: it makes no sense to 'begin' twice on the same assembler!")
+	}
+	*na.m = midvalue
+	if sizeHint < 0 {
+		sizeHint = 0
+	}
+	if sizeHint > 0 {
+		na.w.x = make([]_Node, 0, sizeHint)
+	}
+	return na, nil
+}
+func (na *_List__Node__ReprAssembler) AssignNull() error {
+	switch *na.m {
+	case allowNull:
+		*na.m = schema.Maybe_Null
+		return nil
+	case schema.Maybe_Absent:
+		return mixins.ListAssembler{TypeName: "ipldsch.List__Node.Repr.Repr"}.AssignNull()
+	case schema.Maybe_Value, schema.Maybe_Null:
+		panic("invalid state: cannot assign into assembler that's already finished")
+	case midvalue:
+		panic("invalid state: cannot assign null into an assembler that's already begun working on recursive structures!")
+	}
+	panic("unreachable")
+}
+func (_List__Node__ReprAssembler) AssignBool(bool) error {
+	return mixins.ListAssembler{TypeName: "ipldsch.List__Node.Repr"}.AssignBool(false)
+}
+func (_List__Node__ReprAssembler) AssignInt(int64) error {
+	return mixins.ListAssembler{TypeName: "ipldsch.List__Node.Repr"}.AssignInt(0)
+}
+func (_List__Node__ReprAssembler) AssignFloat(float64) error {
+	return mixins.ListAssembler{TypeName: "ipldsch.List__Node.Repr"}.AssignFloat(0)
+}
+func (_List__Node__ReprAssembler) AssignString(string) error {
+	return mixins.ListAssembler{TypeName: "ipldsch.List__Node.Repr"}.AssignString("")
+}
+func (_List__Node__ReprAssembler) AssignBytes([]byte) error {
+	return mixins.ListAssembler{TypeName: "ipldsch.List__Node.Repr"}.AssignBytes(nil)
+}
+func (_List__Node__ReprAssembler) AssignLink(datamodel.Link) error {
+	return mixins.ListAssembler{TypeName: "ipldsch.List__Node.Repr"}.AssignLink(nil)
+}
+func (na *_List__Node__ReprAssembler) AssignNode(v datamodel.Node) error {
+	if v.IsNull() {
+		return na.AssignNull()
+	}
+	if v2, ok := v.(*_List__Node); ok {
+		switch *na.m {
+		case schema.Maybe_Value, schema.Maybe_Null:
+			panic("invalid state: cannot assign into assembler that's already finished")
+		case midvalue:
+			panic("invalid state: cannot assign null into an assembler that's already begun working on recursive structures!")
+		}
+		*na.w = *v2
+		*na.m = schema.Maybe_Value
+		return nil
+	}
+	if v.Kind() != datamodel.Kind_List {
+		return datamodel.ErrWrongKind{TypeName: "ipldsch.List__Node.Repr", MethodName: "AssignNode", AppropriateKind: datamodel.KindSet_JustList, ActualKind: v.Kind()}
+	}
+	itr := v.ListIterator()
+	for !itr.Done() {
+		_, v, err := itr.Next()
+		if err != nil {
+			return err
+		}
+		if err := na.AssembleValue().AssignNode(v); err != nil {
+			return err
+		}
+	}
+	return na.Finish()
+}
+func (_List__Node__ReprAssembler) Prototype() datamodel.NodePrototype {
+	return _List__Node__ReprPrototype{}
+}
+func (la *_List__Node__ReprAssembler) valueFinishTidy() bool {
+	switch la.cm {
+	case schema.Maybe_Value:
+		la.va.w = nil
+		la.cm = schema.Maybe_Absent
+		la.state = laState_initial
+		la.va.reset()
+		return true
+	default:
+		return false
+	}
+}
+func (la *_List__Node__ReprAssembler) AssembleValue() datamodel.NodeAssembler {
+	switch la.state {
+	case laState_initial:
+		// carry on
+	case laState_midValue:
+		if !la.valueFinishTidy() {
+			panic("invalid state: AssembleValue cannot be called when still in the middle of assembling the previous value")
+		} // if tidy success: carry on
+	case laState_finished:
+		panic("invalid state: AssembleValue cannot be called on an assembler that's already finished")
+	}
+	la.w.x = append(la.w.x, _Node{})
+	la.state = laState_midValue
+	row := &la.w.x[len(la.w.x)-1]
+	la.va.w = row
+	la.va.m = &la.cm
+	return &la.va
+}
+func (la *_List__Node__ReprAssembler) Finish() error {
+	switch la.state {
+	case laState_initial:
+		// carry on
+	case laState_midValue:
+		if !la.valueFinishTidy() {
+			panic("invalid state: Finish cannot be called when in the middle of assembling a value")
+		} // if tidy success: carry on
+	case laState_finished:
+		panic("invalid state: Finish cannot be called on an assembler that's already finished")
+	}
+	la.state = laState_finished
+	*la.m = schema.Maybe_Value
+	return nil
+}
+func (la *_List__Node__ReprAssembler) ValuePrototype(_ int64) datamodel.NodePrototype {
+	return _Node__ReprPrototype{}
+}
+
+func (n *_List__TransferProtocol) Lookup(idx int64) TransferProtocol {
+	if n.Length() <= idx {
+		return nil
+	}
+	v := &n.x[idx]
+	return v
+}
+func (n *_List__TransferProtocol) LookupMaybe(idx int64) MaybeTransferProtocol {
+	if n.Length() <= idx {
+		return nil
+	}
+	v := &n.x[idx]
+	return &_TransferProtocol__Maybe{
+		m: schema.Maybe_Value,
+		v: v,
+	}
+}
+
+var _List__TransferProtocol__valueAbsent = _TransferProtocol__Maybe{m: schema.Maybe_Absent}
+
+func (n List__TransferProtocol) Iterator() *List__TransferProtocol__Itr {
+	return &List__TransferProtocol__Itr{n, 0}
+}
+
+type List__TransferProtocol__Itr struct {
+	n   List__TransferProtocol
+	idx int
+}
+
+func (itr *List__TransferProtocol__Itr) Next() (idx int64, v TransferProtocol) {
+	if itr.idx >= len(itr.n.x) {
+		return -1, nil
+	}
+	idx = int64(itr.idx)
+	v = &itr.n.x[itr.idx]
+	itr.idx++
+	return
+}
+func (itr *List__TransferProtocol__Itr) Done() bool {
+	return itr.idx >= len(itr.n.x)
+}
+
+type _List__TransferProtocol__Maybe struct {
+	m schema.Maybe
+	v _List__TransferProtocol
+}
+type MaybeList__TransferProtocol = *_List__TransferProtocol__Maybe
+
+func (m MaybeList__TransferProtocol) IsNull() bool {
+	return m.m == schema.Maybe_Null
+}
+func (m MaybeList__TransferProtocol) IsAbsent() bool {
+	return m.m == schema.Maybe_Absent
+}
+func (m MaybeList__TransferProtocol) Exists() bool {
+	return m.m == schema.Maybe_Value
+}
+func (m MaybeList__TransferProtocol) AsNode() datamodel.Node {
+	switch m.m {
+	case schema.Maybe_Absent:
+		return datamodel.Absent
+	case schema.Maybe_Null:
+		return datamodel.Null
+	case schema.Maybe_Value:
+		return &m.v
+	default:
+		panic("unreachable")
+	}
+}
+func (m MaybeList__TransferProtocol) Must() List__TransferProtocol {
+	if !m.Exists() {
+		panic("unbox of a maybe rejected")
+	}
+	return &m.v
+}
+
+var _ datamodel.Node = (List__TransferProtocol)(&_List__TransferProtocol{})
+var _ schema.TypedNode = (List__TransferProtocol)(&_List__TransferProtocol{})
+
+func (List__TransferProtocol) Kind() datamodel.Kind {
+	return datamodel.Kind_List
+}
+func (List__TransferProtocol) LookupByString(string) (datamodel.Node, error) {
+	return mixins.List{TypeName: "ipldsch.List__TransferProtocol"}.LookupByString("")
+}
+func (n List__TransferProtocol) LookupByNode(k datamodel.Node) (datamodel.Node, error) {
+	idx, err := k.AsInt()
+	if err != nil {
+		return nil, err
+	}
+	return n.LookupByIndex(idx)
+}
+func (n List__TransferProtocol) LookupByIndex(idx int64) (datamodel.Node, error) {
+	if n.Length() <= idx {
+		return nil, datamodel.ErrNotExists{Segment: datamodel.PathSegmentOfInt(idx)}
+	}
+	v := &n.x[idx]
+	return v, nil
+}
+func (n List__TransferProtocol) LookupBySegment(seg datamodel.PathSegment) (datamodel.Node, error) {
+	i, err := seg.Index()
+	if err != nil {
+		return nil, datamodel.ErrInvalidSegmentForList{TypeName: "ipldsch.List__TransferProtocol", TroubleSegment: seg, Reason: err}
+	}
+	return n.LookupByIndex(i)
+}
+func (List__TransferProtocol) MapIterator() datamodel.MapIterator {
+	return nil
+}
+func (n List__TransferProtocol) ListIterator() datamodel.ListIterator {
+	return &_List__TransferProtocol__ListItr{n, 0}
+}
+
+type _List__TransferProtocol__ListItr struct {
+	n   List__TransferProtocol
+	idx int
+}
+
+func (itr *_List__TransferProtocol__ListItr) Next() (idx int64, v datamodel.Node, _ error) {
+	if itr.idx >= len(itr.n.x) {
+		return -1, nil, datamodel.ErrIteratorOverread{}
+	}
+	idx = int64(itr.idx)
+	x := &itr.n.x[itr.idx]
+	v = x
+	itr.idx++
+	return
+}
+func (itr *_List__TransferProtocol__ListItr) Done() bool {
+	return itr.idx >= len(itr.n.x)
+}
+
+func (n List__TransferProtocol) Length() int64 {
+	return int64(len(n.x))
+}
+func (List__TransferProtocol) IsAbsent() bool {
+	return false
+}
+func (List__TransferProtocol) IsNull() bool {
+	return false
+}
+func (List__TransferProtocol) AsBool() (bool, error) {
+	return mixins.List{TypeName: "ipldsch.List__TransferProtocol"}.AsBool()
+}
+func (List__TransferProtocol) AsInt() (int64, error) {
+	return mixins.List{TypeName: "ipldsch.List__TransferProtocol"}.AsInt()
+}
+func (List__TransferProtocol) AsFloat() (float64, error) {
+	return mixins.List{TypeName: "ipldsch.List__TransferProtocol"}.AsFloat()
+}
+func (List__TransferProtocol) AsString() (string, error) {
+	return mixins.List{TypeName: "ipldsch.List__TransferProtocol"}.AsString()
+}
+func (List__TransferProtocol) AsBytes() ([]byte, error) {
+	return mixins.List{TypeName: "ipldsch.List__TransferProtocol"}.AsBytes()
+}
+func (List__TransferProtocol) AsLink() (datamodel.Link, error) {
+	return mixins.List{TypeName: "ipldsch.List__TransferProtocol"}.AsLink()
+}
+func (List__TransferProtocol) Prototype() datamodel.NodePrototype {
+	return _List__TransferProtocol__Prototype{}
+}
+
+type _List__TransferProtocol__Prototype struct{}
+
+func (_List__TransferProtocol__Prototype) NewBuilder() datamodel.NodeBuilder {
+	var nb _List__TransferProtocol__Builder
+	nb.Reset()
+	return &nb
+}
+
+type _List__TransferProtocol__Builder struct {
+	_List__TransferProtocol__Assembler
+}
+
+func (nb *_List__TransferProtocol__Builder) Build() datamodel.Node {
+	if *nb.m != schema.Maybe_Value {
+		panic("invalid state: cannot call Build on an assembler that's not finished")
+	}
+	return nb.w
+}
+func (nb *_List__TransferProtocol__Builder) Reset() {
+	var w _List__TransferProtocol
+	var m schema.Maybe
+	*nb = _List__TransferProtocol__Builder{_List__TransferProtocol__Assembler{w: &w, m: &m}}
+}
+
+type _List__TransferProtocol__Assembler struct {
+	w     *_List__TransferProtocol
+	m     *schema.Maybe
+	state laState
+
+	cm schema.Maybe
+	va _TransferProtocol__Assembler
+}
+
+func (na *_List__TransferProtocol__Assembler) reset() {
+	na.state = laState_initial
+	na.va.reset()
+}
+func (_List__TransferProtocol__Assembler) BeginMap(sizeHint int64) (datamodel.MapAssembler, error) {
+	return mixins.ListAssembler{TypeName: "ipldsch.List__TransferProtocol"}.BeginMap(0)
+}
+func (na *_List__TransferProtocol__Assembler) BeginList(sizeHint int64) (datamodel.ListAssembler, error) {
+	switch *na.m {
+	case schema.Maybe_Value, schema.Maybe_Null:
+		panic("invalid state: cannot assign into assembler that's already finished")
+	case midvalue:
+		panic("invalid state: it makes no sense to 'begin' twice on the same assembler!")
+	}
+	*na.m = midvalue
+	if sizeHint < 0 {
+		sizeHint = 0
+	}
+	if sizeHint > 0 {
+		na.w.x = make([]_TransferProtocol, 0, sizeHint)
+	}
+	return na, nil
+}
+func (na *_List__TransferProtocol__Assembler) AssignNull() error {
+	switch *na.m {
+	case allowNull:
+		*na.m = schema.Maybe_Null
+		return nil
+	case schema.Maybe_Absent:
+		return mixins.ListAssembler{TypeName: "ipldsch.List__TransferProtocol"}.AssignNull()
+	case schema.Maybe_Value, schema.Maybe_Null:
+		panic("invalid state: cannot assign into assembler that's already finished")
+	case midvalue:
+		panic("invalid state: cannot assign null into an assembler that's already begun working on recursive structures!")
+	}
+	panic("unreachable")
+}
+func (_List__TransferProtocol__Assembler) AssignBool(bool) error {
+	return mixins.ListAssembler{TypeName: "ipldsch.List__TransferProtocol"}.AssignBool(false)
+}
+func (_List__TransferProtocol__Assembler) AssignInt(int64) error {
+	return mixins.ListAssembler{TypeName: "ipldsch.List__TransferProtocol"}.AssignInt(0)
+}
+func (_List__TransferProtocol__Assembler) AssignFloat(float64) error {
+	return mixins.ListAssembler{TypeName: "ipldsch.List__TransferProtocol"}.AssignFloat(0)
+}
+func (_List__TransferProtocol__Assembler) AssignString(string) error {
+	return mixins.ListAssembler{TypeName: "ipldsch.List__TransferProtocol"}.AssignString("")
+}
+func (_List__TransferProtocol__Assembler) AssignBytes([]byte) error {
+	return mixins.ListAssembler{TypeName: "ipldsch.List__TransferProtocol"}.AssignBytes(nil)
+}
+func (_List__TransferProtocol__Assembler) AssignLink(datamodel.Link) error {
+	return mixins.ListAssembler{TypeName: "ipldsch.List__TransferProtocol"}.AssignLink(nil)
+}
+func (na *_List__TransferProtocol__Assembler) AssignNode(v datamodel.Node) error {
+	if v.IsNull() {
+		return na.AssignNull()
+	}
+	if v2, ok := v.(*_List__TransferProtocol); ok {
+		switch *na.m {
+		case schema.Maybe_Value, schema.Maybe_Null:
+			panic("invalid state: cannot assign into assembler that's already finished")
+		case midvalue:
+			panic("invalid state: cannot assign null into an assembler that's already begun working on recursive structures!")
+		}
+		*na.w = *v2
+		*na.m = schema.Maybe_Value
+		return nil
+	}
+	if v.Kind() != datamodel.Kind_List {
+		return datamodel.ErrWrongKind{TypeName: "ipldsch.List__TransferProtocol", MethodName: "AssignNode", AppropriateKind: datamodel.KindSet_JustList, ActualKind: v.Kind()}
+	}
+	itr := v.ListIterator()
+	for !itr.Done() {
+		_, v, err := itr.Next()
+		if err != nil {
+			return err
+		}
+		if err := na.AssembleValue().AssignNode(v); err != nil {
+			return err
+		}
+	}
+	return na.Finish()
+}
+func (_List__TransferProtocol__Assembler) Prototype() datamodel.NodePrototype {
+	return _List__TransferProtocol__Prototype{}
+}
+func (la *_List__TransferProtocol__Assembler) valueFinishTidy() bool {
+	switch la.cm {
+	case schema.Maybe_Value:
+		la.va.w = nil
+		la.cm = schema.Maybe_Absent
+		la.state = laState_initial
+		la.va.reset()
+		return true
+	default:
+		return false
+	}
+}
+func (la *_List__TransferProtocol__Assembler) AssembleValue() datamodel.NodeAssembler {
+	switch la.state {
+	case laState_initial:
+		// carry on
+	case laState_midValue:
+		if !la.valueFinishTidy() {
+			panic("invalid state: AssembleValue cannot be called when still in the middle of assembling the previous value")
+		} // if tidy success: carry on
+	case laState_finished:
+		panic("invalid state: AssembleValue cannot be called on an assembler that's already finished")
+	}
+	la.w.x = append(la.w.x, _TransferProtocol{})
+	la.state = laState_midValue
+	row := &la.w.x[len(la.w.x)-1]
+	la.va.w = row
+	la.va.m = &la.cm
+	return &la.va
+}
+func (la *_List__TransferProtocol__Assembler) Finish() error {
+	switch la.state {
+	case laState_initial:
+		// carry on
+	case laState_midValue:
+		if !la.valueFinishTidy() {
+			panic("invalid state: Finish cannot be called when in the middle of assembling a value")
+		} // if tidy success: carry on
+	case laState_finished:
+		panic("invalid state: Finish cannot be called on an assembler that's already finished")
+	}
+	la.state = laState_finished
+	*la.m = schema.Maybe_Value
+	return nil
+}
+func (la *_List__TransferProtocol__Assembler) ValuePrototype(_ int64) datamodel.NodePrototype {
+	return _TransferProtocol__Prototype{}
+}
+func (List__TransferProtocol) Type() schema.Type {
+	return nil /*TODO:typelit*/
+}
+func (n List__TransferProtocol) Representation() datamodel.Node {
+	return (*_List__TransferProtocol__Repr)(n)
+}
+
+type _List__TransferProtocol__Repr _List__TransferProtocol
+
+var _ datamodel.Node = &_List__TransferProtocol__Repr{}
+
+func (_List__TransferProtocol__Repr) Kind() datamodel.Kind {
+	return datamodel.Kind_List
+}
+func (_List__TransferProtocol__Repr) LookupByString(string) (datamodel.Node, error) {
+	return mixins.List{TypeName: "ipldsch.List__TransferProtocol.Repr"}.LookupByString("")
+}
+func (nr *_List__TransferProtocol__Repr) LookupByNode(k datamodel.Node) (datamodel.Node, error) {
+	v, err := (List__TransferProtocol)(nr).LookupByNode(k)
+	if err != nil || v == datamodel.Null {
+		return v, err
+	}
+	return v.(TransferProtocol).Representation(), nil
+}
+func (nr *_List__TransferProtocol__Repr) LookupByIndex(idx int64) (datamodel.Node, error) {
+	v, err := (List__TransferProtocol)(nr).LookupByIndex(idx)
+	if err != nil || v == datamodel.Null {
+		return v, err
+	}
+	return v.(TransferProtocol).Representation(), nil
+}
+func (n _List__TransferProtocol__Repr) LookupBySegment(seg datamodel.PathSegment) (datamodel.Node, error) {
+	i, err := seg.Index()
+	if err != nil {
+		return nil, datamodel.ErrInvalidSegmentForList{TypeName: "ipldsch.List__TransferProtocol.Repr", TroubleSegment: seg, Reason: err}
+	}
+	return n.LookupByIndex(i)
+}
+func (_List__TransferProtocol__Repr) MapIterator() datamodel.MapIterator {
+	return nil
+}
+func (nr *_List__TransferProtocol__Repr) ListIterator() datamodel.ListIterator {
+	return &_List__TransferProtocol__ReprListItr{(List__TransferProtocol)(nr), 0}
+}
+
+type _List__TransferProtocol__ReprListItr _List__TransferProtocol__ListItr
+
+func (itr *_List__TransferProtocol__ReprListItr) Next() (idx int64, v datamodel.Node, err error) {
+	idx, v, err = (*_List__TransferProtocol__ListItr)(itr).Next()
+	if err != nil || v == datamodel.Null {
+		return
+	}
+	return idx, v.(TransferProtocol).Representation(), nil
+}
+func (itr *_List__TransferProtocol__ReprListItr) Done() bool {
+	return (*_List__TransferProtocol__ListItr)(itr).Done()
+}
+
+func (rn *_List__TransferProtocol__Repr) Length() int64 {
+	return int64(len(rn.x))
+}
+func (_List__TransferProtocol__Repr) IsAbsent() bool {
+	return false
+}
+func (_List__TransferProtocol__Repr) IsNull() bool {
+	return false
+}
+func (_List__TransferProtocol__Repr) AsBool() (bool, error) {
+	return mixins.List{TypeName: "ipldsch.List__TransferProtocol.Repr"}.AsBool()
+}
+func (_List__TransferProtocol__Repr) AsInt() (int64, error) {
+	return mixins.List{TypeName: "ipldsch.List__TransferProtocol.Repr"}.AsInt()
+}
+func (_List__TransferProtocol__Repr) AsFloat() (float64, error) {
+	return mixins.List{TypeName: "ipldsch.List__TransferProtocol.Repr"}.AsFloat()
+}
+func (_List__TransferProtocol__Repr) AsString() (string, error) {
+	return mixins.List{TypeName: "ipldsch.List__TransferProtocol.Repr"}.AsString()
+}
+func (_List__TransferProtocol__Repr) AsBytes() ([]byte, error) {
+	return mixins.List{TypeName: "ipldsch.List__TransferProtocol.Repr"}.AsBytes()
+}
+func (_List__TransferProtocol__Repr) AsLink() (datamodel.Link, error) {
+	return mixins.List{TypeName: "ipldsch.List__TransferProtocol.Repr"}.AsLink()
+}
+func (_List__TransferProtocol__Repr) Prototype() datamodel.NodePrototype {
+	return _List__TransferProtocol__ReprPrototype{}
+}
+
+type _List__TransferProtocol__ReprPrototype struct{}
+
+func (_List__TransferProtocol__ReprPrototype) NewBuilder() datamodel.NodeBuilder {
+	var nb _List__TransferProtocol__ReprBuilder
+	nb.Reset()
+	return &nb
+}
+
+type _List__TransferProtocol__ReprBuilder struct {
+	_List__TransferProtocol__ReprAssembler
+}
+
+func (nb *_List__TransferProtocol__ReprBuilder) Build() datamodel.Node {
+	if *nb.m != schema.Maybe_Value {
+		panic("invalid state: cannot call Build on an assembler that's not finished")
+	}
+	return nb.w
+}
+func (nb *_List__TransferProtocol__ReprBuilder) Reset() {
+	var w _List__TransferProtocol
+	var m schema.Maybe
+	*nb = _List__TransferProtocol__ReprBuilder{_List__TransferProtocol__ReprAssembler{w: &w, m: &m}}
+}
+
+type _List__TransferProtocol__ReprAssembler struct {
+	w     *_List__TransferProtocol
+	m     *schema.Maybe
+	state laState
+
+	cm schema.Maybe
+	va _TransferProtocol__ReprAssembler
+}
+
+func (na *_List__TransferProtocol__ReprAssembler) reset() {
+	na.state = laState_initial
+	na.va.reset()
+}
+func (_List__TransferProtocol__ReprAssembler) BeginMap(sizeHint int64) (datamodel.MapAssembler, error) {
+	return mixins.ListAssembler{TypeName: "ipldsch.List__TransferProtocol.Repr"}.BeginMap(0)
+}
+func (na *_List__TransferProtocol__ReprAssembler) BeginList(sizeHint int64) (datamodel.ListAssembler, error) {
+	switch *na.m {
+	case schema.Maybe_Value, schema.Maybe_Null:
+		panic("invalid state: cannot assign into assembler that's already finished")
+	case midvalue:
+		panic("invalid state: it makes no sense to 'begin' twice on the same assembler!")
+	}
+	*na.m = midvalue
+	if sizeHint < 0 {
+		sizeHint = 0
+	}
+	if sizeHint > 0 {
+		na.w.x = make([]_TransferProtocol, 0, sizeHint)
+	}
+	return na, nil
+}
+func (na *_List__TransferProtocol__ReprAssembler) AssignNull() error {
+	switch *na.m {
+	case allowNull:
+		*na.m = schema.Maybe_Null
+		return nil
+	case schema.Maybe_Absent:
+		return mixins.ListAssembler{TypeName: "ipldsch.List__TransferProtocol.Repr.Repr"}.AssignNull()
+	case schema.Maybe_Value, schema.Maybe_Null:
+		panic("invalid state: cannot assign into assembler that's already finished")
+	case midvalue:
+		panic("invalid state: cannot assign null into an assembler that's already begun working on recursive structures!")
+	}
+	panic("unreachable")
+}
+func (_List__TransferProtocol__ReprAssembler) AssignBool(bool) error {
+	return mixins.ListAssembler{TypeName: "ipldsch.List__TransferProtocol.Repr"}.AssignBool(false)
+}
+func (_List__TransferProtocol__ReprAssembler) AssignInt(int64) error {
+	return mixins.ListAssembler{TypeName: "ipldsch.List__TransferProtocol.Repr"}.AssignInt(0)
+}
+func (_List__TransferProtocol__ReprAssembler) AssignFloat(float64) error {
+	return mixins.ListAssembler{TypeName: "ipldsch.List__TransferProtocol.Repr"}.AssignFloat(0)
+}
+func (_List__TransferProtocol__ReprAssembler) AssignString(string) error {
+	return mixins.ListAssembler{TypeName: "ipldsch.List__TransferProtocol.Repr"}.AssignString("")
+}
+func (_List__TransferProtocol__ReprAssembler) AssignBytes([]byte) error {
+	return mixins.ListAssembler{TypeName: "ipldsch.List__TransferProtocol.Repr"}.AssignBytes(nil)
+}
+func (_List__TransferProtocol__ReprAssembler) AssignLink(datamodel.Link) error {
+	return mixins.ListAssembler{TypeName: "ipldsch.List__TransferProtocol.Repr"}.AssignLink(nil)
+}
+func (na *_List__TransferProtocol__ReprAssembler) AssignNode(v datamodel.Node) error {
+	if v.IsNull() {
+		return na.AssignNull()
+	}
+	if v2, ok := v.(*_List__TransferProtocol); ok {
+		switch *na.m {
+		case schema.Maybe_Value, schema.Maybe_Null:
+			panic("invalid state: cannot assign into assembler that's already finished")
+		case midvalue:
+			panic("invalid state: cannot assign null into an assembler that's already begun working on recursive structures!")
+		}
+		*na.w = *v2
+		*na.m = schema.Maybe_Value
+		return nil
+	}
+	if v.Kind() != datamodel.Kind_List {
+		return datamodel.ErrWrongKind{TypeName: "ipldsch.List__TransferProtocol.Repr", MethodName: "AssignNode", AppropriateKind: datamodel.KindSet_JustList, ActualKind: v.Kind()}
+	}
+	itr := v.ListIterator()
+	for !itr.Done() {
+		_, v, err := itr.Next()
+		if err != nil {
+			return err
+		}
+		if err := na.AssembleValue().AssignNode(v); err != nil {
+			return err
+		}
+	}
+	return na.Finish()
+}
+func (_List__TransferProtocol__ReprAssembler) Prototype() datamodel.NodePrototype {
+	return _List__TransferProtocol__ReprPrototype{}
+}
+func (la *_List__TransferProtocol__ReprAssembler) valueFinishTidy() bool {
+	switch la.cm {
+	case schema.Maybe_Value:
+		la.va.w = nil
+		la.cm = schema.Maybe_Absent
+		la.state = laState_initial
+		la.va.reset()
+		return true
+	default:
+		return false
+	}
+}
+func (la *_List__TransferProtocol__ReprAssembler) AssembleValue() datamodel.NodeAssembler {
+	switch la.state {
+	case laState_initial:
+		// carry on
+	case laState_midValue:
+		if !la.valueFinishTidy() {
+			panic("invalid state: AssembleValue cannot be called when still in the middle of assembling the previous value")
+		} // if tidy success: carry on
+	case laState_finished:
+		panic("invalid state: AssembleValue cannot be called on an assembler that's already finished")
+	}
+	la.w.x = append(la.w.x, _TransferProtocol{})
+	la.state = laState_midValue
+	row := &la.w.x[len(la.w.x)-1]
+	la.va.w = row
+	la.va.m = &la.cm
+	return &la.va
+}
+func (la *_List__TransferProtocol__ReprAssembler) Finish() error {
+	switch la.state {
+	case laState_initial:
+		// carry on
+	case laState_midValue:
+		if !la.valueFinishTidy() {
+			panic("invalid state: Finish cannot be called when in the middle of assembling a value")
+		} // if tidy success: carry on
+	case laState_finished:
+		panic("invalid state: Finish cannot be called on an assembler that's already finished")
+	}
+	la.state = laState_finished
+	*la.m = schema.Maybe_Value
+	return nil
+}
+func (la *_List__TransferProtocol__ReprAssembler) ValuePrototype(_ int64) datamodel.NodePrototype {
+	return _TransferProtocol__ReprPrototype{}
+}
+
+func (n *_Map__Multihash__Provider) Lookup(k Multihash) Provider {
+	v, exists := n.m[*k]
+	if !exists {
+		return nil
+	}
+	return v
+}
+func (n *_Map__Multihash__Provider) LookupMaybe(k Multihash) MaybeProvider {
+	v, exists := n.m[*k]
+	if !exists {
+		return &_Map__Multihash__Provider__valueAbsent
+	}
+	return &_Provider__Maybe{
+		m: schema.Maybe_Value,
+		v: v,
+	}
+}
+
+var _Map__Multihash__Provider__valueAbsent = _Provider__Maybe{m: schema.Maybe_Absent}
+
+func (n Map__Multihash__Provider) Iterator() *Map__Multihash__Provider__Itr {
+	return &Map__Multihash__Provider__Itr{n, 0}
+}
+
+type Map__Multihash__Provider__Itr struct {
+	n   Map__Multihash__Provider
+	idx int
+}
+
+func (itr *Map__Multihash__Provider__Itr) Next() (k Multihash, v Provider) {
+	if itr.idx >= len(itr.n.t) {
+		return nil, nil
+	}
+	x := &itr.n.t[itr.idx]
+	k = &x.k
+	v = &x.v
+	itr.idx++
+	return
+}
+func (itr *Map__Multihash__Provider__Itr) Done() bool {
+	return itr.idx >= len(itr.n.t)
+}
+
+type _Map__Multihash__Provider__Maybe struct {
+	m schema.Maybe
+	v _Map__Multihash__Provider
+}
+type MaybeMap__Multihash__Provider = *_Map__Multihash__Provider__Maybe
+
+func (m MaybeMap__Multihash__Provider) IsNull() bool {
+	return m.m == schema.Maybe_Null
+}
+func (m MaybeMap__Multihash__Provider) IsAbsent() bool {
+	return m.m == schema.Maybe_Absent
+}
+func (m MaybeMap__Multihash__Provider) Exists() bool {
+	return m.m == schema.Maybe_Value
+}
+func (m MaybeMap__Multihash__Provider) AsNode() datamodel.Node {
+	switch m.m {
+	case schema.Maybe_Absent:
+		return datamodel.Absent
+	case schema.Maybe_Null:
+		return datamodel.Null
+	case schema.Maybe_Value:
+		return &m.v
+	default:
+		panic("unreachable")
+	}
+}
+func (m MaybeMap__Multihash__Provider) Must() Map__Multihash__Provider {
+	if !m.Exists() {
+		panic("unbox of a maybe rejected")
+	}
+	return &m.v
+}
+
+var _ datamodel.Node = (Map__Multihash__Provider)(&_Map__Multihash__Provider{})
+var _ schema.TypedNode = (Map__Multihash__Provider)(&_Map__Multihash__Provider{})
+
+func (Map__Multihash__Provider) Kind() datamodel.Kind {
+	return datamodel.Kind_Map
+}
+func (n Map__Multihash__Provider) LookupByString(k string) (datamodel.Node, error) {
+	var k2 _Multihash
+	if err := (_Multihash__ReprPrototype{}).fromString(&k2, k); err != nil {
+		return nil, err // TODO wrap in some kind of ErrInvalidKey
+	}
+	v, exists := n.m[k2]
+	if !exists {
+		return nil, datamodel.ErrNotExists{Segment: datamodel.PathSegmentOfString(k)}
+	}
+	return v, nil
+}
+func (n Map__Multihash__Provider) LookupByNode(k datamodel.Node) (datamodel.Node, error) {
+	k2, ok := k.(Multihash)
+	if !ok {
+		panic("todo invalid key type error")
+		// 'schema.ErrInvalidKey{TypeName:"ipldsch.Map__Multihash__Provider", Key:&_String{k}}' doesn't quite cut it: need room to explain the type, and it's not guaranteed k can be turned into a string at all
+	}
+	v, exists := n.m[*k2]
+	if !exists {
+		return nil, datamodel.ErrNotExists{Segment: datamodel.PathSegmentOfString(k2.String())}
+	}
+	return v, nil
+}
+func (Map__Multihash__Provider) LookupByIndex(idx int64) (datamodel.Node, error) {
+	return mixins.Map{TypeName: "ipldsch.Map__Multihash__Provider"}.LookupByIndex(0)
+}
+func (n Map__Multihash__Provider) LookupBySegment(seg datamodel.PathSegment) (datamodel.Node, error) {
+	return n.LookupByString(seg.String())
+}
+func (n Map__Multihash__Provider) MapIterator() datamodel.MapIterator {
+	return &_Map__Multihash__Provider__MapItr{n, 0}
+}
+
+type _Map__Multihash__Provider__MapItr struct {
+	n   Map__Multihash__Provider
+	idx int
+}
+
+func (itr *_Map__Multihash__Provider__MapItr) Next() (k datamodel.Node, v datamodel.Node, _ error) {
+	if itr.idx >= len(itr.n.t) {
+		return nil, nil, datamodel.ErrIteratorOverread{}
+	}
+	x := &itr.n.t[itr.idx]
+	k = &x.k
+	v = &x.v
+	itr.idx++
+	return
+}
+func (itr *_Map__Multihash__Provider__MapItr) Done() bool {
+	return itr.idx >= len(itr.n.t)
+}
+
+func (Map__Multihash__Provider) ListIterator() datamodel.ListIterator {
+	return nil
+}
+func (n Map__Multihash__Provider) Length() int64 {
+	return int64(len(n.t))
+}
+func (Map__Multihash__Provider) IsAbsent() bool {
+	return false
+}
+func (Map__Multihash__Provider) IsNull() bool {
+	return false
+}
+func (Map__Multihash__Provider) AsBool() (bool, error) {
+	return mixins.Map{TypeName: "ipldsch.Map__Multihash__Provider"}.AsBool()
+}
+func (Map__Multihash__Provider) AsInt() (int64, error) {
+	return mixins.Map{TypeName: "ipldsch.Map__Multihash__Provider"}.AsInt()
+}
+func (Map__Multihash__Provider) AsFloat() (float64, error) {
+	return mixins.Map{TypeName: "ipldsch.Map__Multihash__Provider"}.AsFloat()
+}
+func (Map__Multihash__Provider) AsString() (string, error) {
+	return mixins.Map{TypeName: "ipldsch.Map__Multihash__Provider"}.AsString()
+}
+func (Map__Multihash__Provider) AsBytes() ([]byte, error) {
+	return mixins.Map{TypeName: "ipldsch.Map__Multihash__Provider"}.AsBytes()
+}
+func (Map__Multihash__Provider) AsLink() (datamodel.Link, error) {
+	return mixins.Map{TypeName: "ipldsch.Map__Multihash__Provider"}.AsLink()
+}
+func (Map__Multihash__Provider) Prototype() datamodel.NodePrototype {
+	return _Map__Multihash__Provider__Prototype{}
+}
+
+type _Map__Multihash__Provider__Prototype struct{}
+
+func (_Map__Multihash__Provider__Prototype) NewBuilder() datamodel.NodeBuilder {
+	var nb _Map__Multihash__Provider__Builder
+	nb.Reset()
+	return &nb
+}
+
+type _Map__Multihash__Provider__Builder struct {
+	_Map__Multihash__Provider__Assembler
+}
+
+func (nb *_Map__Multihash__Provider__Builder) Build() datamodel.Node {
+	if *nb.m != schema.Maybe_Value {
+		panic("invalid state: cannot call Build on an assembler that's not finished")
+	}
+	return nb.w
+}
+func (nb *_Map__Multihash__Provider__Builder) Reset() {
+	var w _Map__Multihash__Provider
+	var m schema.Maybe
+	*nb = _Map__Multihash__Provider__Builder{_Map__Multihash__Provider__Assembler{w: &w, m: &m}}
+}
+
+type _Map__Multihash__Provider__Assembler struct {
+	w     *_Map__Multihash__Provider
+	m     *schema.Maybe
+	state maState
+
+	cm schema.Maybe
+	ka _Multihash__Assembler
+	va _Provider__Assembler
+}
+
+func (na *_Map__Multihash__Provider__Assembler) reset() {
+	na.state = maState_initial
+	na.ka.reset()
+	na.va.reset()
+}
+func (na *_Map__Multihash__Provider__Assembler) BeginMap(sizeHint int64) (datamodel.MapAssembler, error) {
+	switch *na.m {
+	case schema.Maybe_Value, schema.Maybe_Null:
+		panic("invalid state: cannot assign into assembler that's already finished")
+	case midvalue:
+		panic("invalid state: it makes no sense to 'begin' twice on the same assembler!")
+	}
+	*na.m = midvalue
+	if sizeHint < 0 {
+		sizeHint = 0
+	}
+	na.w.m = make(map[_Multihash]*_Provider, sizeHint)
+	na.w.t = make([]_Map__Multihash__Provider__entry, 0, sizeHint)
+	return na, nil
+}
+func (_Map__Multihash__Provider__Assembler) BeginList(sizeHint int64) (datamodel.ListAssembler, error) {
+	return mixins.MapAssembler{TypeName: "ipldsch.Map__Multihash__Provider"}.BeginList(0)
+}
+func (na *_Map__Multihash__Provider__Assembler) AssignNull() error {
+	switch *na.m {
+	case allowNull:
+		*na.m = schema.Maybe_Null
+		return nil
+	case schema.Maybe_Absent:
+		return mixins.MapAssembler{TypeName: "ipldsch.Map__Multihash__Provider"}.AssignNull()
+	case schema.Maybe_Value, schema.Maybe_Null:
+		panic("invalid state: cannot assign into assembler that's already finished")
+	case midvalue:
+		panic("invalid state: cannot assign null into an assembler that's already begun working on recursive structures!")
+	}
+	panic("unreachable")
+}
+func (_Map__Multihash__Provider__Assembler) AssignBool(bool) error {
+	return mixins.MapAssembler{TypeName: "ipldsch.Map__Multihash__Provider"}.AssignBool(false)
+}
+func (_Map__Multihash__Provider__Assembler) AssignInt(int64) error {
+	return mixins.MapAssembler{TypeName: "ipldsch.Map__Multihash__Provider"}.AssignInt(0)
+}
+func (_Map__Multihash__Provider__Assembler) AssignFloat(float64) error {
+	return mixins.MapAssembler{TypeName: "ipldsch.Map__Multihash__Provider"}.AssignFloat(0)
+}
+func (_Map__Multihash__Provider__Assembler) AssignString(string) error {
+	return mixins.MapAssembler{TypeName: "ipldsch.Map__Multihash__Provider"}.AssignString("")
+}
+func (_Map__Multihash__Provider__Assembler) AssignBytes([]byte) error {
+	return mixins.MapAssembler{TypeName: "ipldsch.Map__Multihash__Provider"}.AssignBytes(nil)
+}
+func (_Map__Multihash__Provider__Assembler) AssignLink(datamodel.Link) error {
+	return mixins.MapAssembler{TypeName: "ipldsch.Map__Multihash__Provider"}.AssignLink(nil)
+}
+func (na *_Map__Multihash__Provider__Assembler) AssignNode(v datamodel.Node) error {
+	if v.IsNull() {
+		return na.AssignNull()
+	}
+	if v2, ok := v.(*_Map__Multihash__Provider); ok {
+		switch *na.m {
+		case schema.Maybe_Value, schema.Maybe_Null:
+			panic("invalid state: cannot assign into assembler that's already finished")
+		case midvalue:
+			panic("invalid state: cannot assign null into an assembler that's already begun working on recursive structures!")
+		}
+		*na.w = *v2
+		*na.m = schema.Maybe_Value
+		return nil
+	}
+	if v.Kind() != datamodel.Kind_Map {
+		return datamodel.ErrWrongKind{TypeName: "ipldsch.Map__Multihash__Provider", MethodName: "AssignNode", AppropriateKind: datamodel.KindSet_JustMap, ActualKind: v.Kind()}
+	}
+	itr := v.MapIterator()
+	for !itr.Done() {
+		k, v, err := itr.Next()
+		if err != nil {
+			return err
+		}
+		if err := na.AssembleKey().AssignNode(k); err != nil {
+			return err
+		}
+		if err := na.AssembleValue().AssignNode(v); err != nil {
+			return err
+		}
+	}
+	return na.Finish()
+}
+func (_Map__Multihash__Provider__Assembler) Prototype() datamodel.NodePrototype {
+	return _Map__Multihash__Provider__Prototype{}
+}
+func (ma *_Map__Multihash__Provider__Assembler) keyFinishTidy() bool {
+	switch ma.cm {
+	case schema.Maybe_Value:
+		ma.ka.w = nil
+		tz := &ma.w.t[len(ma.w.t)-1]
+		ma.cm = schema.Maybe_Absent
+		ma.state = maState_expectValue
+		ma.w.m[tz.k] = &tz.v
+		ma.va.w = &tz.v
+		ma.va.m = &ma.cm
+		ma.ka.reset()
+		return true
+	default:
+		return false
+	}
+}
+func (ma *_Map__Multihash__Provider__Assembler) valueFinishTidy() bool {
+	switch ma.cm {
+	case schema.Maybe_Value:
+		ma.va.w = nil
+		ma.cm = schema.Maybe_Absent
+		ma.state = maState_initial
+		ma.va.reset()
+		return true
+	default:
+		return false
+	}
+}
+func (ma *_Map__Multihash__Provider__Assembler) AssembleEntry(k string) (datamodel.NodeAssembler, error) {
+	switch ma.state {
+	case maState_initial:
+		// carry on
+	case maState_midKey:
+		panic("invalid state: AssembleEntry cannot be called when in the middle of assembling another key")
+	case maState_expectValue:
+		panic("invalid state: AssembleEntry cannot be called when expecting start of value assembly")
+	case maState_midValue:
+		if !ma.valueFinishTidy() {
+			panic("invalid state: AssembleEntry cannot be called when in the middle of assembling a value")
+		} // if tidy success: carry on
+	case maState_finished:
+		panic("invalid state: AssembleEntry cannot be called on an assembler that's already finished")
+	}
+
+	var k2 _Multihash
+	if err := (_Multihash__ReprPrototype{}).fromString(&k2, k); err != nil {
+		return nil, err // TODO wrap in some kind of ErrInvalidKey
+	}
+	if _, exists := ma.w.m[k2]; exists {
+		return nil, datamodel.ErrRepeatedMapKey{Key: &k2}
+	}
+	ma.w.t = append(ma.w.t, _Map__Multihash__Provider__entry{k: k2})
+	tz := &ma.w.t[len(ma.w.t)-1]
+	ma.state = maState_midValue
+
+	ma.w.m[k2] = &tz.v
+	ma.va.w = &tz.v
+	ma.va.m = &ma.cm
+	return &ma.va, nil
+}
+func (ma *_Map__Multihash__Provider__Assembler) AssembleKey() datamodel.NodeAssembler {
+	switch ma.state {
+	case maState_initial:
+		// carry on
+	case maState_midKey:
+		panic("invalid state: AssembleKey cannot be called when in the middle of assembling another key")
+	case maState_expectValue:
+		panic("invalid state: AssembleKey cannot be called when expecting start of value assembly")
+	case maState_midValue:
+		if !ma.valueFinishTidy() {
+			panic("invalid state: AssembleKey cannot be called when in the middle of assembling a value")
+		} // if tidy success: carry on
+	case maState_finished:
+		panic("invalid state: AssembleKey cannot be called on an assembler that's already finished")
+	}
+	ma.w.t = append(ma.w.t, _Map__Multihash__Provider__entry{})
+	ma.state = maState_midKey
+	ma.ka.m = &ma.cm
+	ma.ka.w = &ma.w.t[len(ma.w.t)-1].k
+	return &ma.ka
+}
+func (ma *_Map__Multihash__Provider__Assembler) AssembleValue() datamodel.NodeAssembler {
+	switch ma.state {
+	case maState_initial:
+		panic("invalid state: AssembleValue cannot be called when no key is primed")
+	case maState_midKey:
+		if !ma.keyFinishTidy() {
+			panic("invalid state: AssembleValue cannot be called when in the middle of assembling a key")
+		} // if tidy success: carry on
+	case maState_expectValue:
+		// carry on
+	case maState_midValue:
+		panic("invalid state: AssembleValue cannot be called when in the middle of assembling another value")
+	case maState_finished:
+		panic("invalid state: AssembleValue cannot be called on an assembler that's already finished")
+	}
+	ma.state = maState_midValue
+	return &ma.va
+}
+func (ma *_Map__Multihash__Provider__Assembler) Finish() error {
+	switch ma.state {
+	case maState_initial:
+		// carry on
+	case maState_midKey:
+		panic("invalid state: Finish cannot be called when in the middle of assembling a key")
+	case maState_expectValue:
+		panic("invalid state: Finish cannot be called when expecting start of value assembly")
+	case maState_midValue:
+		if !ma.valueFinishTidy() {
+			panic("invalid state: Finish cannot be called when in the middle of assembling a value")
+		} // if tidy success: carry on
+	case maState_finished:
+		panic("invalid state: Finish cannot be called on an assembler that's already finished")
+	}
+	ma.state = maState_finished
+	*ma.m = schema.Maybe_Value
+	return nil
+}
+func (ma *_Map__Multihash__Provider__Assembler) KeyPrototype() datamodel.NodePrototype {
+	return _Multihash__Prototype{}
+}
+func (ma *_Map__Multihash__Provider__Assembler) ValuePrototype(_ string) datamodel.NodePrototype {
+	return _Provider__Prototype{}
+}
+func (Map__Multihash__Provider) Type() schema.Type {
+	return nil /*TODO:typelit*/
+}
+func (n Map__Multihash__Provider) Representation() datamodel.Node {
+	return (*_Map__Multihash__Provider__Repr)(n)
+}
+
+type _Map__Multihash__Provider__Repr _Map__Multihash__Provider
+
+var _ datamodel.Node = &_Map__Multihash__Provider__Repr{}
+
+func (_Map__Multihash__Provider__Repr) Kind() datamodel.Kind {
+	return datamodel.Kind_Map
+}
+func (nr *_Map__Multihash__Provider__Repr) LookupByString(k string) (datamodel.Node, error) {
+	v, err := (Map__Multihash__Provider)(nr).LookupByString(k)
+	if err != nil || v == datamodel.Null {
+		return v, err
+	}
+	return v.(Provider).Representation(), nil
+}
+func (nr *_Map__Multihash__Provider__Repr) LookupByNode(k datamodel.Node) (datamodel.Node, error) {
+	v, err := (Map__Multihash__Provider)(nr).LookupByNode(k)
+	if err != nil || v == datamodel.Null {
+		return v, err
+	}
+	return v.(Provider).Representation(), nil
+}
+func (_Map__Multihash__Provider__Repr) LookupByIndex(idx int64) (datamodel.Node, error) {
+	return mixins.Map{TypeName: "ipldsch.Map__Multihash__Provider.Repr"}.LookupByIndex(0)
+}
+func (n _Map__Multihash__Provider__Repr) LookupBySegment(seg datamodel.PathSegment) (datamodel.Node, error) {
+	return n.LookupByString(seg.String())
+}
+func (nr *_Map__Multihash__Provider__Repr) MapIterator() datamodel.MapIterator {
+	return &_Map__Multihash__Provider__ReprMapItr{(Map__Multihash__Provider)(nr), 0}
+}
+
+type _Map__Multihash__Provider__ReprMapItr _Map__Multihash__Provider__MapItr
+
+func (itr *_Map__Multihash__Provider__ReprMapItr) Next() (k datamodel.Node, v datamodel.Node, err error) {
+	k, v, err = (*_Map__Multihash__Provider__MapItr)(itr).Next()
+	if err != nil || v == datamodel.Null {
+		return
+	}
+	return k, v.(Provider).Representation(), nil
+}
+func (itr *_Map__Multihash__Provider__ReprMapItr) Done() bool {
+	return (*_Map__Multihash__Provider__MapItr)(itr).Done()
+}
+
+func (_Map__Multihash__Provider__Repr) ListIterator() datamodel.ListIterator {
+	return nil
+}
+func (rn *_Map__Multihash__Provider__Repr) Length() int64 {
+	return int64(len(rn.t))
+}
+func (_Map__Multihash__Provider__Repr) IsAbsent() bool {
+	return false
+}
+func (_Map__Multihash__Provider__Repr) IsNull() bool {
+	return false
+}
+func (_Map__Multihash__Provider__Repr) AsBool() (bool, error) {
+	return mixins.Map{TypeName: "ipldsch.Map__Multihash__Provider.Repr"}.AsBool()
+}
+func (_Map__Multihash__Provider__Repr) AsInt() (int64, error) {
+	return mixins.Map{TypeName: "ipldsch.Map__Multihash__Provider.Repr"}.AsInt()
+}
+func (_Map__Multihash__Provider__Repr) AsFloat() (float64, error) {
+	return mixins.Map{TypeName: "ipldsch.Map__Multihash__Provider.Repr"}.AsFloat()
+}
+func (_Map__Multihash__Provider__Repr) AsString() (string, error) {
+	return mixins.Map{TypeName: "ipldsch.Map__Multihash__Provider.Repr"}.AsString()
+}
+func (_Map__Multihash__Provider__Repr) AsBytes() ([]byte, error) {
+	return mixins.Map{TypeName: "ipldsch.Map__Multihash__Provider.Repr"}.AsBytes()
+}
+func (_Map__Multihash__Provider__Repr) AsLink() (datamodel.Link, error) {
+	return mixins.Map{TypeName: "ipldsch.Map__Multihash__Provider.Repr"}.AsLink()
+}
+func (_Map__Multihash__Provider__Repr) Prototype() datamodel.NodePrototype {
+	return _Map__Multihash__Provider__ReprPrototype{}
+}
+
+type _Map__Multihash__Provider__ReprPrototype struct{}
+
+func (_Map__Multihash__Provider__ReprPrototype) NewBuilder() datamodel.NodeBuilder {
+	var nb _Map__Multihash__Provider__ReprBuilder
+	nb.Reset()
+	return &nb
+}
+
+type _Map__Multihash__Provider__ReprBuilder struct {
+	_Map__Multihash__Provider__ReprAssembler
+}
+
+func (nb *_Map__Multihash__Provider__ReprBuilder) Build() datamodel.Node {
+	if *nb.m != schema.Maybe_Value {
+		panic("invalid state: cannot call Build on an assembler that's not finished")
+	}
+	return nb.w
+}
+func (nb *_Map__Multihash__Provider__ReprBuilder) Reset() {
+	var w _Map__Multihash__Provider
+	var m schema.Maybe
+	*nb = _Map__Multihash__Provider__ReprBuilder{_Map__Multihash__Provider__ReprAssembler{w: &w, m: &m}}
+}
+
+type _Map__Multihash__Provider__ReprAssembler struct {
+	w     *_Map__Multihash__Provider
+	m     *schema.Maybe
+	state maState
+
+	cm schema.Maybe
+	ka _Multihash__ReprAssembler
+	va _Provider__ReprAssembler
+}
+
+func (na *_Map__Multihash__Provider__ReprAssembler) reset() {
+	na.state = maState_initial
+	na.ka.reset()
+	na.va.reset()
+}
+func (na *_Map__Multihash__Provider__ReprAssembler) BeginMap(sizeHint int64) (datamodel.MapAssembler, error) {
+	switch *na.m {
+	case schema.Maybe_Value, schema.Maybe_Null:
+		panic("invalid state: cannot assign into assembler that's already finished")
+	case midvalue:
+		panic("invalid state: it makes no sense to 'begin' twice on the same assembler!")
+	}
+	*na.m = midvalue
+	if sizeHint < 0 {
+		sizeHint = 0
+	}
+	na.w.m = make(map[_Multihash]*_Provider, sizeHint)
+	na.w.t = make([]_Map__Multihash__Provider__entry, 0, sizeHint)
+	return na, nil
+}
+func (_Map__Multihash__Provider__ReprAssembler) BeginList(sizeHint int64) (datamodel.ListAssembler, error) {
+	return mixins.MapAssembler{TypeName: "ipldsch.Map__Multihash__Provider.Repr"}.BeginList(0)
+}
+func (na *_Map__Multihash__Provider__ReprAssembler) AssignNull() error {
+	switch *na.m {
+	case allowNull:
+		*na.m = schema.Maybe_Null
+		return nil
+	case schema.Maybe_Absent:
+		return mixins.MapAssembler{TypeName: "ipldsch.Map__Multihash__Provider.Repr.Repr"}.AssignNull()
+	case schema.Maybe_Value, schema.Maybe_Null:
+		panic("invalid state: cannot assign into assembler that's already finished")
+	case midvalue:
+		panic("invalid state: cannot assign null into an assembler that's already begun working on recursive structures!")
+	}
+	panic("unreachable")
+}
+func (_Map__Multihash__Provider__ReprAssembler) AssignBool(bool) error {
+	return mixins.MapAssembler{TypeName: "ipldsch.Map__Multihash__Provider.Repr"}.AssignBool(false)
+}
+func (_Map__Multihash__Provider__ReprAssembler) AssignInt(int64) error {
+	return mixins.MapAssembler{TypeName: "ipldsch.Map__Multihash__Provider.Repr"}.AssignInt(0)
+}
+func (_Map__Multihash__Provider__ReprAssembler) AssignFloat(float64) error {
+	return mixins.MapAssembler{TypeName: "ipldsch.Map__Multihash__Provider.Repr"}.AssignFloat(0)
+}
+func (_Map__Multihash__Provider__ReprAssembler) AssignString(string) error {
+	return mixins.MapAssembler{TypeName: "ipldsch.Map__Multihash__Provider.Repr"}.AssignString("")
+}
+func (_Map__Multihash__Provider__ReprAssembler) AssignBytes([]byte) error {
+	return mixins.MapAssembler{TypeName: "ipldsch.Map__Multihash__Provider.Repr"}.AssignBytes(nil)
+}
+func (_Map__Multihash__Provider__ReprAssembler) AssignLink(datamodel.Link) error {
+	return mixins.MapAssembler{TypeName: "ipldsch.Map__Multihash__Provider.Repr"}.AssignLink(nil)
+}
+func (na *_Map__Multihash__Provider__ReprAssembler) AssignNode(v datamodel.Node) error {
+	if v.IsNull() {
+		return na.AssignNull()
+	}
+	if v2, ok := v.(*_Map__Multihash__Provider); ok {
+		switch *na.m {
+		case schema.Maybe_Value, schema.Maybe_Null:
+			panic("invalid state: cannot assign into assembler that's already finished")
+		case midvalue:
+			panic("invalid state: cannot assign null into an assembler that's already begun working on recursive structures!")
+		}
+		*na.w = *v2
+		*na.m = schema.Maybe_Value
+		return nil
+	}
+	if v.Kind() != datamodel.Kind_Map {
+		return datamodel.ErrWrongKind{TypeName: "ipldsch.Map__Multihash__Provider.Repr", MethodName: "AssignNode", AppropriateKind: datamodel.KindSet_JustMap, ActualKind: v.Kind()}
+	}
+	itr := v.MapIterator()
+	for !itr.Done() {
+		k, v, err := itr.Next()
+		if err != nil {
+			return err
+		}
+		if err := na.AssembleKey().AssignNode(k); err != nil {
+			return err
+		}
+		if err := na.AssembleValue().AssignNode(v); err != nil {
+			return err
+		}
+	}
+	return na.Finish()
+}
+func (_Map__Multihash__Provider__ReprAssembler) Prototype() datamodel.NodePrototype {
+	return _Map__Multihash__Provider__ReprPrototype{}
+}
+func (ma *_Map__Multihash__Provider__ReprAssembler) keyFinishTidy() bool {
+	switch ma.cm {
+	case schema.Maybe_Value:
+		ma.ka.w = nil
+		tz := &ma.w.t[len(ma.w.t)-1]
+		ma.cm = schema.Maybe_Absent
+		ma.state = maState_expectValue
+		ma.w.m[tz.k] = &tz.v
+		ma.va.w = &tz.v
+		ma.va.m = &ma.cm
+		ma.ka.reset()
+		return true
+	default:
+		return false
+	}
+}
+func (ma *_Map__Multihash__Provider__ReprAssembler) valueFinishTidy() bool {
+	switch ma.cm {
+	case schema.Maybe_Value:
+		ma.va.w = nil
+		ma.cm = schema.Maybe_Absent
+		ma.state = maState_initial
+		ma.va.reset()
+		return true
+	default:
+		return false
+	}
+}
+func (ma *_Map__Multihash__Provider__ReprAssembler) AssembleEntry(k string) (datamodel.NodeAssembler, error) {
+	switch ma.state {
+	case maState_initial:
+		// carry on
+	case maState_midKey:
+		panic("invalid state: AssembleEntry cannot be called when in the middle of assembling another key")
+	case maState_expectValue:
+		panic("invalid state: AssembleEntry cannot be called when expecting start of value assembly")
+	case maState_midValue:
+		if !ma.valueFinishTidy() {
+			panic("invalid state: AssembleEntry cannot be called when in the middle of assembling a value")
+		} // if tidy success: carry on
+	case maState_finished:
+		panic("invalid state: AssembleEntry cannot be called on an assembler that's already finished")
+	}
+
+	var k2 _Multihash
+	if err := (_Multihash__ReprPrototype{}).fromString(&k2, k); err != nil {
+		return nil, err // TODO wrap in some kind of ErrInvalidKey
+	}
+	if _, exists := ma.w.m[k2]; exists {
+		return nil, datamodel.ErrRepeatedMapKey{Key: &k2}
+	}
+	ma.w.t = append(ma.w.t, _Map__Multihash__Provider__entry{k: k2})
+	tz := &ma.w.t[len(ma.w.t)-1]
+	ma.state = maState_midValue
+
+	ma.w.m[k2] = &tz.v
+	ma.va.w = &tz.v
+	ma.va.m = &ma.cm
+	return &ma.va, nil
+}
+func (ma *_Map__Multihash__Provider__ReprAssembler) AssembleKey() datamodel.NodeAssembler {
+	switch ma.state {
+	case maState_initial:
+		// carry on
+	case maState_midKey:
+		panic("invalid state: AssembleKey cannot be called when in the middle of assembling another key")
+	case maState_expectValue:
+		panic("invalid state: AssembleKey cannot be called when expecting start of value assembly")
+	case maState_midValue:
+		if !ma.valueFinishTidy() {
+			panic("invalid state: AssembleKey cannot be called when in the middle of assembling a value")
+		} // if tidy success: carry on
+	case maState_finished:
+		panic("invalid state: AssembleKey cannot be called on an assembler that's already finished")
+	}
+	ma.w.t = append(ma.w.t, _Map__Multihash__Provider__entry{})
+	ma.state = maState_midKey
+	ma.ka.m = &ma.cm
+	ma.ka.w = &ma.w.t[len(ma.w.t)-1].k
+	return &ma.ka
+}
+func (ma *_Map__Multihash__Provider__ReprAssembler) AssembleValue() datamodel.NodeAssembler {
+	switch ma.state {
+	case maState_initial:
+		panic("invalid state: AssembleValue cannot be called when no key is primed")
+	case maState_midKey:
+		if !ma.keyFinishTidy() {
+			panic("invalid state: AssembleValue cannot be called when in the middle of assembling a key")
+		} // if tidy success: carry on
+	case maState_expectValue:
+		// carry on
+	case maState_midValue:
+		panic("invalid state: AssembleValue cannot be called when in the middle of assembling another value")
+	case maState_finished:
+		panic("invalid state: AssembleValue cannot be called on an assembler that's already finished")
+	}
+	ma.state = maState_midValue
+	return &ma.va
+}
+func (ma *_Map__Multihash__Provider__ReprAssembler) Finish() error {
+	switch ma.state {
+	case maState_initial:
+		// carry on
+	case maState_midKey:
+		panic("invalid state: Finish cannot be called when in the middle of assembling a key")
+	case maState_expectValue:
+		panic("invalid state: Finish cannot be called when expecting start of value assembly")
+	case maState_midValue:
+		if !ma.valueFinishTidy() {
+			panic("invalid state: Finish cannot be called when in the middle of assembling a value")
+		} // if tidy success: carry on
+	case maState_finished:
+		panic("invalid state: Finish cannot be called on an assembler that's already finished")
+	}
+	ma.state = maState_finished
+	*ma.m = schema.Maybe_Value
+	return nil
+}
+func (ma *_Map__Multihash__Provider__ReprAssembler) KeyPrototype() datamodel.NodePrototype {
+	return _Multihash__ReprPrototype{}
+}
+func (ma *_Map__Multihash__Provider__ReprAssembler) ValuePrototype(_ string) datamodel.NodePrototype {
 	return _Provider__ReprPrototype{}
 }
 
-func (n _Peer) FieldMultiaddress() List__Bytes {
-	return &n.Multiaddress
+func (n _Multihash) FieldBytes() Bytes {
+	return &n.Bytes
+}
+
+type _Multihash__Maybe struct {
+	m schema.Maybe
+	v Multihash
+}
+type MaybeMultihash = *_Multihash__Maybe
+
+func (m MaybeMultihash) IsNull() bool {
+	return m.m == schema.Maybe_Null
+}
+func (m MaybeMultihash) IsAbsent() bool {
+	return m.m == schema.Maybe_Absent
+}
+func (m MaybeMultihash) Exists() bool {
+	return m.m == schema.Maybe_Value
+}
+func (m MaybeMultihash) AsNode() datamodel.Node {
+	switch m.m {
+	case schema.Maybe_Absent:
+		return datamodel.Absent
+	case schema.Maybe_Null:
+		return datamodel.Null
+	case schema.Maybe_Value:
+		return m.v
+	default:
+		panic("unreachable")
+	}
+}
+func (m MaybeMultihash) Must() Multihash {
+	if !m.Exists() {
+		panic("unbox of a maybe rejected")
+	}
+	return m.v
+}
+
+var (
+	fieldName__Multihash_Bytes = _String{"Bytes"}
+)
+var _ datamodel.Node = (Multihash)(&_Multihash{})
+var _ schema.TypedNode = (Multihash)(&_Multihash{})
+
+func (Multihash) Kind() datamodel.Kind {
+	return datamodel.Kind_Map
+}
+func (n Multihash) LookupByString(key string) (datamodel.Node, error) {
+	switch key {
+	case "Bytes":
+		return &n.Bytes, nil
+	default:
+		return nil, schema.ErrNoSuchField{Type: nil /*TODO*/, Field: datamodel.PathSegmentOfString(key)}
+	}
+}
+func (n Multihash) LookupByNode(key datamodel.Node) (datamodel.Node, error) {
+	ks, err := key.AsString()
+	if err != nil {
+		return nil, err
+	}
+	return n.LookupByString(ks)
+}
+func (Multihash) LookupByIndex(idx int64) (datamodel.Node, error) {
+	return mixins.Map{TypeName: "ipldsch.Multihash"}.LookupByIndex(0)
+}
+func (n Multihash) LookupBySegment(seg datamodel.PathSegment) (datamodel.Node, error) {
+	return n.LookupByString(seg.String())
+}
+func (n Multihash) MapIterator() datamodel.MapIterator {
+	return &_Multihash__MapItr{n, 0}
+}
+
+type _Multihash__MapItr struct {
+	n   Multihash
+	idx int
+}
+
+func (itr *_Multihash__MapItr) Next() (k datamodel.Node, v datamodel.Node, _ error) {
+	if itr.idx >= 1 {
+		return nil, nil, datamodel.ErrIteratorOverread{}
+	}
+	switch itr.idx {
+	case 0:
+		k = &fieldName__Multihash_Bytes
+		v = &itr.n.Bytes
+	default:
+		panic("unreachable")
+	}
+	itr.idx++
+	return
+}
+func (itr *_Multihash__MapItr) Done() bool {
+	return itr.idx >= 1
+}
+
+func (Multihash) ListIterator() datamodel.ListIterator {
+	return nil
+}
+func (Multihash) Length() int64 {
+	return 1
+}
+func (Multihash) IsAbsent() bool {
+	return false
+}
+func (Multihash) IsNull() bool {
+	return false
+}
+func (Multihash) AsBool() (bool, error) {
+	return mixins.Map{TypeName: "ipldsch.Multihash"}.AsBool()
+}
+func (Multihash) AsInt() (int64, error) {
+	return mixins.Map{TypeName: "ipldsch.Multihash"}.AsInt()
+}
+func (Multihash) AsFloat() (float64, error) {
+	return mixins.Map{TypeName: "ipldsch.Multihash"}.AsFloat()
+}
+func (Multihash) AsString() (string, error) {
+	return mixins.Map{TypeName: "ipldsch.Multihash"}.AsString()
+}
+func (Multihash) AsBytes() ([]byte, error) {
+	return mixins.Map{TypeName: "ipldsch.Multihash"}.AsBytes()
+}
+func (Multihash) AsLink() (datamodel.Link, error) {
+	return mixins.Map{TypeName: "ipldsch.Multihash"}.AsLink()
+}
+func (Multihash) Prototype() datamodel.NodePrototype {
+	return _Multihash__Prototype{}
+}
+
+type _Multihash__Prototype struct{}
+
+func (_Multihash__Prototype) NewBuilder() datamodel.NodeBuilder {
+	var nb _Multihash__Builder
+	nb.Reset()
+	return &nb
+}
+
+type _Multihash__Builder struct {
+	_Multihash__Assembler
+}
+
+func (nb *_Multihash__Builder) Build() datamodel.Node {
+	if *nb.m != schema.Maybe_Value {
+		panic("invalid state: cannot call Build on an assembler that's not finished")
+	}
+	return nb.w
+}
+func (nb *_Multihash__Builder) Reset() {
+	var w _Multihash
+	var m schema.Maybe
+	*nb = _Multihash__Builder{_Multihash__Assembler{w: &w, m: &m}}
+}
+
+type _Multihash__Assembler struct {
+	w     *_Multihash
+	m     *schema.Maybe
+	state maState
+	s     int
+	f     int
+
+	cm       schema.Maybe
+	ca_Bytes _Bytes__Assembler
+}
+
+func (na *_Multihash__Assembler) reset() {
+	na.state = maState_initial
+	na.s = 0
+	na.ca_Bytes.reset()
+}
+
+var (
+	fieldBit__Multihash_Bytes       = 1 << 0
+	fieldBits__Multihash_sufficient = 0 + 1<<0
+)
+
+func (na *_Multihash__Assembler) BeginMap(int64) (datamodel.MapAssembler, error) {
+	switch *na.m {
+	case schema.Maybe_Value, schema.Maybe_Null:
+		panic("invalid state: cannot assign into assembler that's already finished")
+	case midvalue:
+		panic("invalid state: it makes no sense to 'begin' twice on the same assembler!")
+	}
+	*na.m = midvalue
+	if na.w == nil {
+		na.w = &_Multihash{}
+	}
+	return na, nil
+}
+func (_Multihash__Assembler) BeginList(sizeHint int64) (datamodel.ListAssembler, error) {
+	return mixins.MapAssembler{TypeName: "ipldsch.Multihash"}.BeginList(0)
+}
+func (na *_Multihash__Assembler) AssignNull() error {
+	switch *na.m {
+	case allowNull:
+		*na.m = schema.Maybe_Null
+		return nil
+	case schema.Maybe_Absent:
+		return mixins.MapAssembler{TypeName: "ipldsch.Multihash"}.AssignNull()
+	case schema.Maybe_Value, schema.Maybe_Null:
+		panic("invalid state: cannot assign into assembler that's already finished")
+	case midvalue:
+		panic("invalid state: cannot assign null into an assembler that's already begun working on recursive structures!")
+	}
+	panic("unreachable")
+}
+func (_Multihash__Assembler) AssignBool(bool) error {
+	return mixins.MapAssembler{TypeName: "ipldsch.Multihash"}.AssignBool(false)
+}
+func (_Multihash__Assembler) AssignInt(int64) error {
+	return mixins.MapAssembler{TypeName: "ipldsch.Multihash"}.AssignInt(0)
+}
+func (_Multihash__Assembler) AssignFloat(float64) error {
+	return mixins.MapAssembler{TypeName: "ipldsch.Multihash"}.AssignFloat(0)
+}
+func (_Multihash__Assembler) AssignString(string) error {
+	return mixins.MapAssembler{TypeName: "ipldsch.Multihash"}.AssignString("")
+}
+func (_Multihash__Assembler) AssignBytes([]byte) error {
+	return mixins.MapAssembler{TypeName: "ipldsch.Multihash"}.AssignBytes(nil)
+}
+func (_Multihash__Assembler) AssignLink(datamodel.Link) error {
+	return mixins.MapAssembler{TypeName: "ipldsch.Multihash"}.AssignLink(nil)
+}
+func (na *_Multihash__Assembler) AssignNode(v datamodel.Node) error {
+	if v.IsNull() {
+		return na.AssignNull()
+	}
+	if v2, ok := v.(*_Multihash); ok {
+		switch *na.m {
+		case schema.Maybe_Value, schema.Maybe_Null:
+			panic("invalid state: cannot assign into assembler that's already finished")
+		case midvalue:
+			panic("invalid state: cannot assign null into an assembler that's already begun working on recursive structures!")
+		}
+		if na.w == nil {
+			na.w = v2
+			*na.m = schema.Maybe_Value
+			return nil
+		}
+		*na.w = *v2
+		*na.m = schema.Maybe_Value
+		return nil
+	}
+	if v.Kind() != datamodel.Kind_Map {
+		return datamodel.ErrWrongKind{TypeName: "ipldsch.Multihash", MethodName: "AssignNode", AppropriateKind: datamodel.KindSet_JustMap, ActualKind: v.Kind()}
+	}
+	itr := v.MapIterator()
+	for !itr.Done() {
+		k, v, err := itr.Next()
+		if err != nil {
+			return err
+		}
+		if err := na.AssembleKey().AssignNode(k); err != nil {
+			return err
+		}
+		if err := na.AssembleValue().AssignNode(v); err != nil {
+			return err
+		}
+	}
+	return na.Finish()
+}
+func (_Multihash__Assembler) Prototype() datamodel.NodePrototype {
+	return _Multihash__Prototype{}
+}
+func (ma *_Multihash__Assembler) valueFinishTidy() bool {
+	switch ma.f {
+	case 0:
+		switch ma.cm {
+		case schema.Maybe_Value:
+			ma.ca_Bytes.w = nil
+			ma.cm = schema.Maybe_Absent
+			ma.state = maState_initial
+			return true
+		default:
+			return false
+		}
+	default:
+		panic("unreachable")
+	}
+}
+func (ma *_Multihash__Assembler) AssembleEntry(k string) (datamodel.NodeAssembler, error) {
+	switch ma.state {
+	case maState_initial:
+		// carry on
+	case maState_midKey:
+		panic("invalid state: AssembleEntry cannot be called when in the middle of assembling another key")
+	case maState_expectValue:
+		panic("invalid state: AssembleEntry cannot be called when expecting start of value assembly")
+	case maState_midValue:
+		if !ma.valueFinishTidy() {
+			panic("invalid state: AssembleEntry cannot be called when in the middle of assembling a value")
+		} // if tidy success: carry on
+	case maState_finished:
+		panic("invalid state: AssembleEntry cannot be called on an assembler that's already finished")
+	}
+	switch k {
+	case "Bytes":
+		if ma.s&fieldBit__Multihash_Bytes != 0 {
+			return nil, datamodel.ErrRepeatedMapKey{Key: &fieldName__Multihash_Bytes}
+		}
+		ma.s += fieldBit__Multihash_Bytes
+		ma.state = maState_midValue
+		ma.f = 0
+		ma.ca_Bytes.w = &ma.w.Bytes
+		ma.ca_Bytes.m = &ma.cm
+		return &ma.ca_Bytes, nil
+	}
+	return nil, schema.ErrInvalidKey{TypeName: "ipldsch.Multihash", Key: &_String{k}}
+}
+func (ma *_Multihash__Assembler) AssembleKey() datamodel.NodeAssembler {
+	switch ma.state {
+	case maState_initial:
+		// carry on
+	case maState_midKey:
+		panic("invalid state: AssembleKey cannot be called when in the middle of assembling another key")
+	case maState_expectValue:
+		panic("invalid state: AssembleKey cannot be called when expecting start of value assembly")
+	case maState_midValue:
+		if !ma.valueFinishTidy() {
+			panic("invalid state: AssembleKey cannot be called when in the middle of assembling a value")
+		} // if tidy success: carry on
+	case maState_finished:
+		panic("invalid state: AssembleKey cannot be called on an assembler that's already finished")
+	}
+	ma.state = maState_midKey
+	return (*_Multihash__KeyAssembler)(ma)
+}
+func (ma *_Multihash__Assembler) AssembleValue() datamodel.NodeAssembler {
+	switch ma.state {
+	case maState_initial:
+		panic("invalid state: AssembleValue cannot be called when no key is primed")
+	case maState_midKey:
+		panic("invalid state: AssembleValue cannot be called when in the middle of assembling a key")
+	case maState_expectValue:
+		// carry on
+	case maState_midValue:
+		panic("invalid state: AssembleValue cannot be called when in the middle of assembling another value")
+	case maState_finished:
+		panic("invalid state: AssembleValue cannot be called on an assembler that's already finished")
+	}
+	ma.state = maState_midValue
+	switch ma.f {
+	case 0:
+		ma.ca_Bytes.w = &ma.w.Bytes
+		ma.ca_Bytes.m = &ma.cm
+		return &ma.ca_Bytes
+	default:
+		panic("unreachable")
+	}
+}
+func (ma *_Multihash__Assembler) Finish() error {
+	switch ma.state {
+	case maState_initial:
+		// carry on
+	case maState_midKey:
+		panic("invalid state: Finish cannot be called when in the middle of assembling a key")
+	case maState_expectValue:
+		panic("invalid state: Finish cannot be called when expecting start of value assembly")
+	case maState_midValue:
+		if !ma.valueFinishTidy() {
+			panic("invalid state: Finish cannot be called when in the middle of assembling a value")
+		} // if tidy success: carry on
+	case maState_finished:
+		panic("invalid state: Finish cannot be called on an assembler that's already finished")
+	}
+	if ma.s&fieldBits__Multihash_sufficient != fieldBits__Multihash_sufficient {
+		err := schema.ErrMissingRequiredField{Missing: make([]string, 0)}
+		if ma.s&fieldBit__Multihash_Bytes == 0 {
+			err.Missing = append(err.Missing, "Bytes")
+		}
+		return err
+	}
+	ma.state = maState_finished
+	*ma.m = schema.Maybe_Value
+	return nil
+}
+func (ma *_Multihash__Assembler) KeyPrototype() datamodel.NodePrototype {
+	return _String__Prototype{}
+}
+func (ma *_Multihash__Assembler) ValuePrototype(k string) datamodel.NodePrototype {
+	panic("todo structbuilder mapassembler valueprototype")
+}
+
+type _Multihash__KeyAssembler _Multihash__Assembler
+
+func (_Multihash__KeyAssembler) BeginMap(sizeHint int64) (datamodel.MapAssembler, error) {
+	return mixins.StringAssembler{TypeName: "ipldsch.Multihash.KeyAssembler"}.BeginMap(0)
+}
+func (_Multihash__KeyAssembler) BeginList(sizeHint int64) (datamodel.ListAssembler, error) {
+	return mixins.StringAssembler{TypeName: "ipldsch.Multihash.KeyAssembler"}.BeginList(0)
+}
+func (na *_Multihash__KeyAssembler) AssignNull() error {
+	return mixins.StringAssembler{TypeName: "ipldsch.Multihash.KeyAssembler"}.AssignNull()
+}
+func (_Multihash__KeyAssembler) AssignBool(bool) error {
+	return mixins.StringAssembler{TypeName: "ipldsch.Multihash.KeyAssembler"}.AssignBool(false)
+}
+func (_Multihash__KeyAssembler) AssignInt(int64) error {
+	return mixins.StringAssembler{TypeName: "ipldsch.Multihash.KeyAssembler"}.AssignInt(0)
+}
+func (_Multihash__KeyAssembler) AssignFloat(float64) error {
+	return mixins.StringAssembler{TypeName: "ipldsch.Multihash.KeyAssembler"}.AssignFloat(0)
+}
+func (ka *_Multihash__KeyAssembler) AssignString(k string) error {
+	if ka.state != maState_midKey {
+		panic("misuse: KeyAssembler held beyond its valid lifetime")
+	}
+	switch k {
+	case "Bytes":
+		if ka.s&fieldBit__Multihash_Bytes != 0 {
+			return datamodel.ErrRepeatedMapKey{Key: &fieldName__Multihash_Bytes}
+		}
+		ka.s += fieldBit__Multihash_Bytes
+		ka.state = maState_expectValue
+		ka.f = 0
+		return nil
+	default:
+		return schema.ErrInvalidKey{TypeName: "ipldsch.Multihash", Key: &_String{k}}
+	}
+}
+func (_Multihash__KeyAssembler) AssignBytes([]byte) error {
+	return mixins.StringAssembler{TypeName: "ipldsch.Multihash.KeyAssembler"}.AssignBytes(nil)
+}
+func (_Multihash__KeyAssembler) AssignLink(datamodel.Link) error {
+	return mixins.StringAssembler{TypeName: "ipldsch.Multihash.KeyAssembler"}.AssignLink(nil)
+}
+func (ka *_Multihash__KeyAssembler) AssignNode(v datamodel.Node) error {
+	if v2, err := v.AsString(); err != nil {
+		return err
+	} else {
+		return ka.AssignString(v2)
+	}
+}
+func (_Multihash__KeyAssembler) Prototype() datamodel.NodePrototype {
+	return _String__Prototype{}
+}
+func (Multihash) Type() schema.Type {
+	return nil /*TODO:typelit*/
+}
+func (n Multihash) Representation() datamodel.Node {
+	return (*_Multihash__Repr)(n)
+}
+
+type _Multihash__Repr _Multihash
+
+var (
+	fieldName__Multihash_Bytes_serial = _String{"Bytes"}
+)
+var _ datamodel.Node = &_Multihash__Repr{}
+
+func (_Multihash__Repr) Kind() datamodel.Kind {
+	return datamodel.Kind_Map
+}
+func (n *_Multihash__Repr) LookupByString(key string) (datamodel.Node, error) {
+	switch key {
+	case "Bytes":
+		return n.Bytes.Representation(), nil
+	default:
+		return nil, schema.ErrNoSuchField{Type: nil /*TODO*/, Field: datamodel.PathSegmentOfString(key)}
+	}
+}
+func (n *_Multihash__Repr) LookupByNode(key datamodel.Node) (datamodel.Node, error) {
+	ks, err := key.AsString()
+	if err != nil {
+		return nil, err
+	}
+	return n.LookupByString(ks)
+}
+func (_Multihash__Repr) LookupByIndex(idx int64) (datamodel.Node, error) {
+	return mixins.Map{TypeName: "ipldsch.Multihash.Repr"}.LookupByIndex(0)
+}
+func (n _Multihash__Repr) LookupBySegment(seg datamodel.PathSegment) (datamodel.Node, error) {
+	return n.LookupByString(seg.String())
+}
+func (n *_Multihash__Repr) MapIterator() datamodel.MapIterator {
+	return &_Multihash__ReprMapItr{n, 0}
+}
+
+type _Multihash__ReprMapItr struct {
+	n   *_Multihash__Repr
+	idx int
+}
+
+func (itr *_Multihash__ReprMapItr) Next() (k datamodel.Node, v datamodel.Node, _ error) {
+	if itr.idx >= 1 {
+		return nil, nil, datamodel.ErrIteratorOverread{}
+	}
+	switch itr.idx {
+	case 0:
+		k = &fieldName__Multihash_Bytes_serial
+		v = itr.n.Bytes.Representation()
+	default:
+		panic("unreachable")
+	}
+	itr.idx++
+	return
+}
+func (itr *_Multihash__ReprMapItr) Done() bool {
+	return itr.idx >= 1
+}
+func (_Multihash__Repr) ListIterator() datamodel.ListIterator {
+	return nil
+}
+func (rn *_Multihash__Repr) Length() int64 {
+	l := 1
+	return int64(l)
+}
+func (_Multihash__Repr) IsAbsent() bool {
+	return false
+}
+func (_Multihash__Repr) IsNull() bool {
+	return false
+}
+func (_Multihash__Repr) AsBool() (bool, error) {
+	return mixins.Map{TypeName: "ipldsch.Multihash.Repr"}.AsBool()
+}
+func (_Multihash__Repr) AsInt() (int64, error) {
+	return mixins.Map{TypeName: "ipldsch.Multihash.Repr"}.AsInt()
+}
+func (_Multihash__Repr) AsFloat() (float64, error) {
+	return mixins.Map{TypeName: "ipldsch.Multihash.Repr"}.AsFloat()
+}
+func (_Multihash__Repr) AsString() (string, error) {
+	return mixins.Map{TypeName: "ipldsch.Multihash.Repr"}.AsString()
+}
+func (_Multihash__Repr) AsBytes() ([]byte, error) {
+	return mixins.Map{TypeName: "ipldsch.Multihash.Repr"}.AsBytes()
+}
+func (_Multihash__Repr) AsLink() (datamodel.Link, error) {
+	return mixins.Map{TypeName: "ipldsch.Multihash.Repr"}.AsLink()
+}
+func (_Multihash__Repr) Prototype() datamodel.NodePrototype {
+	return _Multihash__ReprPrototype{}
+}
+
+type _Multihash__ReprPrototype struct{}
+
+func (_Multihash__ReprPrototype) NewBuilder() datamodel.NodeBuilder {
+	var nb _Multihash__ReprBuilder
+	nb.Reset()
+	return &nb
+}
+
+type _Multihash__ReprBuilder struct {
+	_Multihash__ReprAssembler
+}
+
+func (nb *_Multihash__ReprBuilder) Build() datamodel.Node {
+	if *nb.m != schema.Maybe_Value {
+		panic("invalid state: cannot call Build on an assembler that's not finished")
+	}
+	return nb.w
+}
+func (nb *_Multihash__ReprBuilder) Reset() {
+	var w _Multihash
+	var m schema.Maybe
+	*nb = _Multihash__ReprBuilder{_Multihash__ReprAssembler{w: &w, m: &m}}
+}
+
+type _Multihash__ReprAssembler struct {
+	w     *_Multihash
+	m     *schema.Maybe
+	state maState
+	s     int
+	f     int
+
+	cm       schema.Maybe
+	ca_Bytes _Bytes__ReprAssembler
+}
+
+func (na *_Multihash__ReprAssembler) reset() {
+	na.state = maState_initial
+	na.s = 0
+	na.ca_Bytes.reset()
+}
+func (na *_Multihash__ReprAssembler) BeginMap(int64) (datamodel.MapAssembler, error) {
+	switch *na.m {
+	case schema.Maybe_Value, schema.Maybe_Null:
+		panic("invalid state: cannot assign into assembler that's already finished")
+	case midvalue:
+		panic("invalid state: it makes no sense to 'begin' twice on the same assembler!")
+	}
+	*na.m = midvalue
+	if na.w == nil {
+		na.w = &_Multihash{}
+	}
+	return na, nil
+}
+func (_Multihash__ReprAssembler) BeginList(sizeHint int64) (datamodel.ListAssembler, error) {
+	return mixins.MapAssembler{TypeName: "ipldsch.Multihash.Repr"}.BeginList(0)
+}
+func (na *_Multihash__ReprAssembler) AssignNull() error {
+	switch *na.m {
+	case allowNull:
+		*na.m = schema.Maybe_Null
+		return nil
+	case schema.Maybe_Absent:
+		return mixins.MapAssembler{TypeName: "ipldsch.Multihash.Repr.Repr"}.AssignNull()
+	case schema.Maybe_Value, schema.Maybe_Null:
+		panic("invalid state: cannot assign into assembler that's already finished")
+	case midvalue:
+		panic("invalid state: cannot assign null into an assembler that's already begun working on recursive structures!")
+	}
+	panic("unreachable")
+}
+func (_Multihash__ReprAssembler) AssignBool(bool) error {
+	return mixins.MapAssembler{TypeName: "ipldsch.Multihash.Repr"}.AssignBool(false)
+}
+func (_Multihash__ReprAssembler) AssignInt(int64) error {
+	return mixins.MapAssembler{TypeName: "ipldsch.Multihash.Repr"}.AssignInt(0)
+}
+func (_Multihash__ReprAssembler) AssignFloat(float64) error {
+	return mixins.MapAssembler{TypeName: "ipldsch.Multihash.Repr"}.AssignFloat(0)
+}
+func (_Multihash__ReprAssembler) AssignString(string) error {
+	return mixins.MapAssembler{TypeName: "ipldsch.Multihash.Repr"}.AssignString("")
+}
+func (_Multihash__ReprAssembler) AssignBytes([]byte) error {
+	return mixins.MapAssembler{TypeName: "ipldsch.Multihash.Repr"}.AssignBytes(nil)
+}
+func (_Multihash__ReprAssembler) AssignLink(datamodel.Link) error {
+	return mixins.MapAssembler{TypeName: "ipldsch.Multihash.Repr"}.AssignLink(nil)
+}
+func (na *_Multihash__ReprAssembler) AssignNode(v datamodel.Node) error {
+	if v.IsNull() {
+		return na.AssignNull()
+	}
+	if v2, ok := v.(*_Multihash); ok {
+		switch *na.m {
+		case schema.Maybe_Value, schema.Maybe_Null:
+			panic("invalid state: cannot assign into assembler that's already finished")
+		case midvalue:
+			panic("invalid state: cannot assign null into an assembler that's already begun working on recursive structures!")
+		}
+		if na.w == nil {
+			na.w = v2
+			*na.m = schema.Maybe_Value
+			return nil
+		}
+		*na.w = *v2
+		*na.m = schema.Maybe_Value
+		return nil
+	}
+	if v.Kind() != datamodel.Kind_Map {
+		return datamodel.ErrWrongKind{TypeName: "ipldsch.Multihash.Repr", MethodName: "AssignNode", AppropriateKind: datamodel.KindSet_JustMap, ActualKind: v.Kind()}
+	}
+	itr := v.MapIterator()
+	for !itr.Done() {
+		k, v, err := itr.Next()
+		if err != nil {
+			return err
+		}
+		if err := na.AssembleKey().AssignNode(k); err != nil {
+			return err
+		}
+		if err := na.AssembleValue().AssignNode(v); err != nil {
+			return err
+		}
+	}
+	return na.Finish()
+}
+func (_Multihash__ReprAssembler) Prototype() datamodel.NodePrototype {
+	return _Multihash__ReprPrototype{}
+}
+func (ma *_Multihash__ReprAssembler) valueFinishTidy() bool {
+	switch ma.f {
+	case 0:
+		switch ma.cm {
+		case schema.Maybe_Value:
+			ma.cm = schema.Maybe_Absent
+			ma.state = maState_initial
+			return true
+		default:
+			return false
+		}
+	default:
+		panic("unreachable")
+	}
+}
+func (ma *_Multihash__ReprAssembler) AssembleEntry(k string) (datamodel.NodeAssembler, error) {
+	switch ma.state {
+	case maState_initial:
+		// carry on
+	case maState_midKey:
+		panic("invalid state: AssembleEntry cannot be called when in the middle of assembling another key")
+	case maState_expectValue:
+		panic("invalid state: AssembleEntry cannot be called when expecting start of value assembly")
+	case maState_midValue:
+		if !ma.valueFinishTidy() {
+			panic("invalid state: AssembleEntry cannot be called when in the middle of assembling a value")
+		} // if tidy success: carry on
+	case maState_finished:
+		panic("invalid state: AssembleEntry cannot be called on an assembler that's already finished")
+	}
+	switch k {
+	case "Bytes":
+		if ma.s&fieldBit__Multihash_Bytes != 0 {
+			return nil, datamodel.ErrRepeatedMapKey{Key: &fieldName__Multihash_Bytes_serial}
+		}
+		ma.s += fieldBit__Multihash_Bytes
+		ma.state = maState_midValue
+		ma.f = 0
+		ma.ca_Bytes.w = &ma.w.Bytes
+		ma.ca_Bytes.m = &ma.cm
+		return &ma.ca_Bytes, nil
+	default:
+	}
+	return nil, schema.ErrInvalidKey{TypeName: "ipldsch.Multihash.Repr", Key: &_String{k}}
+}
+func (ma *_Multihash__ReprAssembler) AssembleKey() datamodel.NodeAssembler {
+	switch ma.state {
+	case maState_initial:
+		// carry on
+	case maState_midKey:
+		panic("invalid state: AssembleKey cannot be called when in the middle of assembling another key")
+	case maState_expectValue:
+		panic("invalid state: AssembleKey cannot be called when expecting start of value assembly")
+	case maState_midValue:
+		if !ma.valueFinishTidy() {
+			panic("invalid state: AssembleKey cannot be called when in the middle of assembling a value")
+		} // if tidy success: carry on
+	case maState_finished:
+		panic("invalid state: AssembleKey cannot be called on an assembler that's already finished")
+	}
+	ma.state = maState_midKey
+	return (*_Multihash__ReprKeyAssembler)(ma)
+}
+func (ma *_Multihash__ReprAssembler) AssembleValue() datamodel.NodeAssembler {
+	switch ma.state {
+	case maState_initial:
+		panic("invalid state: AssembleValue cannot be called when no key is primed")
+	case maState_midKey:
+		panic("invalid state: AssembleValue cannot be called when in the middle of assembling a key")
+	case maState_expectValue:
+		// carry on
+	case maState_midValue:
+		panic("invalid state: AssembleValue cannot be called when in the middle of assembling another value")
+	case maState_finished:
+		panic("invalid state: AssembleValue cannot be called on an assembler that's already finished")
+	}
+	ma.state = maState_midValue
+	switch ma.f {
+	case 0:
+		ma.ca_Bytes.w = &ma.w.Bytes
+		ma.ca_Bytes.m = &ma.cm
+		return &ma.ca_Bytes
+	default:
+		panic("unreachable")
+	}
+}
+func (ma *_Multihash__ReprAssembler) Finish() error {
+	switch ma.state {
+	case maState_initial:
+		// carry on
+	case maState_midKey:
+		panic("invalid state: Finish cannot be called when in the middle of assembling a key")
+	case maState_expectValue:
+		panic("invalid state: Finish cannot be called when expecting start of value assembly")
+	case maState_midValue:
+		if !ma.valueFinishTidy() {
+			panic("invalid state: Finish cannot be called when in the middle of assembling a value")
+		} // if tidy success: carry on
+	case maState_finished:
+		panic("invalid state: Finish cannot be called on an assembler that's already finished")
+	}
+	if ma.s&fieldBits__Multihash_sufficient != fieldBits__Multihash_sufficient {
+		err := schema.ErrMissingRequiredField{Missing: make([]string, 0)}
+		if ma.s&fieldBit__Multihash_Bytes == 0 {
+			err.Missing = append(err.Missing, "Bytes")
+		}
+		return err
+	}
+	ma.state = maState_finished
+	*ma.m = schema.Maybe_Value
+	return nil
+}
+func (ma *_Multihash__ReprAssembler) KeyPrototype() datamodel.NodePrototype {
+	return _String__Prototype{}
+}
+func (ma *_Multihash__ReprAssembler) ValuePrototype(k string) datamodel.NodePrototype {
+	panic("todo structbuilder mapassembler repr valueprototype")
+}
+
+type _Multihash__ReprKeyAssembler _Multihash__ReprAssembler
+
+func (_Multihash__ReprKeyAssembler) BeginMap(sizeHint int64) (datamodel.MapAssembler, error) {
+	return mixins.StringAssembler{TypeName: "ipldsch.Multihash.Repr.KeyAssembler"}.BeginMap(0)
+}
+func (_Multihash__ReprKeyAssembler) BeginList(sizeHint int64) (datamodel.ListAssembler, error) {
+	return mixins.StringAssembler{TypeName: "ipldsch.Multihash.Repr.KeyAssembler"}.BeginList(0)
+}
+func (na *_Multihash__ReprKeyAssembler) AssignNull() error {
+	return mixins.StringAssembler{TypeName: "ipldsch.Multihash.Repr.KeyAssembler"}.AssignNull()
+}
+func (_Multihash__ReprKeyAssembler) AssignBool(bool) error {
+	return mixins.StringAssembler{TypeName: "ipldsch.Multihash.Repr.KeyAssembler"}.AssignBool(false)
+}
+func (_Multihash__ReprKeyAssembler) AssignInt(int64) error {
+	return mixins.StringAssembler{TypeName: "ipldsch.Multihash.Repr.KeyAssembler"}.AssignInt(0)
+}
+func (_Multihash__ReprKeyAssembler) AssignFloat(float64) error {
+	return mixins.StringAssembler{TypeName: "ipldsch.Multihash.Repr.KeyAssembler"}.AssignFloat(0)
+}
+func (ka *_Multihash__ReprKeyAssembler) AssignString(k string) error {
+	if ka.state != maState_midKey {
+		panic("misuse: KeyAssembler held beyond its valid lifetime")
+	}
+	switch k {
+	case "Bytes":
+		if ka.s&fieldBit__Multihash_Bytes != 0 {
+			return datamodel.ErrRepeatedMapKey{Key: &fieldName__Multihash_Bytes_serial}
+		}
+		ka.s += fieldBit__Multihash_Bytes
+		ka.state = maState_expectValue
+		ka.f = 0
+		return nil
+	}
+	return schema.ErrInvalidKey{TypeName: "ipldsch.Multihash.Repr", Key: &_String{k}}
+}
+func (_Multihash__ReprKeyAssembler) AssignBytes([]byte) error {
+	return mixins.StringAssembler{TypeName: "ipldsch.Multihash.Repr.KeyAssembler"}.AssignBytes(nil)
+}
+func (_Multihash__ReprKeyAssembler) AssignLink(datamodel.Link) error {
+	return mixins.StringAssembler{TypeName: "ipldsch.Multihash.Repr.KeyAssembler"}.AssignLink(nil)
+}
+func (ka *_Multihash__ReprKeyAssembler) AssignNode(v datamodel.Node) error {
+	if v2, err := v.AsString(); err != nil {
+		return err
+	} else {
+		return ka.AssignString(v2)
+	}
+}
+func (_Multihash__ReprKeyAssembler) Prototype() datamodel.NodePrototype {
+	return _String__Prototype{}
+}
+
+func (n _Node) AsInterface() _Node__iface {
+	switch n.tag {
+	case 1:
+		return &n.x1
+	default:
+		panic("invalid union state; how did you create this object?")
+	}
+}
+
+type _Node__Maybe struct {
+	m schema.Maybe
+	v Node
+}
+type MaybeNode = *_Node__Maybe
+
+func (m MaybeNode) IsNull() bool {
+	return m.m == schema.Maybe_Null
+}
+func (m MaybeNode) IsAbsent() bool {
+	return m.m == schema.Maybe_Absent
+}
+func (m MaybeNode) Exists() bool {
+	return m.m == schema.Maybe_Value
+}
+func (m MaybeNode) AsNode() datamodel.Node {
+	switch m.m {
+	case schema.Maybe_Absent:
+		return datamodel.Absent
+	case schema.Maybe_Null:
+		return datamodel.Null
+	case schema.Maybe_Value:
+		return m.v
+	default:
+		panic("unreachable")
+	}
+}
+func (m MaybeNode) Must() Node {
+	if !m.Exists() {
+		panic("unbox of a maybe rejected")
+	}
+	return m.v
+}
+
+var (
+	memberName__Node_Peer = _String{"Peer"}
+)
+var _ datamodel.Node = (Node)(&_Node{})
+var _ schema.TypedNode = (Node)(&_Node{})
+
+func (Node) Kind() datamodel.Kind {
+	return datamodel.Kind_Map
+}
+func (n Node) LookupByString(key string) (datamodel.Node, error) {
+	switch key {
+	case "Peer":
+		if n.tag != 1 {
+			return nil, datamodel.ErrNotExists{Segment: datamodel.PathSegmentOfString(key)}
+		}
+		return &n.x1, nil
+	default:
+		return nil, schema.ErrNoSuchField{Type: nil /*TODO*/, Field: datamodel.PathSegmentOfString(key)}
+	}
+}
+func (n Node) LookupByNode(key datamodel.Node) (datamodel.Node, error) {
+	ks, err := key.AsString()
+	if err != nil {
+		return nil, err
+	}
+	return n.LookupByString(ks)
+}
+func (Node) LookupByIndex(idx int64) (datamodel.Node, error) {
+	return mixins.Map{TypeName: "ipldsch.Node"}.LookupByIndex(0)
+}
+func (n Node) LookupBySegment(seg datamodel.PathSegment) (datamodel.Node, error) {
+	return n.LookupByString(seg.String())
+}
+func (n Node) MapIterator() datamodel.MapIterator {
+	return &_Node__MapItr{n, false}
+}
+
+type _Node__MapItr struct {
+	n    Node
+	done bool
+}
+
+func (itr *_Node__MapItr) Next() (k datamodel.Node, v datamodel.Node, _ error) {
+	if itr.done {
+		return nil, nil, datamodel.ErrIteratorOverread{}
+	}
+	switch itr.n.tag {
+	case 1:
+		k, v = &memberName__Node_Peer, &itr.n.x1
+	default:
+		panic("unreachable")
+	}
+	itr.done = true
+	return
+}
+func (itr *_Node__MapItr) Done() bool {
+	return itr.done
+}
+
+func (Node) ListIterator() datamodel.ListIterator {
+	return nil
+}
+func (Node) Length() int64 {
+	return 1
+}
+func (Node) IsAbsent() bool {
+	return false
+}
+func (Node) IsNull() bool {
+	return false
+}
+func (Node) AsBool() (bool, error) {
+	return mixins.Map{TypeName: "ipldsch.Node"}.AsBool()
+}
+func (Node) AsInt() (int64, error) {
+	return mixins.Map{TypeName: "ipldsch.Node"}.AsInt()
+}
+func (Node) AsFloat() (float64, error) {
+	return mixins.Map{TypeName: "ipldsch.Node"}.AsFloat()
+}
+func (Node) AsString() (string, error) {
+	return mixins.Map{TypeName: "ipldsch.Node"}.AsString()
+}
+func (Node) AsBytes() ([]byte, error) {
+	return mixins.Map{TypeName: "ipldsch.Node"}.AsBytes()
+}
+func (Node) AsLink() (datamodel.Link, error) {
+	return mixins.Map{TypeName: "ipldsch.Node"}.AsLink()
+}
+func (Node) Prototype() datamodel.NodePrototype {
+	return _Node__Prototype{}
+}
+
+type _Node__Prototype struct{}
+
+func (_Node__Prototype) NewBuilder() datamodel.NodeBuilder {
+	var nb _Node__Builder
+	nb.Reset()
+	return &nb
+}
+
+type _Node__Builder struct {
+	_Node__Assembler
+}
+
+func (nb *_Node__Builder) Build() datamodel.Node {
+	if *nb.m != schema.Maybe_Value {
+		panic("invalid state: cannot call Build on an assembler that's not finished")
+	}
+	return nb.w
+}
+func (nb *_Node__Builder) Reset() {
+	var w _Node
+	var m schema.Maybe
+	*nb = _Node__Builder{_Node__Assembler{w: &w, m: &m}}
+}
+
+type _Node__Assembler struct {
+	w     *_Node
+	m     *schema.Maybe
+	state maState
+
+	cm  schema.Maybe
+	ca1 _Peer__Assembler
+	ca  uint
+}
+
+func (na *_Node__Assembler) reset() {
+	na.state = maState_initial
+	switch na.ca {
+	case 0:
+		return
+	case 1:
+		na.ca1.reset()
+	default:
+		panic("unreachable")
+	}
+	na.ca = 0
+	na.cm = schema.Maybe_Absent
+}
+func (na *_Node__Assembler) BeginMap(int64) (datamodel.MapAssembler, error) {
+	switch *na.m {
+	case schema.Maybe_Value, schema.Maybe_Null:
+		panic("invalid state: cannot assign into assembler that's already finished")
+	case midvalue:
+		panic("invalid state: it makes no sense to 'begin' twice on the same assembler!")
+	}
+	*na.m = midvalue
+	if na.w == nil {
+		na.w = &_Node{}
+	}
+	return na, nil
+}
+func (_Node__Assembler) BeginList(sizeHint int64) (datamodel.ListAssembler, error) {
+	return mixins.MapAssembler{TypeName: "ipldsch.Node"}.BeginList(0)
+}
+func (na *_Node__Assembler) AssignNull() error {
+	switch *na.m {
+	case allowNull:
+		*na.m = schema.Maybe_Null
+		return nil
+	case schema.Maybe_Absent:
+		return mixins.MapAssembler{TypeName: "ipldsch.Node"}.AssignNull()
+	case schema.Maybe_Value, schema.Maybe_Null:
+		panic("invalid state: cannot assign into assembler that's already finished")
+	case midvalue:
+		panic("invalid state: cannot assign null into an assembler that's already begun working on recursive structures!")
+	}
+	panic("unreachable")
+}
+func (_Node__Assembler) AssignBool(bool) error {
+	return mixins.MapAssembler{TypeName: "ipldsch.Node"}.AssignBool(false)
+}
+func (_Node__Assembler) AssignInt(int64) error {
+	return mixins.MapAssembler{TypeName: "ipldsch.Node"}.AssignInt(0)
+}
+func (_Node__Assembler) AssignFloat(float64) error {
+	return mixins.MapAssembler{TypeName: "ipldsch.Node"}.AssignFloat(0)
+}
+func (_Node__Assembler) AssignString(string) error {
+	return mixins.MapAssembler{TypeName: "ipldsch.Node"}.AssignString("")
+}
+func (_Node__Assembler) AssignBytes([]byte) error {
+	return mixins.MapAssembler{TypeName: "ipldsch.Node"}.AssignBytes(nil)
+}
+func (_Node__Assembler) AssignLink(datamodel.Link) error {
+	return mixins.MapAssembler{TypeName: "ipldsch.Node"}.AssignLink(nil)
+}
+func (na *_Node__Assembler) AssignNode(v datamodel.Node) error {
+	if v.IsNull() {
+		return na.AssignNull()
+	}
+	if v2, ok := v.(*_Node); ok {
+		switch *na.m {
+		case schema.Maybe_Value, schema.Maybe_Null:
+			panic("invalid state: cannot assign into assembler that's already finished")
+		case midvalue:
+			panic("invalid state: cannot assign null into an assembler that's already begun working on recursive structures!")
+		}
+		if na.w == nil {
+			na.w = v2
+			*na.m = schema.Maybe_Value
+			return nil
+		}
+		*na.w = *v2
+		*na.m = schema.Maybe_Value
+		return nil
+	}
+	if v.Kind() != datamodel.Kind_Map {
+		return datamodel.ErrWrongKind{TypeName: "ipldsch.Node", MethodName: "AssignNode", AppropriateKind: datamodel.KindSet_JustMap, ActualKind: v.Kind()}
+	}
+	itr := v.MapIterator()
+	for !itr.Done() {
+		k, v, err := itr.Next()
+		if err != nil {
+			return err
+		}
+		if err := na.AssembleKey().AssignNode(k); err != nil {
+			return err
+		}
+		if err := na.AssembleValue().AssignNode(v); err != nil {
+			return err
+		}
+	}
+	return na.Finish()
+}
+func (_Node__Assembler) Prototype() datamodel.NodePrototype {
+	return _Node__Prototype{}
+}
+func (ma *_Node__Assembler) valueFinishTidy() bool {
+	switch ma.cm {
+	case schema.Maybe_Value:
+		ma.state = maState_initial
+		return true
+	default:
+		return false
+	}
+}
+func (ma *_Node__Assembler) AssembleEntry(k string) (datamodel.NodeAssembler, error) {
+	switch ma.state {
+	case maState_initial:
+		// carry on
+	case maState_midKey:
+		panic("invalid state: AssembleEntry cannot be called when in the middle of assembling another key")
+	case maState_expectValue:
+		panic("invalid state: AssembleEntry cannot be called when expecting start of value assembly")
+	case maState_midValue:
+		if !ma.valueFinishTidy() {
+			panic("invalid state: AssembleEntry cannot be called when in the middle of assembling a value")
+		} // if tidy success: carry on for the moment, but we'll still be erroring shortly.
+	case maState_finished:
+		panic("invalid state: AssembleEntry cannot be called on an assembler that's already finished")
+	}
+	if ma.ca != 0 {
+		return nil, schema.ErrNotUnionStructure{TypeName: "ipldsch.Node", Detail: "cannot add another entry -- a union can only contain one thing!"}
+	}
+	switch k {
+	case "Peer":
+		ma.state = maState_midValue
+		ma.ca = 1
+		ma.w.tag = 1
+		ma.ca1.w = &ma.w.x1
+		ma.ca1.m = &ma.cm
+		return &ma.ca1, nil
+	}
+	return nil, schema.ErrInvalidKey{TypeName: "ipldsch.Node", Key: &_String{k}}
+}
+func (ma *_Node__Assembler) AssembleKey() datamodel.NodeAssembler {
+	switch ma.state {
+	case maState_initial:
+		// carry on
+	case maState_midKey:
+		panic("invalid state: AssembleKey cannot be called when in the middle of assembling another key")
+	case maState_expectValue:
+		panic("invalid state: AssembleKey cannot be called when expecting start of value assembly")
+	case maState_midValue:
+		if !ma.valueFinishTidy() {
+			panic("invalid state: AssembleKey cannot be called when in the middle of assembling a value")
+		} // if tidy success: carry on for the moment, but we'll still be erroring shortly... or rather, the keyassembler will be.
+	case maState_finished:
+		panic("invalid state: AssembleKey cannot be called on an assembler that's already finished")
+	}
+	ma.state = maState_midKey
+	return (*_Node__KeyAssembler)(ma)
+}
+func (ma *_Node__Assembler) AssembleValue() datamodel.NodeAssembler {
+	switch ma.state {
+	case maState_initial:
+		panic("invalid state: AssembleValue cannot be called when no key is primed")
+	case maState_midKey:
+		panic("invalid state: AssembleValue cannot be called when in the middle of assembling a key")
+	case maState_expectValue:
+		// carry on
+	case maState_midValue:
+		panic("invalid state: AssembleValue cannot be called when in the middle of assembling another value")
+	case maState_finished:
+		panic("invalid state: AssembleValue cannot be called on an assembler that's already finished")
+	}
+	ma.state = maState_midValue
+	switch ma.ca {
+	case 1:
+		ma.ca1.w = &ma.w.x1
+		ma.ca1.m = &ma.cm
+		return &ma.ca1
+	default:
+		panic("unreachable")
+	}
+}
+func (ma *_Node__Assembler) Finish() error {
+	switch ma.state {
+	case maState_initial:
+		// carry on
+	case maState_midKey:
+		panic("invalid state: Finish cannot be called when in the middle of assembling a key")
+	case maState_expectValue:
+		panic("invalid state: Finish cannot be called when expecting start of value assembly")
+	case maState_midValue:
+		if !ma.valueFinishTidy() {
+			panic("invalid state: Finish cannot be called when in the middle of assembling a value")
+		} // if tidy success: carry on
+	case maState_finished:
+		panic("invalid state: Finish cannot be called on an assembler that's already finished")
+	}
+	if ma.ca == 0 {
+		return schema.ErrNotUnionStructure{TypeName: "ipldsch.Node", Detail: "a union must have exactly one entry (not none)!"}
+	}
+	ma.state = maState_finished
+	*ma.m = schema.Maybe_Value
+	return nil
+}
+func (ma *_Node__Assembler) KeyPrototype() datamodel.NodePrototype {
+	return _String__Prototype{}
+}
+func (ma *_Node__Assembler) ValuePrototype(k string) datamodel.NodePrototype {
+	switch k {
+	case "Peer":
+		return _Peer__Prototype{}
+	default:
+		return nil
+	}
+}
+
+type _Node__KeyAssembler _Node__Assembler
+
+func (_Node__KeyAssembler) BeginMap(sizeHint int64) (datamodel.MapAssembler, error) {
+	return mixins.StringAssembler{TypeName: "ipldsch.Node.KeyAssembler"}.BeginMap(0)
+}
+func (_Node__KeyAssembler) BeginList(sizeHint int64) (datamodel.ListAssembler, error) {
+	return mixins.StringAssembler{TypeName: "ipldsch.Node.KeyAssembler"}.BeginList(0)
+}
+func (na *_Node__KeyAssembler) AssignNull() error {
+	return mixins.StringAssembler{TypeName: "ipldsch.Node.KeyAssembler"}.AssignNull()
+}
+func (_Node__KeyAssembler) AssignBool(bool) error {
+	return mixins.StringAssembler{TypeName: "ipldsch.Node.KeyAssembler"}.AssignBool(false)
+}
+func (_Node__KeyAssembler) AssignInt(int64) error {
+	return mixins.StringAssembler{TypeName: "ipldsch.Node.KeyAssembler"}.AssignInt(0)
+}
+func (_Node__KeyAssembler) AssignFloat(float64) error {
+	return mixins.StringAssembler{TypeName: "ipldsch.Node.KeyAssembler"}.AssignFloat(0)
+}
+func (ka *_Node__KeyAssembler) AssignString(k string) error {
+	if ka.state != maState_midKey {
+		panic("misuse: KeyAssembler held beyond its valid lifetime")
+	}
+	if ka.ca != 0 {
+		return schema.ErrNotUnionStructure{TypeName: "ipldsch.Node", Detail: "cannot add another entry -- a union can only contain one thing!"}
+	}
+	switch k {
+	case "Peer":
+		ka.ca = 1
+		ka.w.tag = 1
+		ka.state = maState_expectValue
+		return nil
+	}
+	return schema.ErrInvalidKey{TypeName: "ipldsch.Node", Key: &_String{k}} // TODO: error quality: ErrInvalidUnionDiscriminant ?
+}
+func (_Node__KeyAssembler) AssignBytes([]byte) error {
+	return mixins.StringAssembler{TypeName: "ipldsch.Node.KeyAssembler"}.AssignBytes(nil)
+}
+func (_Node__KeyAssembler) AssignLink(datamodel.Link) error {
+	return mixins.StringAssembler{TypeName: "ipldsch.Node.KeyAssembler"}.AssignLink(nil)
+}
+func (ka *_Node__KeyAssembler) AssignNode(v datamodel.Node) error {
+	if v2, err := v.AsString(); err != nil {
+		return err
+	} else {
+		return ka.AssignString(v2)
+	}
+}
+func (_Node__KeyAssembler) Prototype() datamodel.NodePrototype {
+	return _String__Prototype{}
+}
+func (Node) Type() schema.Type {
+	return nil /*TODO:typelit*/
+}
+func (n Node) Representation() datamodel.Node {
+	return (*_Node__Repr)(n)
+}
+
+type _Node__Repr _Node
+
+var (
+	memberName__Node_Peer_serial = _String{"peer"}
+)
+var _ datamodel.Node = &_Node__Repr{}
+
+func (_Node__Repr) Kind() datamodel.Kind {
+	return datamodel.Kind_Map
+}
+func (n *_Node__Repr) LookupByString(key string) (datamodel.Node, error) {
+	switch key {
+	case "peer":
+		if n.tag != 1 {
+			return nil, datamodel.ErrNotExists{Segment: datamodel.PathSegmentOfString(key)}
+		}
+		return n.x1.Representation(), nil
+	default:
+		return nil, schema.ErrNoSuchField{Type: nil /*TODO*/, Field: datamodel.PathSegmentOfString(key)}
+	}
+}
+func (n *_Node__Repr) LookupByNode(key datamodel.Node) (datamodel.Node, error) {
+	ks, err := key.AsString()
+	if err != nil {
+		return nil, err
+	}
+	return n.LookupByString(ks)
+}
+func (_Node__Repr) LookupByIndex(idx int64) (datamodel.Node, error) {
+	return mixins.Map{TypeName: "ipldsch.Node.Repr"}.LookupByIndex(0)
+}
+func (n _Node__Repr) LookupBySegment(seg datamodel.PathSegment) (datamodel.Node, error) {
+	return n.LookupByString(seg.String())
+}
+func (n *_Node__Repr) MapIterator() datamodel.MapIterator {
+	return &_Node__ReprMapItr{n, false}
+}
+
+type _Node__ReprMapItr struct {
+	n    *_Node__Repr
+	done bool
+}
+
+func (itr *_Node__ReprMapItr) Next() (k datamodel.Node, v datamodel.Node, _ error) {
+	if itr.done {
+		return nil, nil, datamodel.ErrIteratorOverread{}
+	}
+	switch itr.n.tag {
+	case 1:
+		k, v = &memberName__Node_Peer_serial, itr.n.x1.Representation()
+	default:
+		panic("unreachable")
+	}
+	itr.done = true
+	return
+}
+func (itr *_Node__ReprMapItr) Done() bool {
+	return itr.done
+}
+
+func (_Node__Repr) ListIterator() datamodel.ListIterator {
+	return nil
+}
+func (_Node__Repr) Length() int64 {
+	return 1
+}
+func (_Node__Repr) IsAbsent() bool {
+	return false
+}
+func (_Node__Repr) IsNull() bool {
+	return false
+}
+func (_Node__Repr) AsBool() (bool, error) {
+	return mixins.Map{TypeName: "ipldsch.Node.Repr"}.AsBool()
+}
+func (_Node__Repr) AsInt() (int64, error) {
+	return mixins.Map{TypeName: "ipldsch.Node.Repr"}.AsInt()
+}
+func (_Node__Repr) AsFloat() (float64, error) {
+	return mixins.Map{TypeName: "ipldsch.Node.Repr"}.AsFloat()
+}
+func (_Node__Repr) AsString() (string, error) {
+	return mixins.Map{TypeName: "ipldsch.Node.Repr"}.AsString()
+}
+func (_Node__Repr) AsBytes() ([]byte, error) {
+	return mixins.Map{TypeName: "ipldsch.Node.Repr"}.AsBytes()
+}
+func (_Node__Repr) AsLink() (datamodel.Link, error) {
+	return mixins.Map{TypeName: "ipldsch.Node.Repr"}.AsLink()
+}
+func (_Node__Repr) Prototype() datamodel.NodePrototype {
+	return _Node__ReprPrototype{}
+}
+
+type _Node__ReprPrototype struct{}
+
+func (_Node__ReprPrototype) NewBuilder() datamodel.NodeBuilder {
+	var nb _Node__ReprBuilder
+	nb.Reset()
+	return &nb
+}
+
+type _Node__ReprBuilder struct {
+	_Node__ReprAssembler
+}
+
+func (nb *_Node__ReprBuilder) Build() datamodel.Node {
+	if *nb.m != schema.Maybe_Value {
+		panic("invalid state: cannot call Build on an assembler that's not finished")
+	}
+	return nb.w
+}
+func (nb *_Node__ReprBuilder) Reset() {
+	var w _Node
+	var m schema.Maybe
+	*nb = _Node__ReprBuilder{_Node__ReprAssembler{w: &w, m: &m}}
+}
+
+type _Node__ReprAssembler struct {
+	w     *_Node
+	m     *schema.Maybe
+	state maState
+
+	cm  schema.Maybe
+	ca1 _Peer__ReprAssembler
+	ca  uint
+}
+
+func (na *_Node__ReprAssembler) reset() {
+	na.state = maState_initial
+	switch na.ca {
+	case 0:
+		return
+	case 1:
+		na.ca1.reset()
+	default:
+		panic("unreachable")
+	}
+	na.ca = 0
+	na.cm = schema.Maybe_Absent
+}
+func (na *_Node__ReprAssembler) BeginMap(int64) (datamodel.MapAssembler, error) {
+	switch *na.m {
+	case schema.Maybe_Value, schema.Maybe_Null:
+		panic("invalid state: cannot assign into assembler that's already finished")
+	case midvalue:
+		panic("invalid state: it makes no sense to 'begin' twice on the same assembler!")
+	}
+	*na.m = midvalue
+	if na.w == nil {
+		na.w = &_Node{}
+	}
+	return na, nil
+}
+func (_Node__ReprAssembler) BeginList(sizeHint int64) (datamodel.ListAssembler, error) {
+	return mixins.MapAssembler{TypeName: "ipldsch.Node.Repr"}.BeginList(0)
+}
+func (na *_Node__ReprAssembler) AssignNull() error {
+	switch *na.m {
+	case allowNull:
+		*na.m = schema.Maybe_Null
+		return nil
+	case schema.Maybe_Absent:
+		return mixins.MapAssembler{TypeName: "ipldsch.Node.Repr.Repr"}.AssignNull()
+	case schema.Maybe_Value, schema.Maybe_Null:
+		panic("invalid state: cannot assign into assembler that's already finished")
+	case midvalue:
+		panic("invalid state: cannot assign null into an assembler that's already begun working on recursive structures!")
+	}
+	panic("unreachable")
+}
+func (_Node__ReprAssembler) AssignBool(bool) error {
+	return mixins.MapAssembler{TypeName: "ipldsch.Node.Repr"}.AssignBool(false)
+}
+func (_Node__ReprAssembler) AssignInt(int64) error {
+	return mixins.MapAssembler{TypeName: "ipldsch.Node.Repr"}.AssignInt(0)
+}
+func (_Node__ReprAssembler) AssignFloat(float64) error {
+	return mixins.MapAssembler{TypeName: "ipldsch.Node.Repr"}.AssignFloat(0)
+}
+func (_Node__ReprAssembler) AssignString(string) error {
+	return mixins.MapAssembler{TypeName: "ipldsch.Node.Repr"}.AssignString("")
+}
+func (_Node__ReprAssembler) AssignBytes([]byte) error {
+	return mixins.MapAssembler{TypeName: "ipldsch.Node.Repr"}.AssignBytes(nil)
+}
+func (_Node__ReprAssembler) AssignLink(datamodel.Link) error {
+	return mixins.MapAssembler{TypeName: "ipldsch.Node.Repr"}.AssignLink(nil)
+}
+func (na *_Node__ReprAssembler) AssignNode(v datamodel.Node) error {
+	if v.IsNull() {
+		return na.AssignNull()
+	}
+	if v2, ok := v.(*_Node); ok {
+		switch *na.m {
+		case schema.Maybe_Value, schema.Maybe_Null:
+			panic("invalid state: cannot assign into assembler that's already finished")
+		case midvalue:
+			panic("invalid state: cannot assign null into an assembler that's already begun working on recursive structures!")
+		}
+		if na.w == nil {
+			na.w = v2
+			*na.m = schema.Maybe_Value
+			return nil
+		}
+		*na.w = *v2
+		*na.m = schema.Maybe_Value
+		return nil
+	}
+	if v.Kind() != datamodel.Kind_Map {
+		return datamodel.ErrWrongKind{TypeName: "ipldsch.Node.Repr", MethodName: "AssignNode", AppropriateKind: datamodel.KindSet_JustMap, ActualKind: v.Kind()}
+	}
+	itr := v.MapIterator()
+	for !itr.Done() {
+		k, v, err := itr.Next()
+		if err != nil {
+			return err
+		}
+		if err := na.AssembleKey().AssignNode(k); err != nil {
+			return err
+		}
+		if err := na.AssembleValue().AssignNode(v); err != nil {
+			return err
+		}
+	}
+	return na.Finish()
+}
+func (_Node__ReprAssembler) Prototype() datamodel.NodePrototype {
+	return _Node__ReprPrototype{}
+}
+func (ma *_Node__ReprAssembler) valueFinishTidy() bool {
+	switch ma.cm {
+	case schema.Maybe_Value:
+		ma.state = maState_initial
+		return true
+	default:
+		return false
+	}
+}
+func (ma *_Node__ReprAssembler) AssembleEntry(k string) (datamodel.NodeAssembler, error) {
+	switch ma.state {
+	case maState_initial:
+		// carry on
+	case maState_midKey:
+		panic("invalid state: AssembleEntry cannot be called when in the middle of assembling another key")
+	case maState_expectValue:
+		panic("invalid state: AssembleEntry cannot be called when expecting start of value assembly")
+	case maState_midValue:
+		if !ma.valueFinishTidy() {
+			panic("invalid state: AssembleEntry cannot be called when in the middle of assembling a value")
+		} // if tidy success: carry on for the moment, but we'll still be erroring shortly.
+	case maState_finished:
+		panic("invalid state: AssembleEntry cannot be called on an assembler that's already finished")
+	}
+	if ma.ca != 0 {
+		return nil, schema.ErrNotUnionStructure{TypeName: "ipldsch.Node.Repr", Detail: "cannot add another entry -- a union can only contain one thing!"}
+	}
+	switch k {
+	case "peer":
+		ma.state = maState_midValue
+		ma.ca = 1
+		ma.w.tag = 1
+		ma.ca1.w = &ma.w.x1
+		ma.ca1.m = &ma.cm
+		return &ma.ca1, nil
+	}
+	return nil, schema.ErrInvalidKey{TypeName: "ipldsch.Node.Repr", Key: &_String{k}}
+}
+func (ma *_Node__ReprAssembler) AssembleKey() datamodel.NodeAssembler {
+	switch ma.state {
+	case maState_initial:
+		// carry on
+	case maState_midKey:
+		panic("invalid state: AssembleKey cannot be called when in the middle of assembling another key")
+	case maState_expectValue:
+		panic("invalid state: AssembleKey cannot be called when expecting start of value assembly")
+	case maState_midValue:
+		if !ma.valueFinishTidy() {
+			panic("invalid state: AssembleKey cannot be called when in the middle of assembling a value")
+		} // if tidy success: carry on for the moment, but we'll still be erroring shortly... or rather, the keyassembler will be.
+	case maState_finished:
+		panic("invalid state: AssembleKey cannot be called on an assembler that's already finished")
+	}
+	ma.state = maState_midKey
+	return (*_Node__ReprKeyAssembler)(ma)
+}
+func (ma *_Node__ReprAssembler) AssembleValue() datamodel.NodeAssembler {
+	switch ma.state {
+	case maState_initial:
+		panic("invalid state: AssembleValue cannot be called when no key is primed")
+	case maState_midKey:
+		panic("invalid state: AssembleValue cannot be called when in the middle of assembling a key")
+	case maState_expectValue:
+		// carry on
+	case maState_midValue:
+		panic("invalid state: AssembleValue cannot be called when in the middle of assembling another value")
+	case maState_finished:
+		panic("invalid state: AssembleValue cannot be called on an assembler that's already finished")
+	}
+	ma.state = maState_midValue
+	switch ma.ca {
+	case 1:
+		ma.ca1.w = &ma.w.x1
+		ma.ca1.m = &ma.cm
+		return &ma.ca1
+	default:
+		panic("unreachable")
+	}
+}
+func (ma *_Node__ReprAssembler) Finish() error {
+	switch ma.state {
+	case maState_initial:
+		// carry on
+	case maState_midKey:
+		panic("invalid state: Finish cannot be called when in the middle of assembling a key")
+	case maState_expectValue:
+		panic("invalid state: Finish cannot be called when expecting start of value assembly")
+	case maState_midValue:
+		if !ma.valueFinishTidy() {
+			panic("invalid state: Finish cannot be called when in the middle of assembling a value")
+		} // if tidy success: carry on
+	case maState_finished:
+		panic("invalid state: Finish cannot be called on an assembler that's already finished")
+	}
+	if ma.ca == 0 {
+		return schema.ErrNotUnionStructure{TypeName: "ipldsch.Node.Repr", Detail: "a union must have exactly one entry (not none)!"}
+	}
+	ma.state = maState_finished
+	*ma.m = schema.Maybe_Value
+	return nil
+}
+func (ma *_Node__ReprAssembler) KeyPrototype() datamodel.NodePrototype {
+	return _String__Prototype{}
+}
+func (ma *_Node__ReprAssembler) ValuePrototype(k string) datamodel.NodePrototype {
+	switch k {
+	case "Peer":
+		return _Peer__ReprPrototype{}
+	default:
+		return nil
+	}
+}
+
+type _Node__ReprKeyAssembler _Node__ReprAssembler
+
+func (_Node__ReprKeyAssembler) BeginMap(sizeHint int64) (datamodel.MapAssembler, error) {
+	return mixins.StringAssembler{TypeName: "ipldsch.Node.Repr.KeyAssembler"}.BeginMap(0)
+}
+func (_Node__ReprKeyAssembler) BeginList(sizeHint int64) (datamodel.ListAssembler, error) {
+	return mixins.StringAssembler{TypeName: "ipldsch.Node.Repr.KeyAssembler"}.BeginList(0)
+}
+func (na *_Node__ReprKeyAssembler) AssignNull() error {
+	return mixins.StringAssembler{TypeName: "ipldsch.Node.Repr.KeyAssembler"}.AssignNull()
+}
+func (_Node__ReprKeyAssembler) AssignBool(bool) error {
+	return mixins.StringAssembler{TypeName: "ipldsch.Node.Repr.KeyAssembler"}.AssignBool(false)
+}
+func (_Node__ReprKeyAssembler) AssignInt(int64) error {
+	return mixins.StringAssembler{TypeName: "ipldsch.Node.Repr.KeyAssembler"}.AssignInt(0)
+}
+func (_Node__ReprKeyAssembler) AssignFloat(float64) error {
+	return mixins.StringAssembler{TypeName: "ipldsch.Node.Repr.KeyAssembler"}.AssignFloat(0)
+}
+func (ka *_Node__ReprKeyAssembler) AssignString(k string) error {
+	if ka.state != maState_midKey {
+		panic("misuse: KeyAssembler held beyond its valid lifetime")
+	}
+	if ka.ca != 0 {
+		return schema.ErrNotUnionStructure{TypeName: "ipldsch.Node.Repr", Detail: "cannot add another entry -- a union can only contain one thing!"}
+	}
+	switch k {
+	case "peer":
+		ka.ca = 1
+		ka.w.tag = 1
+		ka.state = maState_expectValue
+		return nil
+	}
+	return schema.ErrInvalidKey{TypeName: "ipldsch.Node.Repr", Key: &_String{k}} // TODO: error quality: ErrInvalidUnionDiscriminant ?
+}
+func (_Node__ReprKeyAssembler) AssignBytes([]byte) error {
+	return mixins.StringAssembler{TypeName: "ipldsch.Node.Repr.KeyAssembler"}.AssignBytes(nil)
+}
+func (_Node__ReprKeyAssembler) AssignLink(datamodel.Link) error {
+	return mixins.StringAssembler{TypeName: "ipldsch.Node.Repr.KeyAssembler"}.AssignLink(nil)
+}
+func (ka *_Node__ReprKeyAssembler) AssignNode(v datamodel.Node) error {
+	if v2, err := v.AsString(); err != nil {
+		return err
+	} else {
+		return ka.AssignString(v2)
+	}
+}
+func (_Node__ReprKeyAssembler) Prototype() datamodel.NodePrototype {
+	return _String__Prototype{}
+}
+
+func (n _Peer) FieldID() Bytes {
+	return &n.ID
+}
+func (n _Peer) FieldMultiaddresses() List__Bytes {
+	return &n.Multiaddresses
 }
 
 type _Peer__Maybe struct {
@@ -4830,7 +9167,8 @@ func (m MaybePeer) Must() Peer {
 }
 
 var (
-	fieldName__Peer_Multiaddress = _String{"Multiaddress"}
+	fieldName__Peer_ID             = _String{"ID"}
+	fieldName__Peer_Multiaddresses = _String{"Multiaddresses"}
 )
 var _ datamodel.Node = (Peer)(&_Peer{})
 var _ schema.TypedNode = (Peer)(&_Peer{})
@@ -4840,8 +9178,10 @@ func (Peer) Kind() datamodel.Kind {
 }
 func (n Peer) LookupByString(key string) (datamodel.Node, error) {
 	switch key {
-	case "Multiaddress":
-		return &n.Multiaddress, nil
+	case "ID":
+		return &n.ID, nil
+	case "Multiaddresses":
+		return &n.Multiaddresses, nil
 	default:
 		return nil, schema.ErrNoSuchField{Type: nil /*TODO*/, Field: datamodel.PathSegmentOfString(key)}
 	}
@@ -4869,13 +9209,16 @@ type _Peer__MapItr struct {
 }
 
 func (itr *_Peer__MapItr) Next() (k datamodel.Node, v datamodel.Node, _ error) {
-	if itr.idx >= 1 {
+	if itr.idx >= 2 {
 		return nil, nil, datamodel.ErrIteratorOverread{}
 	}
 	switch itr.idx {
 	case 0:
-		k = &fieldName__Peer_Multiaddress
-		v = &itr.n.Multiaddress
+		k = &fieldName__Peer_ID
+		v = &itr.n.ID
+	case 1:
+		k = &fieldName__Peer_Multiaddresses
+		v = &itr.n.Multiaddresses
 	default:
 		panic("unreachable")
 	}
@@ -4883,14 +9226,14 @@ func (itr *_Peer__MapItr) Next() (k datamodel.Node, v datamodel.Node, _ error) {
 	return
 }
 func (itr *_Peer__MapItr) Done() bool {
-	return itr.idx >= 1
+	return itr.idx >= 2
 }
 
 func (Peer) ListIterator() datamodel.ListIterator {
 	return nil
 }
 func (Peer) Length() int64 {
-	return 1
+	return 2
 }
 func (Peer) IsAbsent() bool {
 	return false
@@ -4951,19 +9294,22 @@ type _Peer__Assembler struct {
 	s     int
 	f     int
 
-	cm              schema.Maybe
-	ca_Multiaddress _List__Bytes__Assembler
+	cm                schema.Maybe
+	ca_ID             _Bytes__Assembler
+	ca_Multiaddresses _List__Bytes__Assembler
 }
 
 func (na *_Peer__Assembler) reset() {
 	na.state = maState_initial
 	na.s = 0
-	na.ca_Multiaddress.reset()
+	na.ca_ID.reset()
+	na.ca_Multiaddresses.reset()
 }
 
 var (
-	fieldBit__Peer_Multiaddress = 1 << 0
-	fieldBits__Peer_sufficient  = 0 + 1<<0
+	fieldBit__Peer_ID             = 1 << 0
+	fieldBit__Peer_Multiaddresses = 1 << 1
+	fieldBits__Peer_sufficient    = 0 + 1<<0 + 1<<1
 )
 
 func (na *_Peer__Assembler) BeginMap(int64) (datamodel.MapAssembler, error) {
@@ -5060,7 +9406,17 @@ func (ma *_Peer__Assembler) valueFinishTidy() bool {
 	case 0:
 		switch ma.cm {
 		case schema.Maybe_Value:
-			ma.ca_Multiaddress.w = nil
+			ma.ca_ID.w = nil
+			ma.cm = schema.Maybe_Absent
+			ma.state = maState_initial
+			return true
+		default:
+			return false
+		}
+	case 1:
+		switch ma.cm {
+		case schema.Maybe_Value:
+			ma.ca_Multiaddresses.w = nil
 			ma.cm = schema.Maybe_Absent
 			ma.state = maState_initial
 			return true
@@ -5087,16 +9443,26 @@ func (ma *_Peer__Assembler) AssembleEntry(k string) (datamodel.NodeAssembler, er
 		panic("invalid state: AssembleEntry cannot be called on an assembler that's already finished")
 	}
 	switch k {
-	case "Multiaddress":
-		if ma.s&fieldBit__Peer_Multiaddress != 0 {
-			return nil, datamodel.ErrRepeatedMapKey{Key: &fieldName__Peer_Multiaddress}
+	case "ID":
+		if ma.s&fieldBit__Peer_ID != 0 {
+			return nil, datamodel.ErrRepeatedMapKey{Key: &fieldName__Peer_ID}
 		}
-		ma.s += fieldBit__Peer_Multiaddress
+		ma.s += fieldBit__Peer_ID
 		ma.state = maState_midValue
 		ma.f = 0
-		ma.ca_Multiaddress.w = &ma.w.Multiaddress
-		ma.ca_Multiaddress.m = &ma.cm
-		return &ma.ca_Multiaddress, nil
+		ma.ca_ID.w = &ma.w.ID
+		ma.ca_ID.m = &ma.cm
+		return &ma.ca_ID, nil
+	case "Multiaddresses":
+		if ma.s&fieldBit__Peer_Multiaddresses != 0 {
+			return nil, datamodel.ErrRepeatedMapKey{Key: &fieldName__Peer_Multiaddresses}
+		}
+		ma.s += fieldBit__Peer_Multiaddresses
+		ma.state = maState_midValue
+		ma.f = 1
+		ma.ca_Multiaddresses.w = &ma.w.Multiaddresses
+		ma.ca_Multiaddresses.m = &ma.cm
+		return &ma.ca_Multiaddresses, nil
 	}
 	return nil, schema.ErrInvalidKey{TypeName: "ipldsch.Peer", Key: &_String{k}}
 }
@@ -5134,9 +9500,13 @@ func (ma *_Peer__Assembler) AssembleValue() datamodel.NodeAssembler {
 	ma.state = maState_midValue
 	switch ma.f {
 	case 0:
-		ma.ca_Multiaddress.w = &ma.w.Multiaddress
-		ma.ca_Multiaddress.m = &ma.cm
-		return &ma.ca_Multiaddress
+		ma.ca_ID.w = &ma.w.ID
+		ma.ca_ID.m = &ma.cm
+		return &ma.ca_ID
+	case 1:
+		ma.ca_Multiaddresses.w = &ma.w.Multiaddresses
+		ma.ca_Multiaddresses.m = &ma.cm
+		return &ma.ca_Multiaddresses
 	default:
 		panic("unreachable")
 	}
@@ -5158,8 +9528,11 @@ func (ma *_Peer__Assembler) Finish() error {
 	}
 	if ma.s&fieldBits__Peer_sufficient != fieldBits__Peer_sufficient {
 		err := schema.ErrMissingRequiredField{Missing: make([]string, 0)}
-		if ma.s&fieldBit__Peer_Multiaddress == 0 {
-			err.Missing = append(err.Missing, "Multiaddress")
+		if ma.s&fieldBit__Peer_ID == 0 {
+			err.Missing = append(err.Missing, "ID")
+		}
+		if ma.s&fieldBit__Peer_Multiaddresses == 0 {
+			err.Missing = append(err.Missing, "Multiaddresses")
 		}
 		return err
 	}
@@ -5199,13 +9572,21 @@ func (ka *_Peer__KeyAssembler) AssignString(k string) error {
 		panic("misuse: KeyAssembler held beyond its valid lifetime")
 	}
 	switch k {
-	case "Multiaddress":
-		if ka.s&fieldBit__Peer_Multiaddress != 0 {
-			return datamodel.ErrRepeatedMapKey{Key: &fieldName__Peer_Multiaddress}
+	case "ID":
+		if ka.s&fieldBit__Peer_ID != 0 {
+			return datamodel.ErrRepeatedMapKey{Key: &fieldName__Peer_ID}
 		}
-		ka.s += fieldBit__Peer_Multiaddress
+		ka.s += fieldBit__Peer_ID
 		ka.state = maState_expectValue
 		ka.f = 0
+		return nil
+	case "Multiaddresses":
+		if ka.s&fieldBit__Peer_Multiaddresses != 0 {
+			return datamodel.ErrRepeatedMapKey{Key: &fieldName__Peer_Multiaddresses}
+		}
+		ka.s += fieldBit__Peer_Multiaddresses
+		ka.state = maState_expectValue
+		ka.f = 1
 		return nil
 	default:
 		return schema.ErrInvalidKey{TypeName: "ipldsch.Peer", Key: &_String{k}}
@@ -5237,7 +9618,8 @@ func (n Peer) Representation() datamodel.Node {
 type _Peer__Repr _Peer
 
 var (
-	fieldName__Peer_Multiaddress_serial = _String{"Multiaddress"}
+	fieldName__Peer_ID_serial             = _String{"ID"}
+	fieldName__Peer_Multiaddresses_serial = _String{"Multiaddresses"}
 )
 var _ datamodel.Node = &_Peer__Repr{}
 
@@ -5246,8 +9628,10 @@ func (_Peer__Repr) Kind() datamodel.Kind {
 }
 func (n *_Peer__Repr) LookupByString(key string) (datamodel.Node, error) {
 	switch key {
-	case "Multiaddress":
-		return n.Multiaddress.Representation(), nil
+	case "ID":
+		return n.ID.Representation(), nil
+	case "Multiaddresses":
+		return n.Multiaddresses.Representation(), nil
 	default:
 		return nil, schema.ErrNoSuchField{Type: nil /*TODO*/, Field: datamodel.PathSegmentOfString(key)}
 	}
@@ -5275,13 +9659,16 @@ type _Peer__ReprMapItr struct {
 }
 
 func (itr *_Peer__ReprMapItr) Next() (k datamodel.Node, v datamodel.Node, _ error) {
-	if itr.idx >= 1 {
+	if itr.idx >= 2 {
 		return nil, nil, datamodel.ErrIteratorOverread{}
 	}
 	switch itr.idx {
 	case 0:
-		k = &fieldName__Peer_Multiaddress_serial
-		v = itr.n.Multiaddress.Representation()
+		k = &fieldName__Peer_ID_serial
+		v = itr.n.ID.Representation()
+	case 1:
+		k = &fieldName__Peer_Multiaddresses_serial
+		v = itr.n.Multiaddresses.Representation()
 	default:
 		panic("unreachable")
 	}
@@ -5289,13 +9676,13 @@ func (itr *_Peer__ReprMapItr) Next() (k datamodel.Node, v datamodel.Node, _ erro
 	return
 }
 func (itr *_Peer__ReprMapItr) Done() bool {
-	return itr.idx >= 1
+	return itr.idx >= 2
 }
 func (_Peer__Repr) ListIterator() datamodel.ListIterator {
 	return nil
 }
 func (rn *_Peer__Repr) Length() int64 {
-	l := 1
+	l := 2
 	return int64(l)
 }
 func (_Peer__Repr) IsAbsent() bool {
@@ -5357,14 +9744,16 @@ type _Peer__ReprAssembler struct {
 	s     int
 	f     int
 
-	cm              schema.Maybe
-	ca_Multiaddress _List__Bytes__ReprAssembler
+	cm                schema.Maybe
+	ca_ID             _Bytes__ReprAssembler
+	ca_Multiaddresses _List__Bytes__ReprAssembler
 }
 
 func (na *_Peer__ReprAssembler) reset() {
 	na.state = maState_initial
 	na.s = 0
-	na.ca_Multiaddress.reset()
+	na.ca_ID.reset()
+	na.ca_Multiaddresses.reset()
 }
 func (na *_Peer__ReprAssembler) BeginMap(int64) (datamodel.MapAssembler, error) {
 	switch *na.m {
@@ -5466,6 +9855,15 @@ func (ma *_Peer__ReprAssembler) valueFinishTidy() bool {
 		default:
 			return false
 		}
+	case 1:
+		switch ma.cm {
+		case schema.Maybe_Value:
+			ma.cm = schema.Maybe_Absent
+			ma.state = maState_initial
+			return true
+		default:
+			return false
+		}
 	default:
 		panic("unreachable")
 	}
@@ -5486,16 +9884,26 @@ func (ma *_Peer__ReprAssembler) AssembleEntry(k string) (datamodel.NodeAssembler
 		panic("invalid state: AssembleEntry cannot be called on an assembler that's already finished")
 	}
 	switch k {
-	case "Multiaddress":
-		if ma.s&fieldBit__Peer_Multiaddress != 0 {
-			return nil, datamodel.ErrRepeatedMapKey{Key: &fieldName__Peer_Multiaddress_serial}
+	case "ID":
+		if ma.s&fieldBit__Peer_ID != 0 {
+			return nil, datamodel.ErrRepeatedMapKey{Key: &fieldName__Peer_ID_serial}
 		}
-		ma.s += fieldBit__Peer_Multiaddress
+		ma.s += fieldBit__Peer_ID
 		ma.state = maState_midValue
 		ma.f = 0
-		ma.ca_Multiaddress.w = &ma.w.Multiaddress
-		ma.ca_Multiaddress.m = &ma.cm
-		return &ma.ca_Multiaddress, nil
+		ma.ca_ID.w = &ma.w.ID
+		ma.ca_ID.m = &ma.cm
+		return &ma.ca_ID, nil
+	case "Multiaddresses":
+		if ma.s&fieldBit__Peer_Multiaddresses != 0 {
+			return nil, datamodel.ErrRepeatedMapKey{Key: &fieldName__Peer_Multiaddresses_serial}
+		}
+		ma.s += fieldBit__Peer_Multiaddresses
+		ma.state = maState_midValue
+		ma.f = 1
+		ma.ca_Multiaddresses.w = &ma.w.Multiaddresses
+		ma.ca_Multiaddresses.m = &ma.cm
+		return &ma.ca_Multiaddresses, nil
 	default:
 	}
 	return nil, schema.ErrInvalidKey{TypeName: "ipldsch.Peer.Repr", Key: &_String{k}}
@@ -5534,9 +9942,13 @@ func (ma *_Peer__ReprAssembler) AssembleValue() datamodel.NodeAssembler {
 	ma.state = maState_midValue
 	switch ma.f {
 	case 0:
-		ma.ca_Multiaddress.w = &ma.w.Multiaddress
-		ma.ca_Multiaddress.m = &ma.cm
-		return &ma.ca_Multiaddress
+		ma.ca_ID.w = &ma.w.ID
+		ma.ca_ID.m = &ma.cm
+		return &ma.ca_ID
+	case 1:
+		ma.ca_Multiaddresses.w = &ma.w.Multiaddresses
+		ma.ca_Multiaddresses.m = &ma.cm
+		return &ma.ca_Multiaddresses
 	default:
 		panic("unreachable")
 	}
@@ -5558,8 +9970,11 @@ func (ma *_Peer__ReprAssembler) Finish() error {
 	}
 	if ma.s&fieldBits__Peer_sufficient != fieldBits__Peer_sufficient {
 		err := schema.ErrMissingRequiredField{Missing: make([]string, 0)}
-		if ma.s&fieldBit__Peer_Multiaddress == 0 {
-			err.Missing = append(err.Missing, "Multiaddress")
+		if ma.s&fieldBit__Peer_ID == 0 {
+			err.Missing = append(err.Missing, "ID")
+		}
+		if ma.s&fieldBit__Peer_Multiaddresses == 0 {
+			err.Missing = append(err.Missing, "Multiaddresses")
 		}
 		return err
 	}
@@ -5599,13 +10014,21 @@ func (ka *_Peer__ReprKeyAssembler) AssignString(k string) error {
 		panic("misuse: KeyAssembler held beyond its valid lifetime")
 	}
 	switch k {
-	case "Multiaddress":
-		if ka.s&fieldBit__Peer_Multiaddress != 0 {
-			return datamodel.ErrRepeatedMapKey{Key: &fieldName__Peer_Multiaddress_serial}
+	case "ID":
+		if ka.s&fieldBit__Peer_ID != 0 {
+			return datamodel.ErrRepeatedMapKey{Key: &fieldName__Peer_ID_serial}
 		}
-		ka.s += fieldBit__Peer_Multiaddress
+		ka.s += fieldBit__Peer_ID
 		ka.state = maState_expectValue
 		ka.f = 0
+		return nil
+	case "Multiaddresses":
+		if ka.s&fieldBit__Peer_Multiaddresses != 0 {
+			return datamodel.ErrRepeatedMapKey{Key: &fieldName__Peer_Multiaddresses_serial}
+		}
+		ka.s += fieldBit__Peer_Multiaddresses
+		ka.state = maState_expectValue
+		ka.f = 1
 		return nil
 	}
 	return schema.ErrInvalidKey{TypeName: "ipldsch.Peer.Repr", Key: &_String{k}}
@@ -5627,13 +10050,11 @@ func (_Peer__ReprKeyAssembler) Prototype() datamodel.NodePrototype {
 	return _String__Prototype{}
 }
 
-func (n _Provider) AsInterface() _Provider__iface {
-	switch n.tag {
-	case 1:
-		return &n.x1
-	default:
-		panic("invalid union state; how did you create this object?")
-	}
+func (n _Provider) FieldNode() List__Node {
+	return &n.Node
+}
+func (n _Provider) FieldProto() List__TransferProtocol {
+	return &n.Proto
 }
 
 type _Provider__Maybe struct {
@@ -5671,7 +10092,8 @@ func (m MaybeProvider) Must() Provider {
 }
 
 var (
-	memberName__Provider_Peer = _String{"Peer"}
+	fieldName__Provider_Node  = _String{"Node"}
+	fieldName__Provider_Proto = _String{"Proto"}
 )
 var _ datamodel.Node = (Provider)(&_Provider{})
 var _ schema.TypedNode = (Provider)(&_Provider{})
@@ -5681,11 +10103,10 @@ func (Provider) Kind() datamodel.Kind {
 }
 func (n Provider) LookupByString(key string) (datamodel.Node, error) {
 	switch key {
-	case "Peer":
-		if n.tag != 1 {
-			return nil, datamodel.ErrNotExists{Segment: datamodel.PathSegmentOfString(key)}
-		}
-		return &n.x1, nil
+	case "Node":
+		return &n.Node, nil
+	case "Proto":
+		return &n.Proto, nil
 	default:
 		return nil, schema.ErrNoSuchField{Type: nil /*TODO*/, Field: datamodel.PathSegmentOfString(key)}
 	}
@@ -5704,36 +10125,40 @@ func (n Provider) LookupBySegment(seg datamodel.PathSegment) (datamodel.Node, er
 	return n.LookupByString(seg.String())
 }
 func (n Provider) MapIterator() datamodel.MapIterator {
-	return &_Provider__MapItr{n, false}
+	return &_Provider__MapItr{n, 0}
 }
 
 type _Provider__MapItr struct {
-	n    Provider
-	done bool
+	n   Provider
+	idx int
 }
 
 func (itr *_Provider__MapItr) Next() (k datamodel.Node, v datamodel.Node, _ error) {
-	if itr.done {
+	if itr.idx >= 2 {
 		return nil, nil, datamodel.ErrIteratorOverread{}
 	}
-	switch itr.n.tag {
+	switch itr.idx {
+	case 0:
+		k = &fieldName__Provider_Node
+		v = &itr.n.Node
 	case 1:
-		k, v = &memberName__Provider_Peer, &itr.n.x1
+		k = &fieldName__Provider_Proto
+		v = &itr.n.Proto
 	default:
 		panic("unreachable")
 	}
-	itr.done = true
+	itr.idx++
 	return
 }
 func (itr *_Provider__MapItr) Done() bool {
-	return itr.done
+	return itr.idx >= 2
 }
 
 func (Provider) ListIterator() datamodel.ListIterator {
 	return nil
 }
 func (Provider) Length() int64 {
-	return 1
+	return 2
 }
 func (Provider) IsAbsent() bool {
 	return false
@@ -5791,25 +10216,27 @@ type _Provider__Assembler struct {
 	w     *_Provider
 	m     *schema.Maybe
 	state maState
+	s     int
+	f     int
 
-	cm  schema.Maybe
-	ca1 _Peer__Assembler
-	ca  uint
+	cm       schema.Maybe
+	ca_Node  _List__Node__Assembler
+	ca_Proto _List__TransferProtocol__Assembler
 }
 
 func (na *_Provider__Assembler) reset() {
 	na.state = maState_initial
-	switch na.ca {
-	case 0:
-		return
-	case 1:
-		na.ca1.reset()
-	default:
-		panic("unreachable")
-	}
-	na.ca = 0
-	na.cm = schema.Maybe_Absent
+	na.s = 0
+	na.ca_Node.reset()
+	na.ca_Proto.reset()
 }
+
+var (
+	fieldBit__Provider_Node        = 1 << 0
+	fieldBit__Provider_Proto       = 1 << 1
+	fieldBits__Provider_sufficient = 0 + 1<<0 + 1<<1
+)
+
 func (na *_Provider__Assembler) BeginMap(int64) (datamodel.MapAssembler, error) {
 	switch *na.m {
 	case schema.Maybe_Value, schema.Maybe_Null:
@@ -5900,12 +10327,29 @@ func (_Provider__Assembler) Prototype() datamodel.NodePrototype {
 	return _Provider__Prototype{}
 }
 func (ma *_Provider__Assembler) valueFinishTidy() bool {
-	switch ma.cm {
-	case schema.Maybe_Value:
-		ma.state = maState_initial
-		return true
+	switch ma.f {
+	case 0:
+		switch ma.cm {
+		case schema.Maybe_Value:
+			ma.ca_Node.w = nil
+			ma.cm = schema.Maybe_Absent
+			ma.state = maState_initial
+			return true
+		default:
+			return false
+		}
+	case 1:
+		switch ma.cm {
+		case schema.Maybe_Value:
+			ma.ca_Proto.w = nil
+			ma.cm = schema.Maybe_Absent
+			ma.state = maState_initial
+			return true
+		default:
+			return false
+		}
 	default:
-		return false
+		panic("unreachable")
 	}
 }
 func (ma *_Provider__Assembler) AssembleEntry(k string) (datamodel.NodeAssembler, error) {
@@ -5919,21 +10363,31 @@ func (ma *_Provider__Assembler) AssembleEntry(k string) (datamodel.NodeAssembler
 	case maState_midValue:
 		if !ma.valueFinishTidy() {
 			panic("invalid state: AssembleEntry cannot be called when in the middle of assembling a value")
-		} // if tidy success: carry on for the moment, but we'll still be erroring shortly.
+		} // if tidy success: carry on
 	case maState_finished:
 		panic("invalid state: AssembleEntry cannot be called on an assembler that's already finished")
 	}
-	if ma.ca != 0 {
-		return nil, schema.ErrNotUnionStructure{TypeName: "ipldsch.Provider", Detail: "cannot add another entry -- a union can only contain one thing!"}
-	}
 	switch k {
-	case "Peer":
+	case "Node":
+		if ma.s&fieldBit__Provider_Node != 0 {
+			return nil, datamodel.ErrRepeatedMapKey{Key: &fieldName__Provider_Node}
+		}
+		ma.s += fieldBit__Provider_Node
 		ma.state = maState_midValue
-		ma.ca = 1
-		ma.w.tag = 1
-		ma.ca1.w = &ma.w.x1
-		ma.ca1.m = &ma.cm
-		return &ma.ca1, nil
+		ma.f = 0
+		ma.ca_Node.w = &ma.w.Node
+		ma.ca_Node.m = &ma.cm
+		return &ma.ca_Node, nil
+	case "Proto":
+		if ma.s&fieldBit__Provider_Proto != 0 {
+			return nil, datamodel.ErrRepeatedMapKey{Key: &fieldName__Provider_Proto}
+		}
+		ma.s += fieldBit__Provider_Proto
+		ma.state = maState_midValue
+		ma.f = 1
+		ma.ca_Proto.w = &ma.w.Proto
+		ma.ca_Proto.m = &ma.cm
+		return &ma.ca_Proto, nil
 	}
 	return nil, schema.ErrInvalidKey{TypeName: "ipldsch.Provider", Key: &_String{k}}
 }
@@ -5948,7 +10402,7 @@ func (ma *_Provider__Assembler) AssembleKey() datamodel.NodeAssembler {
 	case maState_midValue:
 		if !ma.valueFinishTidy() {
 			panic("invalid state: AssembleKey cannot be called when in the middle of assembling a value")
-		} // if tidy success: carry on for the moment, but we'll still be erroring shortly... or rather, the keyassembler will be.
+		} // if tidy success: carry on
 	case maState_finished:
 		panic("invalid state: AssembleKey cannot be called on an assembler that's already finished")
 	}
@@ -5969,11 +10423,15 @@ func (ma *_Provider__Assembler) AssembleValue() datamodel.NodeAssembler {
 		panic("invalid state: AssembleValue cannot be called on an assembler that's already finished")
 	}
 	ma.state = maState_midValue
-	switch ma.ca {
+	switch ma.f {
+	case 0:
+		ma.ca_Node.w = &ma.w.Node
+		ma.ca_Node.m = &ma.cm
+		return &ma.ca_Node
 	case 1:
-		ma.ca1.w = &ma.w.x1
-		ma.ca1.m = &ma.cm
-		return &ma.ca1
+		ma.ca_Proto.w = &ma.w.Proto
+		ma.ca_Proto.m = &ma.cm
+		return &ma.ca_Proto
 	default:
 		panic("unreachable")
 	}
@@ -5993,8 +10451,15 @@ func (ma *_Provider__Assembler) Finish() error {
 	case maState_finished:
 		panic("invalid state: Finish cannot be called on an assembler that's already finished")
 	}
-	if ma.ca == 0 {
-		return schema.ErrNotUnionStructure{TypeName: "ipldsch.Provider", Detail: "a union must have exactly one entry (not none)!"}
+	if ma.s&fieldBits__Provider_sufficient != fieldBits__Provider_sufficient {
+		err := schema.ErrMissingRequiredField{Missing: make([]string, 0)}
+		if ma.s&fieldBit__Provider_Node == 0 {
+			err.Missing = append(err.Missing, "Node")
+		}
+		if ma.s&fieldBit__Provider_Proto == 0 {
+			err.Missing = append(err.Missing, "Proto")
+		}
+		return err
 	}
 	ma.state = maState_finished
 	*ma.m = schema.Maybe_Value
@@ -6004,12 +10469,7 @@ func (ma *_Provider__Assembler) KeyPrototype() datamodel.NodePrototype {
 	return _String__Prototype{}
 }
 func (ma *_Provider__Assembler) ValuePrototype(k string) datamodel.NodePrototype {
-	switch k {
-	case "Peer":
-		return _Peer__Prototype{}
-	default:
-		return nil
-	}
+	panic("todo structbuilder mapassembler valueprototype")
 }
 
 type _Provider__KeyAssembler _Provider__Assembler
@@ -6036,17 +10496,26 @@ func (ka *_Provider__KeyAssembler) AssignString(k string) error {
 	if ka.state != maState_midKey {
 		panic("misuse: KeyAssembler held beyond its valid lifetime")
 	}
-	if ka.ca != 0 {
-		return schema.ErrNotUnionStructure{TypeName: "ipldsch.Provider", Detail: "cannot add another entry -- a union can only contain one thing!"}
-	}
 	switch k {
-	case "Peer":
-		ka.ca = 1
-		ka.w.tag = 1
+	case "Node":
+		if ka.s&fieldBit__Provider_Node != 0 {
+			return datamodel.ErrRepeatedMapKey{Key: &fieldName__Provider_Node}
+		}
+		ka.s += fieldBit__Provider_Node
 		ka.state = maState_expectValue
+		ka.f = 0
 		return nil
+	case "Proto":
+		if ka.s&fieldBit__Provider_Proto != 0 {
+			return datamodel.ErrRepeatedMapKey{Key: &fieldName__Provider_Proto}
+		}
+		ka.s += fieldBit__Provider_Proto
+		ka.state = maState_expectValue
+		ka.f = 1
+		return nil
+	default:
+		return schema.ErrInvalidKey{TypeName: "ipldsch.Provider", Key: &_String{k}}
 	}
-	return schema.ErrInvalidKey{TypeName: "ipldsch.Provider", Key: &_String{k}} // TODO: error quality: ErrInvalidUnionDiscriminant ?
 }
 func (_Provider__KeyAssembler) AssignBytes([]byte) error {
 	return mixins.StringAssembler{TypeName: "ipldsch.Provider.KeyAssembler"}.AssignBytes(nil)
@@ -6074,7 +10543,8 @@ func (n Provider) Representation() datamodel.Node {
 type _Provider__Repr _Provider
 
 var (
-	memberName__Provider_Peer_serial = _String{"peer"}
+	fieldName__Provider_Node_serial  = _String{"Node"}
+	fieldName__Provider_Proto_serial = _String{"Proto"}
 )
 var _ datamodel.Node = &_Provider__Repr{}
 
@@ -6083,11 +10553,10 @@ func (_Provider__Repr) Kind() datamodel.Kind {
 }
 func (n *_Provider__Repr) LookupByString(key string) (datamodel.Node, error) {
 	switch key {
-	case "peer":
-		if n.tag != 1 {
-			return nil, datamodel.ErrNotExists{Segment: datamodel.PathSegmentOfString(key)}
-		}
-		return n.x1.Representation(), nil
+	case "Node":
+		return n.Node.Representation(), nil
+	case "Proto":
+		return n.Proto.Representation(), nil
 	default:
 		return nil, schema.ErrNoSuchField{Type: nil /*TODO*/, Field: datamodel.PathSegmentOfString(key)}
 	}
@@ -6106,36 +10575,40 @@ func (n _Provider__Repr) LookupBySegment(seg datamodel.PathSegment) (datamodel.N
 	return n.LookupByString(seg.String())
 }
 func (n *_Provider__Repr) MapIterator() datamodel.MapIterator {
-	return &_Provider__ReprMapItr{n, false}
+	return &_Provider__ReprMapItr{n, 0}
 }
 
 type _Provider__ReprMapItr struct {
-	n    *_Provider__Repr
-	done bool
+	n   *_Provider__Repr
+	idx int
 }
 
 func (itr *_Provider__ReprMapItr) Next() (k datamodel.Node, v datamodel.Node, _ error) {
-	if itr.done {
+	if itr.idx >= 2 {
 		return nil, nil, datamodel.ErrIteratorOverread{}
 	}
-	switch itr.n.tag {
+	switch itr.idx {
+	case 0:
+		k = &fieldName__Provider_Node_serial
+		v = itr.n.Node.Representation()
 	case 1:
-		k, v = &memberName__Provider_Peer_serial, itr.n.x1.Representation()
+		k = &fieldName__Provider_Proto_serial
+		v = itr.n.Proto.Representation()
 	default:
 		panic("unreachable")
 	}
-	itr.done = true
+	itr.idx++
 	return
 }
 func (itr *_Provider__ReprMapItr) Done() bool {
-	return itr.done
+	return itr.idx >= 2
 }
-
 func (_Provider__Repr) ListIterator() datamodel.ListIterator {
 	return nil
 }
-func (_Provider__Repr) Length() int64 {
-	return 1
+func (rn *_Provider__Repr) Length() int64 {
+	l := 2
+	return int64(l)
 }
 func (_Provider__Repr) IsAbsent() bool {
 	return false
@@ -6193,24 +10666,19 @@ type _Provider__ReprAssembler struct {
 	w     *_Provider
 	m     *schema.Maybe
 	state maState
+	s     int
+	f     int
 
-	cm  schema.Maybe
-	ca1 _Peer__ReprAssembler
-	ca  uint
+	cm       schema.Maybe
+	ca_Node  _List__Node__ReprAssembler
+	ca_Proto _List__TransferProtocol__ReprAssembler
 }
 
 func (na *_Provider__ReprAssembler) reset() {
 	na.state = maState_initial
-	switch na.ca {
-	case 0:
-		return
-	case 1:
-		na.ca1.reset()
-	default:
-		panic("unreachable")
-	}
-	na.ca = 0
-	na.cm = schema.Maybe_Absent
+	na.s = 0
+	na.ca_Node.reset()
+	na.ca_Proto.reset()
 }
 func (na *_Provider__ReprAssembler) BeginMap(int64) (datamodel.MapAssembler, error) {
 	switch *na.m {
@@ -6302,12 +10770,27 @@ func (_Provider__ReprAssembler) Prototype() datamodel.NodePrototype {
 	return _Provider__ReprPrototype{}
 }
 func (ma *_Provider__ReprAssembler) valueFinishTidy() bool {
-	switch ma.cm {
-	case schema.Maybe_Value:
-		ma.state = maState_initial
-		return true
+	switch ma.f {
+	case 0:
+		switch ma.cm {
+		case schema.Maybe_Value:
+			ma.cm = schema.Maybe_Absent
+			ma.state = maState_initial
+			return true
+		default:
+			return false
+		}
+	case 1:
+		switch ma.cm {
+		case schema.Maybe_Value:
+			ma.cm = schema.Maybe_Absent
+			ma.state = maState_initial
+			return true
+		default:
+			return false
+		}
 	default:
-		return false
+		panic("unreachable")
 	}
 }
 func (ma *_Provider__ReprAssembler) AssembleEntry(k string) (datamodel.NodeAssembler, error) {
@@ -6321,21 +10804,32 @@ func (ma *_Provider__ReprAssembler) AssembleEntry(k string) (datamodel.NodeAssem
 	case maState_midValue:
 		if !ma.valueFinishTidy() {
 			panic("invalid state: AssembleEntry cannot be called when in the middle of assembling a value")
-		} // if tidy success: carry on for the moment, but we'll still be erroring shortly.
+		} // if tidy success: carry on
 	case maState_finished:
 		panic("invalid state: AssembleEntry cannot be called on an assembler that's already finished")
 	}
-	if ma.ca != 0 {
-		return nil, schema.ErrNotUnionStructure{TypeName: "ipldsch.Provider.Repr", Detail: "cannot add another entry -- a union can only contain one thing!"}
-	}
 	switch k {
-	case "peer":
+	case "Node":
+		if ma.s&fieldBit__Provider_Node != 0 {
+			return nil, datamodel.ErrRepeatedMapKey{Key: &fieldName__Provider_Node_serial}
+		}
+		ma.s += fieldBit__Provider_Node
 		ma.state = maState_midValue
-		ma.ca = 1
-		ma.w.tag = 1
-		ma.ca1.w = &ma.w.x1
-		ma.ca1.m = &ma.cm
-		return &ma.ca1, nil
+		ma.f = 0
+		ma.ca_Node.w = &ma.w.Node
+		ma.ca_Node.m = &ma.cm
+		return &ma.ca_Node, nil
+	case "Proto":
+		if ma.s&fieldBit__Provider_Proto != 0 {
+			return nil, datamodel.ErrRepeatedMapKey{Key: &fieldName__Provider_Proto_serial}
+		}
+		ma.s += fieldBit__Provider_Proto
+		ma.state = maState_midValue
+		ma.f = 1
+		ma.ca_Proto.w = &ma.w.Proto
+		ma.ca_Proto.m = &ma.cm
+		return &ma.ca_Proto, nil
+	default:
 	}
 	return nil, schema.ErrInvalidKey{TypeName: "ipldsch.Provider.Repr", Key: &_String{k}}
 }
@@ -6350,7 +10844,7 @@ func (ma *_Provider__ReprAssembler) AssembleKey() datamodel.NodeAssembler {
 	case maState_midValue:
 		if !ma.valueFinishTidy() {
 			panic("invalid state: AssembleKey cannot be called when in the middle of assembling a value")
-		} // if tidy success: carry on for the moment, but we'll still be erroring shortly... or rather, the keyassembler will be.
+		} // if tidy success: carry on
 	case maState_finished:
 		panic("invalid state: AssembleKey cannot be called on an assembler that's already finished")
 	}
@@ -6371,11 +10865,15 @@ func (ma *_Provider__ReprAssembler) AssembleValue() datamodel.NodeAssembler {
 		panic("invalid state: AssembleValue cannot be called on an assembler that's already finished")
 	}
 	ma.state = maState_midValue
-	switch ma.ca {
+	switch ma.f {
+	case 0:
+		ma.ca_Node.w = &ma.w.Node
+		ma.ca_Node.m = &ma.cm
+		return &ma.ca_Node
 	case 1:
-		ma.ca1.w = &ma.w.x1
-		ma.ca1.m = &ma.cm
-		return &ma.ca1
+		ma.ca_Proto.w = &ma.w.Proto
+		ma.ca_Proto.m = &ma.cm
+		return &ma.ca_Proto
 	default:
 		panic("unreachable")
 	}
@@ -6395,8 +10893,15 @@ func (ma *_Provider__ReprAssembler) Finish() error {
 	case maState_finished:
 		panic("invalid state: Finish cannot be called on an assembler that's already finished")
 	}
-	if ma.ca == 0 {
-		return schema.ErrNotUnionStructure{TypeName: "ipldsch.Provider.Repr", Detail: "a union must have exactly one entry (not none)!"}
+	if ma.s&fieldBits__Provider_sufficient != fieldBits__Provider_sufficient {
+		err := schema.ErrMissingRequiredField{Missing: make([]string, 0)}
+		if ma.s&fieldBit__Provider_Node == 0 {
+			err.Missing = append(err.Missing, "Node")
+		}
+		if ma.s&fieldBit__Provider_Proto == 0 {
+			err.Missing = append(err.Missing, "Proto")
+		}
+		return err
 	}
 	ma.state = maState_finished
 	*ma.m = schema.Maybe_Value
@@ -6406,12 +10911,7 @@ func (ma *_Provider__ReprAssembler) KeyPrototype() datamodel.NodePrototype {
 	return _String__Prototype{}
 }
 func (ma *_Provider__ReprAssembler) ValuePrototype(k string) datamodel.NodePrototype {
-	switch k {
-	case "Peer":
-		return _Peer__ReprPrototype{}
-	default:
-		return nil
-	}
+	panic("todo structbuilder mapassembler repr valueprototype")
 }
 
 type _Provider__ReprKeyAssembler _Provider__ReprAssembler
@@ -6438,17 +10938,25 @@ func (ka *_Provider__ReprKeyAssembler) AssignString(k string) error {
 	if ka.state != maState_midKey {
 		panic("misuse: KeyAssembler held beyond its valid lifetime")
 	}
-	if ka.ca != 0 {
-		return schema.ErrNotUnionStructure{TypeName: "ipldsch.Provider.Repr", Detail: "cannot add another entry -- a union can only contain one thing!"}
-	}
 	switch k {
-	case "peer":
-		ka.ca = 1
-		ka.w.tag = 1
+	case "Node":
+		if ka.s&fieldBit__Provider_Node != 0 {
+			return datamodel.ErrRepeatedMapKey{Key: &fieldName__Provider_Node_serial}
+		}
+		ka.s += fieldBit__Provider_Node
 		ka.state = maState_expectValue
+		ka.f = 0
+		return nil
+	case "Proto":
+		if ka.s&fieldBit__Provider_Proto != 0 {
+			return datamodel.ErrRepeatedMapKey{Key: &fieldName__Provider_Proto_serial}
+		}
+		ka.s += fieldBit__Provider_Proto
+		ka.state = maState_expectValue
+		ka.f = 1
 		return nil
 	}
-	return schema.ErrInvalidKey{TypeName: "ipldsch.Provider.Repr", Key: &_String{k}} // TODO: error quality: ErrInvalidUnionDiscriminant ?
+	return schema.ErrInvalidKey{TypeName: "ipldsch.Provider.Repr", Key: &_String{k}}
 }
 func (_Provider__ReprKeyAssembler) AssignBytes([]byte) error {
 	return mixins.StringAssembler{TypeName: "ipldsch.Provider.Repr.KeyAssembler"}.AssignBytes(nil)
@@ -6675,3 +11183,843 @@ var _ datamodel.Node = &_String__Repr{}
 
 type _String__ReprPrototype = _String__Prototype
 type _String__ReprAssembler = _String__Assembler
+
+func (n _TransferProtocol) AsInterface() _TransferProtocol__iface {
+	switch n.tag {
+	case 1:
+		return &n.x1
+	default:
+		panic("invalid union state; how did you create this object?")
+	}
+}
+
+type _TransferProtocol__Maybe struct {
+	m schema.Maybe
+	v TransferProtocol
+}
+type MaybeTransferProtocol = *_TransferProtocol__Maybe
+
+func (m MaybeTransferProtocol) IsNull() bool {
+	return m.m == schema.Maybe_Null
+}
+func (m MaybeTransferProtocol) IsAbsent() bool {
+	return m.m == schema.Maybe_Absent
+}
+func (m MaybeTransferProtocol) Exists() bool {
+	return m.m == schema.Maybe_Value
+}
+func (m MaybeTransferProtocol) AsNode() datamodel.Node {
+	switch m.m {
+	case schema.Maybe_Absent:
+		return datamodel.Absent
+	case schema.Maybe_Null:
+		return datamodel.Null
+	case schema.Maybe_Value:
+		return m.v
+	default:
+		panic("unreachable")
+	}
+}
+func (m MaybeTransferProtocol) Must() TransferProtocol {
+	if !m.Exists() {
+		panic("unbox of a maybe rejected")
+	}
+	return m.v
+}
+
+var (
+	memberName__TransferProtocol_BitswapTransfer = _String{"BitswapTransfer"}
+)
+var _ datamodel.Node = (TransferProtocol)(&_TransferProtocol{})
+var _ schema.TypedNode = (TransferProtocol)(&_TransferProtocol{})
+
+func (TransferProtocol) Kind() datamodel.Kind {
+	return datamodel.Kind_Map
+}
+func (n TransferProtocol) LookupByString(key string) (datamodel.Node, error) {
+	switch key {
+	case "BitswapTransfer":
+		if n.tag != 1 {
+			return nil, datamodel.ErrNotExists{Segment: datamodel.PathSegmentOfString(key)}
+		}
+		return &n.x1, nil
+	default:
+		return nil, schema.ErrNoSuchField{Type: nil /*TODO*/, Field: datamodel.PathSegmentOfString(key)}
+	}
+}
+func (n TransferProtocol) LookupByNode(key datamodel.Node) (datamodel.Node, error) {
+	ks, err := key.AsString()
+	if err != nil {
+		return nil, err
+	}
+	return n.LookupByString(ks)
+}
+func (TransferProtocol) LookupByIndex(idx int64) (datamodel.Node, error) {
+	return mixins.Map{TypeName: "ipldsch.TransferProtocol"}.LookupByIndex(0)
+}
+func (n TransferProtocol) LookupBySegment(seg datamodel.PathSegment) (datamodel.Node, error) {
+	return n.LookupByString(seg.String())
+}
+func (n TransferProtocol) MapIterator() datamodel.MapIterator {
+	return &_TransferProtocol__MapItr{n, false}
+}
+
+type _TransferProtocol__MapItr struct {
+	n    TransferProtocol
+	done bool
+}
+
+func (itr *_TransferProtocol__MapItr) Next() (k datamodel.Node, v datamodel.Node, _ error) {
+	if itr.done {
+		return nil, nil, datamodel.ErrIteratorOverread{}
+	}
+	switch itr.n.tag {
+	case 1:
+		k, v = &memberName__TransferProtocol_BitswapTransfer, &itr.n.x1
+	default:
+		panic("unreachable")
+	}
+	itr.done = true
+	return
+}
+func (itr *_TransferProtocol__MapItr) Done() bool {
+	return itr.done
+}
+
+func (TransferProtocol) ListIterator() datamodel.ListIterator {
+	return nil
+}
+func (TransferProtocol) Length() int64 {
+	return 1
+}
+func (TransferProtocol) IsAbsent() bool {
+	return false
+}
+func (TransferProtocol) IsNull() bool {
+	return false
+}
+func (TransferProtocol) AsBool() (bool, error) {
+	return mixins.Map{TypeName: "ipldsch.TransferProtocol"}.AsBool()
+}
+func (TransferProtocol) AsInt() (int64, error) {
+	return mixins.Map{TypeName: "ipldsch.TransferProtocol"}.AsInt()
+}
+func (TransferProtocol) AsFloat() (float64, error) {
+	return mixins.Map{TypeName: "ipldsch.TransferProtocol"}.AsFloat()
+}
+func (TransferProtocol) AsString() (string, error) {
+	return mixins.Map{TypeName: "ipldsch.TransferProtocol"}.AsString()
+}
+func (TransferProtocol) AsBytes() ([]byte, error) {
+	return mixins.Map{TypeName: "ipldsch.TransferProtocol"}.AsBytes()
+}
+func (TransferProtocol) AsLink() (datamodel.Link, error) {
+	return mixins.Map{TypeName: "ipldsch.TransferProtocol"}.AsLink()
+}
+func (TransferProtocol) Prototype() datamodel.NodePrototype {
+	return _TransferProtocol__Prototype{}
+}
+
+type _TransferProtocol__Prototype struct{}
+
+func (_TransferProtocol__Prototype) NewBuilder() datamodel.NodeBuilder {
+	var nb _TransferProtocol__Builder
+	nb.Reset()
+	return &nb
+}
+
+type _TransferProtocol__Builder struct {
+	_TransferProtocol__Assembler
+}
+
+func (nb *_TransferProtocol__Builder) Build() datamodel.Node {
+	if *nb.m != schema.Maybe_Value {
+		panic("invalid state: cannot call Build on an assembler that's not finished")
+	}
+	return nb.w
+}
+func (nb *_TransferProtocol__Builder) Reset() {
+	var w _TransferProtocol
+	var m schema.Maybe
+	*nb = _TransferProtocol__Builder{_TransferProtocol__Assembler{w: &w, m: &m}}
+}
+
+type _TransferProtocol__Assembler struct {
+	w     *_TransferProtocol
+	m     *schema.Maybe
+	state maState
+
+	cm  schema.Maybe
+	ca1 _BitswapTransfer__Assembler
+	ca  uint
+}
+
+func (na *_TransferProtocol__Assembler) reset() {
+	na.state = maState_initial
+	switch na.ca {
+	case 0:
+		return
+	case 1:
+		na.ca1.reset()
+	default:
+		panic("unreachable")
+	}
+	na.ca = 0
+	na.cm = schema.Maybe_Absent
+}
+func (na *_TransferProtocol__Assembler) BeginMap(int64) (datamodel.MapAssembler, error) {
+	switch *na.m {
+	case schema.Maybe_Value, schema.Maybe_Null:
+		panic("invalid state: cannot assign into assembler that's already finished")
+	case midvalue:
+		panic("invalid state: it makes no sense to 'begin' twice on the same assembler!")
+	}
+	*na.m = midvalue
+	if na.w == nil {
+		na.w = &_TransferProtocol{}
+	}
+	return na, nil
+}
+func (_TransferProtocol__Assembler) BeginList(sizeHint int64) (datamodel.ListAssembler, error) {
+	return mixins.MapAssembler{TypeName: "ipldsch.TransferProtocol"}.BeginList(0)
+}
+func (na *_TransferProtocol__Assembler) AssignNull() error {
+	switch *na.m {
+	case allowNull:
+		*na.m = schema.Maybe_Null
+		return nil
+	case schema.Maybe_Absent:
+		return mixins.MapAssembler{TypeName: "ipldsch.TransferProtocol"}.AssignNull()
+	case schema.Maybe_Value, schema.Maybe_Null:
+		panic("invalid state: cannot assign into assembler that's already finished")
+	case midvalue:
+		panic("invalid state: cannot assign null into an assembler that's already begun working on recursive structures!")
+	}
+	panic("unreachable")
+}
+func (_TransferProtocol__Assembler) AssignBool(bool) error {
+	return mixins.MapAssembler{TypeName: "ipldsch.TransferProtocol"}.AssignBool(false)
+}
+func (_TransferProtocol__Assembler) AssignInt(int64) error {
+	return mixins.MapAssembler{TypeName: "ipldsch.TransferProtocol"}.AssignInt(0)
+}
+func (_TransferProtocol__Assembler) AssignFloat(float64) error {
+	return mixins.MapAssembler{TypeName: "ipldsch.TransferProtocol"}.AssignFloat(0)
+}
+func (_TransferProtocol__Assembler) AssignString(string) error {
+	return mixins.MapAssembler{TypeName: "ipldsch.TransferProtocol"}.AssignString("")
+}
+func (_TransferProtocol__Assembler) AssignBytes([]byte) error {
+	return mixins.MapAssembler{TypeName: "ipldsch.TransferProtocol"}.AssignBytes(nil)
+}
+func (_TransferProtocol__Assembler) AssignLink(datamodel.Link) error {
+	return mixins.MapAssembler{TypeName: "ipldsch.TransferProtocol"}.AssignLink(nil)
+}
+func (na *_TransferProtocol__Assembler) AssignNode(v datamodel.Node) error {
+	if v.IsNull() {
+		return na.AssignNull()
+	}
+	if v2, ok := v.(*_TransferProtocol); ok {
+		switch *na.m {
+		case schema.Maybe_Value, schema.Maybe_Null:
+			panic("invalid state: cannot assign into assembler that's already finished")
+		case midvalue:
+			panic("invalid state: cannot assign null into an assembler that's already begun working on recursive structures!")
+		}
+		if na.w == nil {
+			na.w = v2
+			*na.m = schema.Maybe_Value
+			return nil
+		}
+		*na.w = *v2
+		*na.m = schema.Maybe_Value
+		return nil
+	}
+	if v.Kind() != datamodel.Kind_Map {
+		return datamodel.ErrWrongKind{TypeName: "ipldsch.TransferProtocol", MethodName: "AssignNode", AppropriateKind: datamodel.KindSet_JustMap, ActualKind: v.Kind()}
+	}
+	itr := v.MapIterator()
+	for !itr.Done() {
+		k, v, err := itr.Next()
+		if err != nil {
+			return err
+		}
+		if err := na.AssembleKey().AssignNode(k); err != nil {
+			return err
+		}
+		if err := na.AssembleValue().AssignNode(v); err != nil {
+			return err
+		}
+	}
+	return na.Finish()
+}
+func (_TransferProtocol__Assembler) Prototype() datamodel.NodePrototype {
+	return _TransferProtocol__Prototype{}
+}
+func (ma *_TransferProtocol__Assembler) valueFinishTidy() bool {
+	switch ma.cm {
+	case schema.Maybe_Value:
+		ma.state = maState_initial
+		return true
+	default:
+		return false
+	}
+}
+func (ma *_TransferProtocol__Assembler) AssembleEntry(k string) (datamodel.NodeAssembler, error) {
+	switch ma.state {
+	case maState_initial:
+		// carry on
+	case maState_midKey:
+		panic("invalid state: AssembleEntry cannot be called when in the middle of assembling another key")
+	case maState_expectValue:
+		panic("invalid state: AssembleEntry cannot be called when expecting start of value assembly")
+	case maState_midValue:
+		if !ma.valueFinishTidy() {
+			panic("invalid state: AssembleEntry cannot be called when in the middle of assembling a value")
+		} // if tidy success: carry on for the moment, but we'll still be erroring shortly.
+	case maState_finished:
+		panic("invalid state: AssembleEntry cannot be called on an assembler that's already finished")
+	}
+	if ma.ca != 0 {
+		return nil, schema.ErrNotUnionStructure{TypeName: "ipldsch.TransferProtocol", Detail: "cannot add another entry -- a union can only contain one thing!"}
+	}
+	switch k {
+	case "BitswapTransfer":
+		ma.state = maState_midValue
+		ma.ca = 1
+		ma.w.tag = 1
+		ma.ca1.w = &ma.w.x1
+		ma.ca1.m = &ma.cm
+		return &ma.ca1, nil
+	}
+	return nil, schema.ErrInvalidKey{TypeName: "ipldsch.TransferProtocol", Key: &_String{k}}
+}
+func (ma *_TransferProtocol__Assembler) AssembleKey() datamodel.NodeAssembler {
+	switch ma.state {
+	case maState_initial:
+		// carry on
+	case maState_midKey:
+		panic("invalid state: AssembleKey cannot be called when in the middle of assembling another key")
+	case maState_expectValue:
+		panic("invalid state: AssembleKey cannot be called when expecting start of value assembly")
+	case maState_midValue:
+		if !ma.valueFinishTidy() {
+			panic("invalid state: AssembleKey cannot be called when in the middle of assembling a value")
+		} // if tidy success: carry on for the moment, but we'll still be erroring shortly... or rather, the keyassembler will be.
+	case maState_finished:
+		panic("invalid state: AssembleKey cannot be called on an assembler that's already finished")
+	}
+	ma.state = maState_midKey
+	return (*_TransferProtocol__KeyAssembler)(ma)
+}
+func (ma *_TransferProtocol__Assembler) AssembleValue() datamodel.NodeAssembler {
+	switch ma.state {
+	case maState_initial:
+		panic("invalid state: AssembleValue cannot be called when no key is primed")
+	case maState_midKey:
+		panic("invalid state: AssembleValue cannot be called when in the middle of assembling a key")
+	case maState_expectValue:
+		// carry on
+	case maState_midValue:
+		panic("invalid state: AssembleValue cannot be called when in the middle of assembling another value")
+	case maState_finished:
+		panic("invalid state: AssembleValue cannot be called on an assembler that's already finished")
+	}
+	ma.state = maState_midValue
+	switch ma.ca {
+	case 1:
+		ma.ca1.w = &ma.w.x1
+		ma.ca1.m = &ma.cm
+		return &ma.ca1
+	default:
+		panic("unreachable")
+	}
+}
+func (ma *_TransferProtocol__Assembler) Finish() error {
+	switch ma.state {
+	case maState_initial:
+		// carry on
+	case maState_midKey:
+		panic("invalid state: Finish cannot be called when in the middle of assembling a key")
+	case maState_expectValue:
+		panic("invalid state: Finish cannot be called when expecting start of value assembly")
+	case maState_midValue:
+		if !ma.valueFinishTidy() {
+			panic("invalid state: Finish cannot be called when in the middle of assembling a value")
+		} // if tidy success: carry on
+	case maState_finished:
+		panic("invalid state: Finish cannot be called on an assembler that's already finished")
+	}
+	if ma.ca == 0 {
+		return schema.ErrNotUnionStructure{TypeName: "ipldsch.TransferProtocol", Detail: "a union must have exactly one entry (not none)!"}
+	}
+	ma.state = maState_finished
+	*ma.m = schema.Maybe_Value
+	return nil
+}
+func (ma *_TransferProtocol__Assembler) KeyPrototype() datamodel.NodePrototype {
+	return _String__Prototype{}
+}
+func (ma *_TransferProtocol__Assembler) ValuePrototype(k string) datamodel.NodePrototype {
+	switch k {
+	case "BitswapTransfer":
+		return _BitswapTransfer__Prototype{}
+	default:
+		return nil
+	}
+}
+
+type _TransferProtocol__KeyAssembler _TransferProtocol__Assembler
+
+func (_TransferProtocol__KeyAssembler) BeginMap(sizeHint int64) (datamodel.MapAssembler, error) {
+	return mixins.StringAssembler{TypeName: "ipldsch.TransferProtocol.KeyAssembler"}.BeginMap(0)
+}
+func (_TransferProtocol__KeyAssembler) BeginList(sizeHint int64) (datamodel.ListAssembler, error) {
+	return mixins.StringAssembler{TypeName: "ipldsch.TransferProtocol.KeyAssembler"}.BeginList(0)
+}
+func (na *_TransferProtocol__KeyAssembler) AssignNull() error {
+	return mixins.StringAssembler{TypeName: "ipldsch.TransferProtocol.KeyAssembler"}.AssignNull()
+}
+func (_TransferProtocol__KeyAssembler) AssignBool(bool) error {
+	return mixins.StringAssembler{TypeName: "ipldsch.TransferProtocol.KeyAssembler"}.AssignBool(false)
+}
+func (_TransferProtocol__KeyAssembler) AssignInt(int64) error {
+	return mixins.StringAssembler{TypeName: "ipldsch.TransferProtocol.KeyAssembler"}.AssignInt(0)
+}
+func (_TransferProtocol__KeyAssembler) AssignFloat(float64) error {
+	return mixins.StringAssembler{TypeName: "ipldsch.TransferProtocol.KeyAssembler"}.AssignFloat(0)
+}
+func (ka *_TransferProtocol__KeyAssembler) AssignString(k string) error {
+	if ka.state != maState_midKey {
+		panic("misuse: KeyAssembler held beyond its valid lifetime")
+	}
+	if ka.ca != 0 {
+		return schema.ErrNotUnionStructure{TypeName: "ipldsch.TransferProtocol", Detail: "cannot add another entry -- a union can only contain one thing!"}
+	}
+	switch k {
+	case "BitswapTransfer":
+		ka.ca = 1
+		ka.w.tag = 1
+		ka.state = maState_expectValue
+		return nil
+	}
+	return schema.ErrInvalidKey{TypeName: "ipldsch.TransferProtocol", Key: &_String{k}} // TODO: error quality: ErrInvalidUnionDiscriminant ?
+}
+func (_TransferProtocol__KeyAssembler) AssignBytes([]byte) error {
+	return mixins.StringAssembler{TypeName: "ipldsch.TransferProtocol.KeyAssembler"}.AssignBytes(nil)
+}
+func (_TransferProtocol__KeyAssembler) AssignLink(datamodel.Link) error {
+	return mixins.StringAssembler{TypeName: "ipldsch.TransferProtocol.KeyAssembler"}.AssignLink(nil)
+}
+func (ka *_TransferProtocol__KeyAssembler) AssignNode(v datamodel.Node) error {
+	if v2, err := v.AsString(); err != nil {
+		return err
+	} else {
+		return ka.AssignString(v2)
+	}
+}
+func (_TransferProtocol__KeyAssembler) Prototype() datamodel.NodePrototype {
+	return _String__Prototype{}
+}
+func (TransferProtocol) Type() schema.Type {
+	return nil /*TODO:typelit*/
+}
+func (n TransferProtocol) Representation() datamodel.Node {
+	return (*_TransferProtocol__Repr)(n)
+}
+
+type _TransferProtocol__Repr _TransferProtocol
+
+var (
+	memberName__TransferProtocol_BitswapTransfer_serial = _String{"bitswap"}
+)
+var _ datamodel.Node = &_TransferProtocol__Repr{}
+
+func (_TransferProtocol__Repr) Kind() datamodel.Kind {
+	return datamodel.Kind_Map
+}
+func (n *_TransferProtocol__Repr) LookupByString(key string) (datamodel.Node, error) {
+	switch key {
+	case "bitswap":
+		if n.tag != 1 {
+			return nil, datamodel.ErrNotExists{Segment: datamodel.PathSegmentOfString(key)}
+		}
+		return n.x1.Representation(), nil
+	default:
+		return nil, schema.ErrNoSuchField{Type: nil /*TODO*/, Field: datamodel.PathSegmentOfString(key)}
+	}
+}
+func (n *_TransferProtocol__Repr) LookupByNode(key datamodel.Node) (datamodel.Node, error) {
+	ks, err := key.AsString()
+	if err != nil {
+		return nil, err
+	}
+	return n.LookupByString(ks)
+}
+func (_TransferProtocol__Repr) LookupByIndex(idx int64) (datamodel.Node, error) {
+	return mixins.Map{TypeName: "ipldsch.TransferProtocol.Repr"}.LookupByIndex(0)
+}
+func (n _TransferProtocol__Repr) LookupBySegment(seg datamodel.PathSegment) (datamodel.Node, error) {
+	return n.LookupByString(seg.String())
+}
+func (n *_TransferProtocol__Repr) MapIterator() datamodel.MapIterator {
+	return &_TransferProtocol__ReprMapItr{n, false}
+}
+
+type _TransferProtocol__ReprMapItr struct {
+	n    *_TransferProtocol__Repr
+	done bool
+}
+
+func (itr *_TransferProtocol__ReprMapItr) Next() (k datamodel.Node, v datamodel.Node, _ error) {
+	if itr.done {
+		return nil, nil, datamodel.ErrIteratorOverread{}
+	}
+	switch itr.n.tag {
+	case 1:
+		k, v = &memberName__TransferProtocol_BitswapTransfer_serial, itr.n.x1.Representation()
+	default:
+		panic("unreachable")
+	}
+	itr.done = true
+	return
+}
+func (itr *_TransferProtocol__ReprMapItr) Done() bool {
+	return itr.done
+}
+
+func (_TransferProtocol__Repr) ListIterator() datamodel.ListIterator {
+	return nil
+}
+func (_TransferProtocol__Repr) Length() int64 {
+	return 1
+}
+func (_TransferProtocol__Repr) IsAbsent() bool {
+	return false
+}
+func (_TransferProtocol__Repr) IsNull() bool {
+	return false
+}
+func (_TransferProtocol__Repr) AsBool() (bool, error) {
+	return mixins.Map{TypeName: "ipldsch.TransferProtocol.Repr"}.AsBool()
+}
+func (_TransferProtocol__Repr) AsInt() (int64, error) {
+	return mixins.Map{TypeName: "ipldsch.TransferProtocol.Repr"}.AsInt()
+}
+func (_TransferProtocol__Repr) AsFloat() (float64, error) {
+	return mixins.Map{TypeName: "ipldsch.TransferProtocol.Repr"}.AsFloat()
+}
+func (_TransferProtocol__Repr) AsString() (string, error) {
+	return mixins.Map{TypeName: "ipldsch.TransferProtocol.Repr"}.AsString()
+}
+func (_TransferProtocol__Repr) AsBytes() ([]byte, error) {
+	return mixins.Map{TypeName: "ipldsch.TransferProtocol.Repr"}.AsBytes()
+}
+func (_TransferProtocol__Repr) AsLink() (datamodel.Link, error) {
+	return mixins.Map{TypeName: "ipldsch.TransferProtocol.Repr"}.AsLink()
+}
+func (_TransferProtocol__Repr) Prototype() datamodel.NodePrototype {
+	return _TransferProtocol__ReprPrototype{}
+}
+
+type _TransferProtocol__ReprPrototype struct{}
+
+func (_TransferProtocol__ReprPrototype) NewBuilder() datamodel.NodeBuilder {
+	var nb _TransferProtocol__ReprBuilder
+	nb.Reset()
+	return &nb
+}
+
+type _TransferProtocol__ReprBuilder struct {
+	_TransferProtocol__ReprAssembler
+}
+
+func (nb *_TransferProtocol__ReprBuilder) Build() datamodel.Node {
+	if *nb.m != schema.Maybe_Value {
+		panic("invalid state: cannot call Build on an assembler that's not finished")
+	}
+	return nb.w
+}
+func (nb *_TransferProtocol__ReprBuilder) Reset() {
+	var w _TransferProtocol
+	var m schema.Maybe
+	*nb = _TransferProtocol__ReprBuilder{_TransferProtocol__ReprAssembler{w: &w, m: &m}}
+}
+
+type _TransferProtocol__ReprAssembler struct {
+	w     *_TransferProtocol
+	m     *schema.Maybe
+	state maState
+
+	cm  schema.Maybe
+	ca1 _BitswapTransfer__ReprAssembler
+	ca  uint
+}
+
+func (na *_TransferProtocol__ReprAssembler) reset() {
+	na.state = maState_initial
+	switch na.ca {
+	case 0:
+		return
+	case 1:
+		na.ca1.reset()
+	default:
+		panic("unreachable")
+	}
+	na.ca = 0
+	na.cm = schema.Maybe_Absent
+}
+func (na *_TransferProtocol__ReprAssembler) BeginMap(int64) (datamodel.MapAssembler, error) {
+	switch *na.m {
+	case schema.Maybe_Value, schema.Maybe_Null:
+		panic("invalid state: cannot assign into assembler that's already finished")
+	case midvalue:
+		panic("invalid state: it makes no sense to 'begin' twice on the same assembler!")
+	}
+	*na.m = midvalue
+	if na.w == nil {
+		na.w = &_TransferProtocol{}
+	}
+	return na, nil
+}
+func (_TransferProtocol__ReprAssembler) BeginList(sizeHint int64) (datamodel.ListAssembler, error) {
+	return mixins.MapAssembler{TypeName: "ipldsch.TransferProtocol.Repr"}.BeginList(0)
+}
+func (na *_TransferProtocol__ReprAssembler) AssignNull() error {
+	switch *na.m {
+	case allowNull:
+		*na.m = schema.Maybe_Null
+		return nil
+	case schema.Maybe_Absent:
+		return mixins.MapAssembler{TypeName: "ipldsch.TransferProtocol.Repr.Repr"}.AssignNull()
+	case schema.Maybe_Value, schema.Maybe_Null:
+		panic("invalid state: cannot assign into assembler that's already finished")
+	case midvalue:
+		panic("invalid state: cannot assign null into an assembler that's already begun working on recursive structures!")
+	}
+	panic("unreachable")
+}
+func (_TransferProtocol__ReprAssembler) AssignBool(bool) error {
+	return mixins.MapAssembler{TypeName: "ipldsch.TransferProtocol.Repr"}.AssignBool(false)
+}
+func (_TransferProtocol__ReprAssembler) AssignInt(int64) error {
+	return mixins.MapAssembler{TypeName: "ipldsch.TransferProtocol.Repr"}.AssignInt(0)
+}
+func (_TransferProtocol__ReprAssembler) AssignFloat(float64) error {
+	return mixins.MapAssembler{TypeName: "ipldsch.TransferProtocol.Repr"}.AssignFloat(0)
+}
+func (_TransferProtocol__ReprAssembler) AssignString(string) error {
+	return mixins.MapAssembler{TypeName: "ipldsch.TransferProtocol.Repr"}.AssignString("")
+}
+func (_TransferProtocol__ReprAssembler) AssignBytes([]byte) error {
+	return mixins.MapAssembler{TypeName: "ipldsch.TransferProtocol.Repr"}.AssignBytes(nil)
+}
+func (_TransferProtocol__ReprAssembler) AssignLink(datamodel.Link) error {
+	return mixins.MapAssembler{TypeName: "ipldsch.TransferProtocol.Repr"}.AssignLink(nil)
+}
+func (na *_TransferProtocol__ReprAssembler) AssignNode(v datamodel.Node) error {
+	if v.IsNull() {
+		return na.AssignNull()
+	}
+	if v2, ok := v.(*_TransferProtocol); ok {
+		switch *na.m {
+		case schema.Maybe_Value, schema.Maybe_Null:
+			panic("invalid state: cannot assign into assembler that's already finished")
+		case midvalue:
+			panic("invalid state: cannot assign null into an assembler that's already begun working on recursive structures!")
+		}
+		if na.w == nil {
+			na.w = v2
+			*na.m = schema.Maybe_Value
+			return nil
+		}
+		*na.w = *v2
+		*na.m = schema.Maybe_Value
+		return nil
+	}
+	if v.Kind() != datamodel.Kind_Map {
+		return datamodel.ErrWrongKind{TypeName: "ipldsch.TransferProtocol.Repr", MethodName: "AssignNode", AppropriateKind: datamodel.KindSet_JustMap, ActualKind: v.Kind()}
+	}
+	itr := v.MapIterator()
+	for !itr.Done() {
+		k, v, err := itr.Next()
+		if err != nil {
+			return err
+		}
+		if err := na.AssembleKey().AssignNode(k); err != nil {
+			return err
+		}
+		if err := na.AssembleValue().AssignNode(v); err != nil {
+			return err
+		}
+	}
+	return na.Finish()
+}
+func (_TransferProtocol__ReprAssembler) Prototype() datamodel.NodePrototype {
+	return _TransferProtocol__ReprPrototype{}
+}
+func (ma *_TransferProtocol__ReprAssembler) valueFinishTidy() bool {
+	switch ma.cm {
+	case schema.Maybe_Value:
+		ma.state = maState_initial
+		return true
+	default:
+		return false
+	}
+}
+func (ma *_TransferProtocol__ReprAssembler) AssembleEntry(k string) (datamodel.NodeAssembler, error) {
+	switch ma.state {
+	case maState_initial:
+		// carry on
+	case maState_midKey:
+		panic("invalid state: AssembleEntry cannot be called when in the middle of assembling another key")
+	case maState_expectValue:
+		panic("invalid state: AssembleEntry cannot be called when expecting start of value assembly")
+	case maState_midValue:
+		if !ma.valueFinishTidy() {
+			panic("invalid state: AssembleEntry cannot be called when in the middle of assembling a value")
+		} // if tidy success: carry on for the moment, but we'll still be erroring shortly.
+	case maState_finished:
+		panic("invalid state: AssembleEntry cannot be called on an assembler that's already finished")
+	}
+	if ma.ca != 0 {
+		return nil, schema.ErrNotUnionStructure{TypeName: "ipldsch.TransferProtocol.Repr", Detail: "cannot add another entry -- a union can only contain one thing!"}
+	}
+	switch k {
+	case "bitswap":
+		ma.state = maState_midValue
+		ma.ca = 1
+		ma.w.tag = 1
+		ma.ca1.w = &ma.w.x1
+		ma.ca1.m = &ma.cm
+		return &ma.ca1, nil
+	}
+	return nil, schema.ErrInvalidKey{TypeName: "ipldsch.TransferProtocol.Repr", Key: &_String{k}}
+}
+func (ma *_TransferProtocol__ReprAssembler) AssembleKey() datamodel.NodeAssembler {
+	switch ma.state {
+	case maState_initial:
+		// carry on
+	case maState_midKey:
+		panic("invalid state: AssembleKey cannot be called when in the middle of assembling another key")
+	case maState_expectValue:
+		panic("invalid state: AssembleKey cannot be called when expecting start of value assembly")
+	case maState_midValue:
+		if !ma.valueFinishTidy() {
+			panic("invalid state: AssembleKey cannot be called when in the middle of assembling a value")
+		} // if tidy success: carry on for the moment, but we'll still be erroring shortly... or rather, the keyassembler will be.
+	case maState_finished:
+		panic("invalid state: AssembleKey cannot be called on an assembler that's already finished")
+	}
+	ma.state = maState_midKey
+	return (*_TransferProtocol__ReprKeyAssembler)(ma)
+}
+func (ma *_TransferProtocol__ReprAssembler) AssembleValue() datamodel.NodeAssembler {
+	switch ma.state {
+	case maState_initial:
+		panic("invalid state: AssembleValue cannot be called when no key is primed")
+	case maState_midKey:
+		panic("invalid state: AssembleValue cannot be called when in the middle of assembling a key")
+	case maState_expectValue:
+		// carry on
+	case maState_midValue:
+		panic("invalid state: AssembleValue cannot be called when in the middle of assembling another value")
+	case maState_finished:
+		panic("invalid state: AssembleValue cannot be called on an assembler that's already finished")
+	}
+	ma.state = maState_midValue
+	switch ma.ca {
+	case 1:
+		ma.ca1.w = &ma.w.x1
+		ma.ca1.m = &ma.cm
+		return &ma.ca1
+	default:
+		panic("unreachable")
+	}
+}
+func (ma *_TransferProtocol__ReprAssembler) Finish() error {
+	switch ma.state {
+	case maState_initial:
+		// carry on
+	case maState_midKey:
+		panic("invalid state: Finish cannot be called when in the middle of assembling a key")
+	case maState_expectValue:
+		panic("invalid state: Finish cannot be called when expecting start of value assembly")
+	case maState_midValue:
+		if !ma.valueFinishTidy() {
+			panic("invalid state: Finish cannot be called when in the middle of assembling a value")
+		} // if tidy success: carry on
+	case maState_finished:
+		panic("invalid state: Finish cannot be called on an assembler that's already finished")
+	}
+	if ma.ca == 0 {
+		return schema.ErrNotUnionStructure{TypeName: "ipldsch.TransferProtocol.Repr", Detail: "a union must have exactly one entry (not none)!"}
+	}
+	ma.state = maState_finished
+	*ma.m = schema.Maybe_Value
+	return nil
+}
+func (ma *_TransferProtocol__ReprAssembler) KeyPrototype() datamodel.NodePrototype {
+	return _String__Prototype{}
+}
+func (ma *_TransferProtocol__ReprAssembler) ValuePrototype(k string) datamodel.NodePrototype {
+	switch k {
+	case "BitswapTransfer":
+		return _BitswapTransfer__ReprPrototype{}
+	default:
+		return nil
+	}
+}
+
+type _TransferProtocol__ReprKeyAssembler _TransferProtocol__ReprAssembler
+
+func (_TransferProtocol__ReprKeyAssembler) BeginMap(sizeHint int64) (datamodel.MapAssembler, error) {
+	return mixins.StringAssembler{TypeName: "ipldsch.TransferProtocol.Repr.KeyAssembler"}.BeginMap(0)
+}
+func (_TransferProtocol__ReprKeyAssembler) BeginList(sizeHint int64) (datamodel.ListAssembler, error) {
+	return mixins.StringAssembler{TypeName: "ipldsch.TransferProtocol.Repr.KeyAssembler"}.BeginList(0)
+}
+func (na *_TransferProtocol__ReprKeyAssembler) AssignNull() error {
+	return mixins.StringAssembler{TypeName: "ipldsch.TransferProtocol.Repr.KeyAssembler"}.AssignNull()
+}
+func (_TransferProtocol__ReprKeyAssembler) AssignBool(bool) error {
+	return mixins.StringAssembler{TypeName: "ipldsch.TransferProtocol.Repr.KeyAssembler"}.AssignBool(false)
+}
+func (_TransferProtocol__ReprKeyAssembler) AssignInt(int64) error {
+	return mixins.StringAssembler{TypeName: "ipldsch.TransferProtocol.Repr.KeyAssembler"}.AssignInt(0)
+}
+func (_TransferProtocol__ReprKeyAssembler) AssignFloat(float64) error {
+	return mixins.StringAssembler{TypeName: "ipldsch.TransferProtocol.Repr.KeyAssembler"}.AssignFloat(0)
+}
+func (ka *_TransferProtocol__ReprKeyAssembler) AssignString(k string) error {
+	if ka.state != maState_midKey {
+		panic("misuse: KeyAssembler held beyond its valid lifetime")
+	}
+	if ka.ca != 0 {
+		return schema.ErrNotUnionStructure{TypeName: "ipldsch.TransferProtocol.Repr", Detail: "cannot add another entry -- a union can only contain one thing!"}
+	}
+	switch k {
+	case "bitswap":
+		ka.ca = 1
+		ka.w.tag = 1
+		ka.state = maState_expectValue
+		return nil
+	}
+	return schema.ErrInvalidKey{TypeName: "ipldsch.TransferProtocol.Repr", Key: &_String{k}} // TODO: error quality: ErrInvalidUnionDiscriminant ?
+}
+func (_TransferProtocol__ReprKeyAssembler) AssignBytes([]byte) error {
+	return mixins.StringAssembler{TypeName: "ipldsch.TransferProtocol.Repr.KeyAssembler"}.AssignBytes(nil)
+}
+func (_TransferProtocol__ReprKeyAssembler) AssignLink(datamodel.Link) error {
+	return mixins.StringAssembler{TypeName: "ipldsch.TransferProtocol.Repr.KeyAssembler"}.AssignLink(nil)
+}
+func (ka *_TransferProtocol__ReprKeyAssembler) AssignNode(v datamodel.Node) error {
+	if v2, err := v.AsString(); err != nil {
+		return err
+	} else {
+		return ka.AssignString(v2)
+	}
+}
+func (_TransferProtocol__ReprKeyAssembler) Prototype() datamodel.NodePrototype {
+	return _String__Prototype{}
+}
