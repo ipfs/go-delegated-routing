@@ -9,8 +9,7 @@ type Multihash struct {
 }
 type List__Multihash []Multihash
 type GetP2PProvideRequest struct {
-	Nonce string
-	Keys  List__Multihash
+	Keys List__Multihash
 }
 type ProvidersByKey struct {
 	Key      Multihash
