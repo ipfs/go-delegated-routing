@@ -9,6 +9,7 @@ type Multihash struct {
 }
 
 type GetP2PProvideRequest struct {
+	Nonce String
      Keys [Multihash]   # multihash vs raw?
 }
 
