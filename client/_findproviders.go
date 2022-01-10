@@ -11,12 +11,9 @@ import (
 
 	"github.com/ipfs/go-cid"
 	"github.com/ipfs/go-delegated-routing/parser"
-	logging "github.com/ipfs/go-log"
 	"github.com/libp2p/go-libp2p-core/peer"
 	"github.com/multiformats/go-multiaddr"
 )
-
-var logger = logging.Logger("delegated/client")
 
 func (c *client) FindProviders(ctx context.Context, cid cid.Cid) ([]peer.AddrInfo, error) {
 	ctx, cancel := context.WithCancel(ctx)

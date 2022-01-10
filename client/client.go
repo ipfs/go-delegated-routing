@@ -5,13 +5,20 @@ import (
 	"net/http"
 	"net/url"
 
-	"github.com/ipfs/go-cid"
-	"github.com/libp2p/go-libp2p-core/peer"
+	proto "github.com/ipfs/go-delegated-routing/ipld/ipldsch"
+	logging "github.com/ipfs/go-log"
 )
 
+var logger = logging.Logger("delegated/client")
+
 type Client interface {
-	FindProviders(ctx context.Context, cid cid.Cid) ([]peer.AddrInfo, error)
-	FindProvidersAsync(ctx context.Context, cid cid.Cid) (<-chan FindProvidersAsyncResult, error)
+	GetP2PProvide(ctx context.Context, req *proto.GetP2PProvideRequest) ([]*proto.GetP2PProvideResponse, error)
+	GetP2PProvide_Async(ctx context.Context, req *proto.GetP2PProvideRequest) (<-chan GetP2PProvide_Async_Response, error)
+}
+
+type GetP2PProvide_Async_Response struct {
+	Resp *proto.GetP2PProvideResponse
+	Err  error
 }
 
 type Option func(*client) error
