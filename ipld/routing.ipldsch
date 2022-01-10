@@ -4,6 +4,7 @@ type Envelope union {
      | GetP2PProvideResponse "get-p2p-provide-response"
 } representation keyed
 
+# ISSUE: IPLD schema cannot alias types
 type Multihash struct {
      Bytes Bytes
 }

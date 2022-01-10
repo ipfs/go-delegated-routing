@@ -14,6 +14,8 @@ import (
 	"github.com/ipld/go-ipld-prime/codec/dagjson"
 )
 
+// NOTE: This file serves as an example of how codegen could generate RPC client bindings for a single method.
+
 func (c *client) GetP2PProvide(ctx context.Context, req *proto.GetP2PProvideRequest) ([]*proto.GetP2PProvideResponse, error) {
 	ctx, cancel := context.WithCancel(ctx)
 	defer cancel()
@@ -79,7 +81,7 @@ func process_GetP2PProvide_Async_Response(ctx context.Context, ch chan<- GetP2PP
 		}
 
 		env := &proto.Envelope{}
-		// ISSUE: bindnode codegen should be upgraded so that the user doesn't need to provide the prototype manually
+		// ISSUE: bindnode codegen should not require the user to provide the prototype manually
 		_, err := ipld.UnmarshalStreaming(r, dagjson.Decode, env, proto.Prototypes.Envelope.Type())
 		if errors.Is(err, io.EOF) {
 			return
