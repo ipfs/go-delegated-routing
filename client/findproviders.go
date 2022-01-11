@@ -60,11 +60,16 @@ func (fp *FindProviders) FindProvidersAsync(ctx context.Context, key cid.Cid) (<
 func cidsToGetP2PProvideRequest(cids []cid.Cid) *proto.GetP2PProvideRequest {
 	keys := make(proto.List__Multihash, len(cids))
 	for i, cid := range cids {
-		keys[i] = proto.Multihash{Bytes: cid.Hash()}
+		keys[i] = *BuildProtoMultihashFromCid(cid)
 	}
 	return &proto.GetP2PProvideRequest{
 		Keys: keys,
 	}
+}
+
+func BuildProtoMultihashFromCid(c cid.Cid) *proto.Multihash {
+	p := proto.Multihash{Bytes: c.Hash()}
+	return &p
 }
 
 type KeyProviders struct {
@@ -85,12 +90,7 @@ func parseP2PProvideResponseForKey(resp *proto.GetP2PProvideResponse, key cid.Ci
 func parseP2PProvideResponse(resp *proto.GetP2PProvideResponse) []KeyProviders {
 	kp := []KeyProviders{}
 	for _, prov := range resp.ProvidersByKey {
-		mh, err := ParseProtoMultihash(&prov.Key)
-		if err != nil {
-			continue
-		}
-		// XXX: Is CidFromBytes(cid.Hash()) == cid?
-		_, c, err := cid.CidFromBytes(mh)
+		c, err := ParseProtoCid(&prov.Key)
 		if err != nil {
 			logger.Infof("cannot parse key cid (%w)", err)
 			continue
@@ -98,6 +98,20 @@ func parseP2PProvideResponse(resp *proto.GetP2PProvideResponse) []KeyProviders {
 		kp = append(kp, KeyProviders{Key: c, Providers: parseProtoNodesToAddrInfo(prov.Provider.Node)})
 	}
 	return kp
+}
+
+func ParseProtoCid(p *proto.Multihash) (cid.Cid, error) {
+	mh, err := ParseProtoMultihash(p)
+	if err != nil {
+		return cid.Undef, err
+	}
+	// XXX: Is CidFromBytes(cid.Hash()) == cid?
+	// _, c, err := cid.CidFromBytes(mh)
+	c := cid.NewCidV1(cid.Raw, mh)
+	if err != nil {
+		return cid.Undef, err
+	}
+	return c, nil
 }
 
 func ParseProtoMultihash(p *proto.Multihash) (multihash.Multihash, error) {

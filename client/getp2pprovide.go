@@ -14,7 +14,7 @@ import (
 	"github.com/ipld/go-ipld-prime/codec/dagjson"
 )
 
-// NOTE: This file serves as an example of how codegen could generate RPC client bindings for a single method.
+// NOTE: This file will be codegen'd by a protocol compiler.
 
 func (c *client) GetP2PProvide(ctx context.Context, req *proto.GetP2PProvideRequest) ([]*proto.GetP2PProvideResponse, error) {
 	ctx, cancel := context.WithCancel(ctx)
