@@ -65,7 +65,7 @@ func (c *client) GetP2PProvide_Async(ctx context.Context, req *proto.GetP2PProvi
 
 	resp, err := c.client.Do(httpReq)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("sending HTTP request (%v)", err)
 	}
 
 	ch := make(chan GetP2PProvide_Async_Response, 1)
@@ -81,13 +81,14 @@ func process_GetP2PProvide_Async_Response(ctx context.Context, ch chan<- GetP2PP
 		}
 
 		env := &proto.Envelope{}
-		// ISSUE: bindnode codegen should not require the user to provide the prototype manually
+		// TODO: bindnode codegen should not require the user to provide the prototype manually
 		_, err := ipld.UnmarshalStreaming(r, dagjson.Decode, env, proto.Prototypes.Envelope.Type())
-		if errors.Is(err, io.EOF) {
+		if errors.Is(err, io.EOF) || errors.Is(err, io.ErrUnexpectedEOF) {
 			return
 		}
 		if err != nil {
 			ch <- GetP2PProvide_Async_Response{Err: err}
+			return
 		}
 
 		if env.GetP2PProvideResponse == nil {
