@@ -1,6 +1,6 @@
 package ipldsch
 
-type Envelope struct {
+type ServiceEnvelope struct {
 	GetP2PProvideRequest  *GetP2PProvideRequest
 	GetP2PProvideResponse *GetP2PProvideResponse
 }

@@ -22,8 +22,8 @@ func Server_AsyncHandler(s Server) http.HandlerFunc {
 	return func(writer http.ResponseWriter, request *http.Request) {
 		// parse request
 		msg := request.URL.Query().Get("q")
-		env := &proto.Envelope{}
-		_, err := ipld.Unmarshal([]byte(msg), dagjson.Decode, env, proto.Prototypes.Envelope.Type())
+		env := &proto.ServiceEnvelope{}
+		_, err := ipld.Unmarshal([]byte(msg), dagjson.Decode, env, proto.Prototypes.ServiceEnvelope.Type())
 		if err != nil {
 			log.Errorf("received request not decodeable (%w)", err)
 			writer.WriteHeader(400)
@@ -40,10 +40,10 @@ func Server_AsyncHandler(s Server) http.HandlerFunc {
 				return
 			}
 			for resp := range ch {
-				env := &proto.Envelope{
+				env := &proto.ServiceEnvelope{
 					GetP2PProvideResponse: resp,
 				}
-				buf, err := ipld.Marshal(dagjson.Encode, env, proto.Prototypes.Envelope.Type())
+				buf, err := ipld.Marshal(dagjson.Encode, env, proto.Prototypes.ServiceEnvelope.Type())
 				if err != nil {
 					log.Errorf("cannot encode response (%w)", err)
 					continue

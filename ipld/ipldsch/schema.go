@@ -14,7 +14,7 @@ var embeddedSchema []byte
 var Prototypes schemaSlab
 
 type schemaSlab struct {
-	Envelope               schema.TypedPrototype
+	ServiceEnvelope        schema.TypedPrototype
 	Multihash              schema.TypedPrototype
 	List__Multihash        schema.TypedPrototype
 	GetP2PProvideRequest   schema.TypedPrototype
@@ -37,9 +37,9 @@ func init() {
 		panic(err)
 	}
 
-	Prototypes.Envelope = bindnode.Prototype(
-		(*Envelope)(nil),
-		ts.TypeByName("Envelope"),
+	Prototypes.ServiceEnvelope = bindnode.Prototype(
+		(*ServiceEnvelope)(nil),
+		ts.TypeByName("ServiceEnvelope"),
 	)
 
 	Prototypes.Multihash = bindnode.Prototype(

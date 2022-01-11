@@ -44,11 +44,11 @@ func (c *client) GetP2PProvide(ctx context.Context, req *proto.GetP2PProvideRequ
 }
 
 func (c *client) GetP2PProvide_Async(ctx context.Context, req *proto.GetP2PProvideRequest) (<-chan GetP2PProvide_Async_Response, error) {
-	envelope := &proto.Envelope{
+	envelope := &proto.ServiceEnvelope{
 		GetP2PProvideRequest: req,
 	}
 
-	buf, err := ipld.Marshal(dagjson.Encode, envelope, proto.Prototypes.Envelope.Type())
+	buf, err := ipld.Marshal(dagjson.Encode, envelope, proto.Prototypes.ServiceEnvelope.Type())
 	if err != nil {
 		return nil, fmt.Errorf("unexpected serialization error (%w)", err)
 	}
@@ -80,9 +80,9 @@ func process_GetP2PProvide_Async_Response(ctx context.Context, ch chan<- GetP2PP
 			return
 		}
 
-		env := &proto.Envelope{}
+		env := &proto.ServiceEnvelope{}
 		// TODO: bindnode codegen should not require the user to provide the prototype manually
-		_, err := ipld.UnmarshalStreaming(r, dagjson.Decode, env, proto.Prototypes.Envelope.Type())
+		_, err := ipld.UnmarshalStreaming(r, dagjson.Decode, env, proto.Prototypes.ServiceEnvelope.Type())
 		if errors.Is(err, io.EOF) || errors.Is(err, io.ErrUnexpectedEOF) {
 			return
 		}

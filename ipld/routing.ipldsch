@@ -1,16 +1,17 @@
 
-type Envelope union {
+type ServiceEnvelope union {
      | GetP2PProvideRequest "get-p2p-provide-request"
      | GetP2PProvideResponse "get-p2p-provide-response"
 } representation keyed
 
-# ISSUE: IPLD schema cannot alias types
+# TODO: IPLD schema type aliases not implemented
+# type Multihash = Bytes
 type Multihash struct {
      Bytes Bytes
 }
 
 type GetP2PProvideRequest struct {
-     Keys [Multihash]   # multihash vs raw?
+     Keys [Multihash]
 }
 
 type ProvidersByKey struct {
@@ -19,7 +20,7 @@ type ProvidersByKey struct {
 }
 
 type GetP2PProvideResponse struct {
-     # ProvidersByKey {Multihash : Provider} # not possible in IPLD schema, instead:
+     # NOTE: ProvidersByKey {Multihash : Provider} is not possible in IPLD schema, instead:
 	ProvidersByKey [ProvidersByKey]
 }
 
@@ -46,5 +47,5 @@ type TransferProtocol union {
 
 type BitswapTransfer struct {}
 
-# XXX: can we have a union representation that tries to parse in order of rules?
-# XXX: how to accomplish pass through? can struct deser place out-of-schema data in a "leftover" field?
+# TODO: we need a union representation that tries to parse in order of rules?
+# TODO: to accomplish pass through: struct deserializer must place out-of-schema data in a dedicated "leftover" field of type any?
