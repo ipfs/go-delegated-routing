@@ -26,6 +26,7 @@ type findProvidersServer struct {
 
 func (fps *findProvidersServer) GetP2PProvide(ctx context.Context, req *proto.GetP2PProvideRequest, rch chan<- *proto.GetP2PProvideResponse) error {
 	go func() {
+		defer close(rch)
 		pcids := parseCidsFromGetP2PProvideRequest(req)
 		for _, c := range pcids {
 			ch := make(chan client.FindProvidersAsyncResult)

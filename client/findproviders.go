@@ -11,11 +11,13 @@ import (
 	multihash "github.com/multiformats/go-multihash"
 )
 
-type FindProviders struct {
+// NativeClient is a mixin which provides higher-level APIs, used by DHT and Hydra.
+// It also lifts protocol-level cids and multihashes into their libp2p equivalents.
+type NativeClient struct {
 	client Client
 }
 
-func (fp *FindProviders) FindProviders(ctx context.Context, key cid.Cid) ([]peer.AddrInfo, error) {
+func (fp *NativeClient) FindProviders(ctx context.Context, key cid.Cid) ([]peer.AddrInfo, error) {
 	resps, err := fp.client.GetP2PProvide(ctx, cidsToGetP2PProvideRequest([]cid.Cid{key}))
 	if err != nil {
 		return nil, err
@@ -32,7 +34,7 @@ type FindProvidersAsyncResult struct {
 	Err      error
 }
 
-func (fp *FindProviders) FindProvidersAsync(ctx context.Context, key cid.Cid) (<-chan FindProvidersAsyncResult, error) {
+func (fp *NativeClient) FindProvidersAsync(ctx context.Context, key cid.Cid) (<-chan FindProvidersAsyncResult, error) {
 	ch0, err := fp.client.GetP2PProvide_Async(ctx, cidsToGetP2PProvideRequest([]cid.Cid{key}))
 	if err != nil {
 		return nil, err

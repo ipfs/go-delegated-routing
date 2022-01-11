@@ -24,9 +24,9 @@ type GetP2PProvide_Async_Response struct {
 type Option func(*client) error
 
 type client struct {
-	client        *http.Client
-	endpoint      *url.URL
-	FindProviders // mixin provides higher-level APIs used by DHT and Hydra
+	client       *http.Client
+	endpoint     *url.URL
+	NativeClient // mixin provides higher-level APIs used by DHT and Hydra
 }
 
 func WithHTTPClient(hc *http.Client) Option {
@@ -47,6 +47,6 @@ func New(endpoint string, opts ...Option) (*client, error) {
 			return nil, err
 		}
 	}
-	c.FindProviders.client = c
+	c.NativeClient.client = c
 	return c, nil
 }
