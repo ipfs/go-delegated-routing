@@ -1,98 +1,87 @@
 package server
 
 import (
-	"bytes"
-	"encoding/json"
+	"context"
 	"net/http"
 
 	"github.com/ipfs/go-cid"
 	"github.com/ipfs/go-delegated-routing/client"
-	"github.com/ipfs/go-delegated-routing/parser"
-	logging "github.com/ipfs/go-log"
+	proto "github.com/ipfs/go-delegated-routing/ipld/ipldsch"
 	"github.com/libp2p/go-libp2p-core/peer"
 	"github.com/multiformats/go-multiaddr"
 )
 
-var log = logging.Logger("delegated/server")
+// FindProvidersAsyncHandler implements a higher-level interface to GetP2PProvide, used in DHT and Hydra.
 
 type FindProvidersAsyncFunc func(cid.Cid, chan<- client.FindProvidersAsyncResult) error
 
 func FindProvidersAsyncHandler(f FindProvidersAsyncFunc) http.HandlerFunc {
-	return func(writer http.ResponseWriter, request *http.Request) {
-		msg := request.URL.Query().Get("q")
-		dec := json.NewDecoder(bytes.NewBufferString(msg))
-		env := parser.Envelope{Payload: &parser.GetP2PProvideRequest{}}
-		err := dec.Decode(&env)
-		if err != nil {
-			log.Errorf("received request not decodeable (%v)", err)
-			writer.WriteHeader(400)
-			return
-		}
-		switch env.Tag {
-		case parser.MethodGetP2PProvide:
-			req, ok := env.Payload.(*parser.GetP2PProvideRequest)
-			if !ok {
-				log.Errorf("p2p provide request is missing")
-				writer.WriteHeader(400)
-				return
-			}
-			// extract key and return it in the form of a cid
-			parsedCid, err := ParseGetP2PProvideRequest(req)
-			if err != nil {
-				log.Errorf("cannot parse get p2p provide request (%v)", err)
-				writer.WriteHeader(400)
-				return
-			}
-			// proxy to func
+	fps := &findProvidersServer{f}
+	return Server_AsyncHandler(fps)
+}
+
+type findProvidersServer struct {
+	FindProvidersAsyncFunc
+}
+
+func (fps *findProvidersServer) GetP2PProvide(ctx context.Context, req *proto.GetP2PProvideRequest, rch chan<- *proto.GetP2PProvideResponse) error {
+	go func() {
+		pcids := parseCidsFromGetP2PProvideRequest(req)
+		for _, c := range pcids {
 			ch := make(chan client.FindProvidersAsyncResult)
-			if err = f(parsedCid, ch); err != nil {
-				log.Errorf("get p2p provider rejected request (%v)", err)
-				writer.WriteHeader(500)
-				return
+			if err := fps.FindProvidersAsyncFunc(c, ch); err != nil {
+				log.Errorf("find providers function rejected request (%w)", err)
+				continue
 			}
 			for x := range ch {
 				if x.Err != nil {
-					log.Errorf("get p2p provider returned error (%v)", x.Err)
+					log.Errorf("find providers function returned error (%w)", x.Err)
 					continue
 				}
-				resp := GenerateGetP2PProvideResponse(x.AddrInfo)
-				env := &parser.Envelope{
-					Tag:     parser.MethodGetP2PProvide,
-					Payload: resp,
-				}
-				enc, err := json.Marshal(env)
-				if err != nil {
-					continue
-				}
-				writer.Write(enc)
+				rch <- buildGetP2PProvideResponse(c, x.AddrInfo)
 			}
-		default:
-			log.Errorf("unknown method (%v)", env.Tag)
-			writer.WriteHeader(404)
 		}
+	}()
+	return nil
+}
+
+func parseCidsFromGetP2PProvideRequest(req *proto.GetP2PProvideRequest) []cid.Cid {
+	cids := []cid.Cid{}
+	for _, key := range req.Keys {
+		c, err := client.ParseProtoCid(&key)
+		if err != nil {
+			continue
+		}
+		cids = append(cids, c)
+	}
+	return cids
+}
+
+func buildGetP2PProvideResponse(key cid.Cid, addrInfo []peer.AddrInfo) *proto.GetP2PProvideResponse {
+	nodes := make(proto.List__Node, len(addrInfo))
+	for i, addrInfo := range addrInfo {
+		nodes[i] = proto.Node{Peer: buildPeerFromAddrInfo(addrInfo)}
+	}
+	return &proto.GetP2PProvideResponse{
+		ProvidersByKey: proto.List__ProvidersByKey{
+			proto.ProvidersByKey{
+				Key: *client.BuildProtoMultihashFromCid(key),
+				Provider: proto.Provider{
+					Node: nodes,
+				},
+			},
+		},
 	}
 }
 
-// ParseGetP2PProvideRequest parses a GetP2PProvideRequest and returns the included bytes key in the form of a cid.
-func ParseGetP2PProvideRequest(req *parser.GetP2PProvideRequest) (cid.Cid, error) {
-	mhBytes, err := parser.FromDJSpecialBytes(req.Key)
-	if err != nil {
-		return cid.Undef, err
+func buildPeerFromAddrInfo(addrInfo peer.AddrInfo) *proto.Peer {
+	pm := make(proto.List__Bytes, len(addrInfo.Addrs))
+	for i, addr := range addrInfo.Addrs {
+		peerAddr := addr.Encapsulate(multiaddr.StringCast("/p2p/" + addrInfo.ID.String()))
+		pm[i] = peerAddr.Bytes()
 	}
-	parsedCid := cid.NewCidV1(cid.Raw, mhBytes)
-	if err != nil {
-		return cid.Undef, err
+	return &proto.Peer{
+		ID:             []uint8(addrInfo.ID),
+		Multiaddresses: pm,
 	}
-	return parsedCid, nil
-}
-
-func GenerateGetP2PProvideResponse(infos []peer.AddrInfo) *parser.GetP2PProvideResponse {
-	resp := &parser.GetP2PProvideResponse{}
-	for _, info := range infos {
-		for _, addr := range info.Addrs {
-			peerAddr := addr.Encapsulate(multiaddr.StringCast("/p2p/" + info.ID.String()))
-			resp.Peers = append(resp.Peers, parser.ToDJSpecialBytes(peerAddr.Bytes()))
-		}
-	}
-	return resp
 }
