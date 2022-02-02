@@ -1,17 +1,10 @@
-Repository Name
+Delegated Routing - Indexer Edition
 =======================
 
-> Repository tagline
+> Delegate routing to someone who knows
 
-A longer repository description.
+relays the libp2p 'GetProvidersAsync' call to an external HTTP provider, like storetheindex
 
-## Documentation
-
-[Insert link to documentation]() or expand with Install, Build, Usage sections.
-
-## Lead Maintainer
-
-[Your name](https://github.com/alinktoyourname)
 
 ## Contributing
 
