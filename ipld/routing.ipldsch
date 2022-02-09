@@ -3,8 +3,11 @@ type ServiceEnvelope union {
      | GetP2PProvideRequest "get-p2p-provide-request"
      | GetP2PProvideResponse "get-p2p-provide-response"
 } representation keyed
+# XXX: we want an envelope representation here,
+# because the envelope "key" field allows us to distinguish a function call/return from other things.
+# Unfortunatly, it is not implemented in bindnode.
 
-# TODO: IPLD schema type aliases not implemented
+# XXX: IPLD schema type aliases are not implemented, so we can't do:
 # type Multihash = Bytes
 type Multihash struct {
      Bytes Bytes
@@ -20,7 +23,7 @@ type ProvidersByKey struct {
 }
 
 type GetP2PProvideResponse struct {
-     # NOTE: ProvidersByKey {Multihash : Provider} is not possible in IPLD schema, instead:
+     # XXX: ProvidersByKey {Multihash : Provider} is not possible in IPLD schema, instead:
 	ProvidersByKey [ProvidersByKey]
 }
 
@@ -46,6 +49,3 @@ type TransferProtocol union {
 } representation keyed
 
 type BitswapTransfer struct {}
-
-# TODO: we need a union representation that tries to parse in order of rules?
-# TODO: to accomplish pass through: struct deserializer must place out-of-schema data in a dedicated "leftover" field of type any?
