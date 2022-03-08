@@ -5,16 +5,19 @@ import (
 	"fmt"
 
 	"github.com/ipfs/go-cid"
-	proto "github.com/ipfs/go-delegated-routing/ipld/ipldsch"
+	proto "github.com/ipfs/go-delegated-routing/gen/proto"
+	logging "github.com/ipfs/go-log"
 	"github.com/libp2p/go-libp2p-core/peer"
 	"github.com/multiformats/go-multiaddr"
 	multihash "github.com/multiformats/go-multihash"
 )
 
+var logger = logging.Logger("service/client/DelegatedRouting")
+
 // NativeClient is a mixin which provides higher-level APIs, used by DHT and Hydra.
 // It also lifts protocol-level cids and multihashes into their libp2p equivalents.
 type NativeClient struct {
-	client Client
+	client proto.DelegatedRouting_Client
 }
 
 func (fp *NativeClient) FindProviders(ctx context.Context, key cid.Cid) ([]peer.AddrInfo, error) {
@@ -60,18 +63,17 @@ func (fp *NativeClient) FindProvidersAsync(ctx context.Context, key cid.Cid) (<-
 }
 
 func cidsToGetP2PProvideRequest(cids []cid.Cid) *proto.GetP2PProvideRequest {
-	keys := make(proto.List__Multihash, len(cids))
+	keys := make(proto.KeyList, len(cids))
 	for i, cid := range cids {
-		keys[i] = *BuildProtoMultihashFromCid(cid)
+		keys[i] = BuildProtoMultihashFromCid(cid)
 	}
 	return &proto.GetP2PProvideRequest{
 		Keys: keys,
 	}
 }
 
-func BuildProtoMultihashFromCid(c cid.Cid) *proto.Multihash {
-	p := proto.Multihash{Bytes: c.Hash()}
-	return &p
+func BuildProtoMultihashFromCid(c cid.Cid) proto.Multihash {
+	return proto.Multihash{Bytes: []byte(c.Hash())}
 }
 
 type KeyProviders struct {
@@ -97,7 +99,7 @@ func parseP2PProvideResponse(resp *proto.GetP2PProvideResponse) []KeyProviders {
 			logger.Infof("cannot parse key cid (%w)", err)
 			continue
 		}
-		kp = append(kp, KeyProviders{Key: c, Providers: parseProtoNodesToAddrInfo(prov.Provider.Node)})
+		kp = append(kp, KeyProviders{Key: c, Providers: parseProtoNodesToAddrInfo(prov.Provider.Nodes)})
 	}
 	return kp
 }
