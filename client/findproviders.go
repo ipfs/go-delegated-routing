@@ -14,13 +14,15 @@ import (
 
 var logger = logging.Logger("service/client/DelegatedRouting")
 
-// NativeClient is a mixin which provides higher-level APIs, used by DHT and Hydra.
-// It also lifts protocol-level cids and multihashes into their libp2p equivalents.
-type NativeClient struct {
+type Client struct {
 	client proto.DelegatedRouting_Client
 }
 
-func (fp *NativeClient) FindProviders(ctx context.Context, key cid.Cid) ([]peer.AddrInfo, error) {
+func NewClient(c proto.DelegatedRouting_Client) *Client {
+	return &Client{client: c}
+}
+
+func (fp *Client) FindProviders(ctx context.Context, key cid.Cid) ([]peer.AddrInfo, error) {
 	resps, err := fp.client.GetP2PProvide(ctx, cidsToGetP2PProvideRequest([]cid.Cid{key}))
 	if err != nil {
 		return nil, err
@@ -37,7 +39,7 @@ type FindProvidersAsyncResult struct {
 	Err      error
 }
 
-func (fp *NativeClient) FindProvidersAsync(ctx context.Context, key cid.Cid) (<-chan FindProvidersAsyncResult, error) {
+func (fp *Client) FindProvidersAsync(ctx context.Context, key cid.Cid) (<-chan FindProvidersAsyncResult, error) {
 	ch0, err := fp.client.GetP2PProvide_Async(ctx, cidsToGetP2PProvideRequest([]cid.Cid{key}))
 	if err != nil {
 		return nil, err
@@ -73,7 +75,7 @@ func cidsToGetP2PProvideRequest(cids []cid.Cid) *proto.GetP2PProvideRequest {
 }
 
 func BuildProtoMultihashFromCid(c cid.Cid) proto.Multihash {
-	return proto.Multihash{Bytes: []byte(c.Hash())}
+	return proto.Multihash{Bytes: c.Bytes()} // CID to bytes
 }
 
 type KeyProviders struct {
@@ -94,7 +96,7 @@ func parseP2PProvideResponseForKey(resp *proto.GetP2PProvideResponse, key cid.Ci
 func parseP2PProvideResponse(resp *proto.GetP2PProvideResponse) []KeyProviders {
 	kp := []KeyProviders{}
 	for _, prov := range resp.ProvidersByKey {
-		c, err := ParseProtoCid(&prov.Key)
+		c, err := ParseProtoCid(&prov.Key) // bytes to CID
 		if err != nil {
 			logger.Infof("cannot parse key cid (%w)", err)
 			continue
@@ -105,17 +107,7 @@ func parseP2PProvideResponse(resp *proto.GetP2PProvideResponse) []KeyProviders {
 }
 
 func ParseProtoCid(p *proto.Multihash) (cid.Cid, error) {
-	mh, err := ParseProtoMultihash(p)
-	if err != nil {
-		return cid.Undef, err
-	}
-	// XXX: Is CidFromBytes(cid.Hash()) == cid?
-	// _, c, err := cid.CidFromBytes(mh)
-	c := cid.NewCidV1(cid.Raw, mh)
-	if err != nil {
-		return cid.Undef, err
-	}
-	return c, nil
+	return cid.Cast(p.Bytes)
 }
 
 func ParseProtoMultihash(p *proto.Multihash) (multihash.Multihash, error) {
