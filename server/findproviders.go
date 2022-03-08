@@ -6,10 +6,14 @@ import (
 
 	"github.com/ipfs/go-cid"
 	"github.com/ipfs/go-delegated-routing/client"
-	proto "github.com/ipfs/go-delegated-routing/ipld/ipldsch"
+	proto "github.com/ipfs/go-delegated-routing/gen/proto"
+	logging "github.com/ipfs/go-log"
+	"github.com/ipld/edelweiss/values"
 	"github.com/libp2p/go-libp2p-core/peer"
 	"github.com/multiformats/go-multiaddr"
 )
+
+var logger = logging.Logger("service/server/DelegatedRouting")
 
 // FindProvidersAsyncHandler implements a higher-level interface to GetP2PProvide, used in DHT and Hydra.
 
@@ -17,7 +21,7 @@ type FindProvidersAsyncFunc func(cid.Cid, chan<- client.FindProvidersAsyncResult
 
 func FindProvidersAsyncHandler(f FindProvidersAsyncFunc) http.HandlerFunc {
 	fps := &findProvidersServer{f}
-	return Server_AsyncHandler(fps)
+	return proto.DelegatedRouting_AsyncHandler(fps)
 }
 
 type findProvidersServer struct {
@@ -31,12 +35,12 @@ func (fps *findProvidersServer) GetP2PProvide(ctx context.Context, req *proto.Ge
 		for _, c := range pcids {
 			ch := make(chan client.FindProvidersAsyncResult)
 			if err := fps.FindProvidersAsyncFunc(c, ch); err != nil {
-				log.Errorf("find providers function rejected request (%w)", err)
+				logger.Errorf("find providers function rejected request (%w)", err)
 				continue
 			}
 			for x := range ch {
 				if x.Err != nil {
-					log.Errorf("find providers function returned error (%w)", x.Err)
+					logger.Errorf("find providers function returned error (%w)", x.Err)
 					continue
 				}
 				rch <- buildGetP2PProvideResponse(c, x.AddrInfo)
@@ -59,16 +63,16 @@ func parseCidsFromGetP2PProvideRequest(req *proto.GetP2PProvideRequest) []cid.Ci
 }
 
 func buildGetP2PProvideResponse(key cid.Cid, addrInfo []peer.AddrInfo) *proto.GetP2PProvideResponse {
-	nodes := make(proto.List__Node, len(addrInfo))
+	nodes := make([]proto.Node, len(addrInfo))
 	for i, addrInfo := range addrInfo {
 		nodes[i] = proto.Node{Peer: buildPeerFromAddrInfo(addrInfo)}
 	}
 	return &proto.GetP2PProvideResponse{
-		ProvidersByKey: proto.List__ProvidersByKey{
+		ProvidersByKey: proto.ProvidersByKeyList{
 			proto.ProvidersByKey{
-				Key: *client.BuildProtoMultihashFromCid(key),
+				Key: client.BuildProtoMultihashFromCid(key),
 				Provider: proto.Provider{
-					Node: nodes,
+					Nodes: nodes,
 				},
 			},
 		},
@@ -76,13 +80,13 @@ func buildGetP2PProvideResponse(key cid.Cid, addrInfo []peer.AddrInfo) *proto.Ge
 }
 
 func buildPeerFromAddrInfo(addrInfo peer.AddrInfo) *proto.Peer {
-	pm := make(proto.List__Bytes, len(addrInfo.Addrs))
+	pm := make([]values.Bytes, len(addrInfo.Addrs))
 	for i, addr := range addrInfo.Addrs {
 		peerAddr := addr.Encapsulate(multiaddr.StringCast("/p2p/" + addrInfo.ID.String()))
 		pm[i] = peerAddr.Bytes()
 	}
 	return &proto.Peer{
-		ID:             []uint8(addrInfo.ID),
+		ID:             []byte(addrInfo.ID),
 		Multiaddresses: pm,
 	}
 }
