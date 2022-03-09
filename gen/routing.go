@@ -148,7 +148,7 @@ func main() {
 	dir := path.Join(wd, "proto")
 	x := &compile.GoPkgCodegen{
 		GoPkgDirPath: dir,
-		GoPkgPath:    "github.com/ipld/edelweiss/examples/routing-api/proto",
+		GoPkgPath:    "github.com/ipfs/go-delegated-routing/gen/proto",
 		Defs:         proto,
 	}
 	goFile, err := x.Compile()
