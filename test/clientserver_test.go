@@ -39,6 +39,8 @@ func TestClientServer(t *testing.T) {
 	ngoStart, allocStart := snapUtilizations()
 	fmt.Printf("start: goroutines=%d allocated=%d\n", ngoStart, allocStart)
 
+	timeStart := time.Now()
+
 	const N = 1e4
 	for i := 0; i < N; i++ {
 		infos, err := c.FindProviders(context.Background(), cid.NewCidV1(cid.Libp2pKey, h))
@@ -59,6 +61,11 @@ func TestClientServer(t *testing.T) {
 		}
 		// fmt.Println(infos)
 	}
+
+	timeEnd := time.Now()
+	avgLatency := timeEnd.Sub(timeStart) / N
+	fmt.Printf("average roundtrip latency: %v\n", avgLatency)
+
 	ngoEnd, allocEnd := snapUtilizations()
 	fmt.Printf("end: goroutines=%d allocated=%d\n", ngoEnd, allocEnd)
 	fmt.Printf("diff: goroutines=%d allocated=%d\n", ngoEnd-ngoStart, allocEnd-allocStart)
@@ -74,6 +81,15 @@ func TestClientServer(t *testing.T) {
 	}
 	if allocEnd-allocStart > 300e3 {
 		t.Errorf("memory leakage")
+	}
+
+	// on a MacBook 2.6 GHz 6-Core Intel Core i7
+	// the average latency is concentrated around 150µs, independently of the iteration count N
+	// we are codifying a regression check for this,
+	// with the caveat that this may result in flakiness since it depends on the ci runtime environment.
+
+	if avgLatency > time.Microsecond*200 {
+		t.Errorf("average latency too large")
 	}
 }
 
