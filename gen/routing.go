@@ -17,87 +17,112 @@ var proto = defs.Defs{
 		Type: defs.Service{
 			Methods: defs.Methods{
 				defs.Method{
-					Name: "GetP2PProvide",
+					Name: "FindProviders",
 					Type: defs.Fn{
-						Arg:    defs.Ref{Name: "GetP2PProvideRequest"},
-						Return: defs.Ref{Name: "GetP2PProvideResponse"},
+						Arg:    defs.Ref{Name: "FindProvidersRequest"},
+						Return: defs.Ref{Name: "FindProvidersResponse"},
+					},
+				},
+				defs.Method{
+					Name: "GetIPNS",
+					Type: defs.Fn{
+						Arg:    defs.Ref{Name: "GetIPNSRequest"},
+						Return: defs.Ref{Name: "GetIPNSResponse"},
+					},
+				},
+				defs.Method{
+					Name: "PutIPNS",
+					Type: defs.Fn{
+						Arg:    defs.Ref{Name: "PutIPNSRequest"},
+						Return: defs.Ref{Name: "PutIPNSResponse"},
 					},
 				},
 			},
 		},
 	},
 
-	// request type
+	// FindProviders request type
 	defs.Named{
-		Name: "GetP2PProvideRequest",
+		Name: "FindProvidersRequest",
 		Type: defs.Structure{
 			Fields: defs.Fields{
 				defs.Field{
-					Name: "Keys",
+					Name:   "Key",
+					GoName: "Key",
+					Type:   defs.Link{To: defs.Any{}},
+				},
+			},
+		},
+	},
+
+	// FindProviders response type
+	defs.Named{
+		Name: "FindProvidersResponse",
+		Type: defs.Structure{
+			Fields: defs.Fields{
+				defs.Field{
+					Name:   "Providers",
+					GoName: "Providers",
 					Type: defs.Named{
-						Name: "KeyList",
-						Type: defs.List{Element: defs.Ref{Name: "Multihash"}},
+						Name: "ProvidersList",
+						Type: defs.List{Element: defs.Ref{Name: "Provider"}},
 					},
 				},
 			},
 		},
 	},
 
-	// response type
+	// GetIPNS request type
 	defs.Named{
-		Name: "GetP2PProvideResponse",
+		Name: "GetIPNSRequest",
 		Type: defs.Structure{
 			Fields: defs.Fields{
-				defs.Field{
-					Name: "ProvidersByKey",
-					Type: defs.Named{
-						Name: "ProvidersByKeyList",
-						Type: defs.List{Element: defs.Ref{Name: "ProvidersByKey"}},
-					},
-				},
+				defs.Field{Name: "ID", GoName: "ID", Type: defs.Bytes{}},
 			},
 		},
 	},
+
+	// GetIPNS response type
 	defs.Named{
-		Name: "ProvidersByKey",
+		Name: "GetIPNSResponse",
 		Type: defs.Structure{
 			Fields: defs.Fields{
-				defs.Field{
-					Name: "Key",
-					Type: defs.Ref{Name: "Multihash"},
-				},
-				defs.Field{
-					Name: "Provider",
-					Type: defs.Ref{Name: "Provider"},
-				},
+				defs.Field{Name: "Record", GoName: "Record", Type: defs.Bytes{}},
 			},
 		},
+	},
+
+	// PutIPNS request type
+	defs.Named{
+		Name: "PutIPNSRequest",
+		Type: defs.Structure{
+			Fields: defs.Fields{
+				defs.Field{Name: "ID", GoName: "ID", Type: defs.Bytes{}},
+				defs.Field{Name: "Record", GoName: "Record", Type: defs.Bytes{}},
+			},
+		},
+	},
+
+	// PutIPNS response type
+	defs.Named{
+		Name: "PutIPNSResponse",
+		Type: defs.Structure{},
 	},
 
 	// general routing types
-	defs.Named{
-		Name: "Multihash",
-		Type: defs.Structure{
-			Fields: defs.Fields{
-				defs.Field{
-					Name: "Bytes",
-					Type: defs.Bytes{},
-				},
-			},
-		},
-	},
-
 	defs.Named{
 		Name: "Provider",
 		Type: defs.Structure{
 			Fields: defs.Fields{
 				defs.Field{
-					Name: "Nodes",
-					Type: defs.List{Element: defs.Ref{Name: "Node"}},
+					Name:   "Node",
+					GoName: "ProviderNode",
+					Type:   defs.Ref{Name: "Node"},
 				},
 				defs.Field{
-					Name: "Proto",
-					Type: defs.List{Element: defs.Ref{Name: "TransferProto"}},
+					Name:   "Proto",
+					GoName: "ProviderProto",
+					Type:   defs.List{Element: defs.Ref{Name: "TransferProtocol"}},
 				},
 			},
 		},
@@ -107,7 +132,12 @@ var proto = defs.Defs{
 		Name: "Node",
 		Type: defs.Inductive{
 			Cases: defs.Cases{
-				defs.Case{Name: "Peer", Type: defs.Ref{Name: "Peer"}},
+				defs.Case{Name: "peer", GoName: "Peer", Type: defs.Ref{Name: "Peer"}},
+			},
+			Default: defs.DefaultCase{
+				GoKeyName:   "DefaultKey",
+				GoValueName: "DefaultValue",
+				Type:        defs.Any{},
 			},
 		},
 	},
@@ -116,24 +146,41 @@ var proto = defs.Defs{
 		Name: "Peer",
 		Type: defs.Structure{
 			Fields: defs.Fields{
-				defs.Field{Name: "ID", Type: defs.Bytes{}},
-				defs.Field{Name: "Multiaddresses", Type: defs.List{Element: defs.Bytes{}}},
+				defs.Field{Name: "ID", GoName: "ID", Type: defs.Bytes{}},
+				defs.Field{Name: "Multiaddresses", GoName: "Multiaddresses", Type: defs.List{Element: defs.Bytes{}}},
 			},
 		},
 	},
 
 	defs.Named{
-		Name: "TransferProto",
+		Name: "TransferProtocol",
 		Type: defs.Inductive{
 			Cases: defs.Cases{
-				defs.Case{Name: "Bitswap", Type: defs.Ref{Name: "BitswapTransfer"}},
+				defs.Case{Name: "2304", GoName: "Bitswap", Type: defs.Ref{Name: "BitswapProtocol"}},
+				defs.Case{Name: "2320", GoName: "GraphSyncFILv1", Type: defs.Ref{Name: "GraphSyncFILv1Protocol"}},
+			},
+			Default: defs.DefaultCase{
+				GoKeyName:   "DefaultKey",
+				GoValueName: "DefaultValue",
+				Type:        defs.Any{},
 			},
 		},
 	},
 
 	defs.Named{
-		Name: "BitswapTransfer",
+		Name: "BitswapProtocol",
 		Type: defs.Structure{},
+	},
+
+	defs.Named{
+		Name: "GraphSyncFILv1Protocol",
+		Type: defs.Structure{
+			Fields: defs.Fields{
+				defs.Field{Name: "PieceCID", GoName: "PieceCID", Type: defs.Link{To: defs.Any{}}},
+				defs.Field{Name: "VerifiedDeal", GoName: "VerifiedDeal", Type: defs.Bool{}},
+				defs.Field{Name: "FastRetrieval", GoName: "FastRetrieval", Type: defs.Bool{}},
+			},
+		},
 	},
 }
 
