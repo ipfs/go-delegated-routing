@@ -1,6 +1,7 @@
 package test
 
 import (
+	"bytes"
 	"context"
 	"fmt"
 	"net/http/httptest"
@@ -41,8 +42,9 @@ func TestClientServer(t *testing.T) {
 
 	timeStart := time.Now()
 
-	const N = 1e4
+	const N = 1e5
 	for i := 0; i < N; i++ {
+		// exercise FindProviders
 		infos, err := c.FindProviders(context.Background(), cid.NewCidV1(cid.Libp2pKey, h))
 		if err != nil {
 			t.Fatal(err)
@@ -60,6 +62,24 @@ func TestClientServer(t *testing.T) {
 			t.Errorf("expecting %#v, got %#v", testAddrInfo.Addrs[0], infos[0].Addrs[0])
 		}
 		// fmt.Println(infos)
+
+		// exercise GetIPNS
+		record, err := c.GetIPNS(context.Background(), testIPNSID)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if len(record) != 1 {
+			t.Fatalf("expecting 1 result, got %d", len(record))
+		}
+		if bytes.Compare(record[0], testIPNSRecord) != 0 {
+			t.Errorf("expecting %#v, got %#v", testIPNSRecord, record[0])
+		}
+
+		// exercise PutIPNS
+		err = c.PutIPNS(context.Background(), testIPNSID, testIPNSRecord)
+		if err != nil {
+			t.Fatal(err)
+		}
 	}
 
 	timeEnd := time.Now()
@@ -88,7 +108,7 @@ func TestClientServer(t *testing.T) {
 	// we are codifying a regression check for this,
 	// with the caveat that this may result in flakiness since it depends on the ci runtime environment.
 
-	if avgLatency > time.Microsecond*200 {
+	if avgLatency > time.Microsecond*400 {
 		t.Errorf("average latency too large")
 	}
 }
@@ -107,8 +127,10 @@ const (
 )
 
 var (
-	testMultiaddr = multiaddr.StringCast(testPeerAddr + "/p2p/" + testPeerID)
-	testAddrInfo  *peer.AddrInfo
+	testMultiaddr  = multiaddr.StringCast(testPeerAddr + "/p2p/" + testPeerID)
+	testAddrInfo   *peer.AddrInfo
+	testIPNSID     = []byte{1, 2, 3}
+	testIPNSRecord = []byte{4, 5, 6}
 )
 
 func TestMain(m *testing.M) {
@@ -126,7 +148,7 @@ type testDelegatedRoutingService struct{}
 
 func (testDelegatedRoutingService) GetIPNS(id []byte, ch chan<- client.GetIPNSAsyncResult) error {
 	go func() {
-		ch <- client.GetIPNSAsyncResult{Record: []byte{1, 2, 3}}
+		ch <- client.GetIPNSAsyncResult{Record: testIPNSRecord}
 		close(ch)
 	}()
 	return nil
