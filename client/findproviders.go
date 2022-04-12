@@ -68,11 +68,6 @@ func cidsToFindProvidersRequest(cid cid.Cid) *proto.FindProvidersRequest {
 	}
 }
 
-type KeyProviders struct {
-	Key       cid.Cid
-	Providers []peer.AddrInfo
-}
-
 func parseFindProvidersResponse(resp *proto.FindProvidersResponse) []peer.AddrInfo {
 	infos := []peer.AddrInfo{}
 	for _, prov := range resp.Providers {
