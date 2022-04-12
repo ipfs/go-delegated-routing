@@ -2,7 +2,6 @@ package server
 
 import (
 	"context"
-	"fmt"
 	"net/http"
 
 	"github.com/ipfs/go-cid"
@@ -16,43 +15,86 @@ import (
 
 var logger = logging.Logger("service/server/DelegatedRouting")
 
-// FindProvidersAsyncHandler implements a higher-level interface to FindProviders, used in DHT and Hydra.
-
-type FindProvidersAsyncFunc func(cid.Cid, chan<- client.FindProvidersAsyncResult) error
-
-func FindProvidersAsyncHandler(f FindProvidersAsyncFunc) http.HandlerFunc {
-	fps := &findProvidersServer{f}
-	return proto.DelegatedRouting_AsyncHandler(fps)
+type DelegatedRoutingService interface {
+	FindProviders(key cid.Cid, rch chan<- client.FindProvidersAsyncResult) error
+	GetIPNS(id []byte, rch chan<- client.GetIPNSAsyncResult) error
+	PutIPNS(id []byte, record []byte, rch chan<- client.PutIPNSAsyncResult) error
 }
 
-type findProvidersServer struct {
-	FindProvidersAsyncFunc
+func DelegatedRoutingAsyncHandler(svc DelegatedRoutingService) http.HandlerFunc {
+	drs := &delegatedRoutingServer{svc}
+	return proto.DelegatedRouting_AsyncHandler(drs)
 }
 
-func (fps *findProvidersServer) GetIPNS(ctx context.Context, req *proto.GetIPNSRequest, respCh chan<- *proto.DelegatedRouting_GetIPNS_AsyncResult) error {
-	return fmt.Errorf("GetIPNS not supported")
+type delegatedRoutingServer struct {
+	service DelegatedRoutingService
 }
 
-func (fps *findProvidersServer) PutIPNS(ctx context.Context, req *proto.PutIPNSRequest, respCh chan<- *proto.DelegatedRouting_PutIPNS_AsyncResult) error {
-	return fmt.Errorf("PutIPNS not supported")
+func (drs *delegatedRoutingServer) GetIPNS(ctx context.Context, req *proto.GetIPNSRequest, rch chan<- *proto.DelegatedRouting_GetIPNS_AsyncResult) error {
+	go func() {
+		defer close(rch)
+		id := req.ID
+		ch := make(chan client.GetIPNSAsyncResult)
+		if err := drs.service.GetIPNS(id, ch); err != nil {
+			logger.Errorf("get ipns function rejected request (%w)", err)
+			return
+		}
+		for x := range ch {
+			var resp *proto.DelegatedRouting_GetIPNS_AsyncResult
+			if x.Err != nil {
+				logger.Errorf("get ipns function returned error (%w)", x.Err)
+				resp = &proto.DelegatedRouting_GetIPNS_AsyncResult{Err: x.Err}
+			} else {
+				resp = &proto.DelegatedRouting_GetIPNS_AsyncResult{Resp: &proto.GetIPNSResponse{Record: x.Record}}
+			}
+			rch <- resp
+		}
+	}()
+	return nil
 }
 
-func (fps *findProvidersServer) FindProviders(ctx context.Context, req *proto.FindProvidersRequest, rch chan<- *proto.DelegatedRouting_FindProviders_AsyncResult) error {
+func (drs *delegatedRoutingServer) PutIPNS(ctx context.Context, req *proto.PutIPNSRequest, rch chan<- *proto.DelegatedRouting_PutIPNS_AsyncResult) error {
+	go func() {
+		defer close(rch)
+		id, record := req.ID, req.Record
+		ch := make(chan client.PutIPNSAsyncResult)
+		if err := drs.service.PutIPNS(id, record, ch); err != nil {
+			logger.Errorf("put ipns function rejected request (%w)", err)
+			return
+		}
+		for x := range ch {
+			var resp *proto.DelegatedRouting_PutIPNS_AsyncResult
+			if x.Err != nil {
+				logger.Errorf("put ipns function returned error (%w)", x.Err)
+				resp = &proto.DelegatedRouting_PutIPNS_AsyncResult{Err: x.Err}
+			} else {
+				resp = &proto.DelegatedRouting_PutIPNS_AsyncResult{Resp: &proto.PutIPNSResponse{}}
+			}
+			rch <- resp
+		}
+	}()
+	return nil
+}
+
+func (drs *delegatedRoutingServer) FindProviders(ctx context.Context, req *proto.FindProvidersRequest, rch chan<- *proto.DelegatedRouting_FindProviders_AsyncResult) error {
 	go func() {
 		defer close(rch)
 		pcids := parseCidsFromFindProvidersRequest(req)
 		for _, c := range pcids {
 			ch := make(chan client.FindProvidersAsyncResult)
-			if err := fps.FindProvidersAsyncFunc(c, ch); err != nil {
+			if err := drs.service.FindProviders(c, ch); err != nil {
 				logger.Errorf("find providers function rejected request (%w)", err)
 				continue
 			}
 			for x := range ch {
+				var resp *proto.DelegatedRouting_FindProviders_AsyncResult
 				if x.Err != nil {
 					logger.Errorf("find providers function returned error (%w)", x.Err)
-					continue
+					resp = &proto.DelegatedRouting_FindProviders_AsyncResult{Err: x.Err}
+				} else {
+					resp = buildFindProvidersResponse(c, x.AddrInfo)
 				}
-				rch <- buildFindProvidersResponse(c, x.AddrInfo)
+				rch <- resp
 			}
 		}
 	}()

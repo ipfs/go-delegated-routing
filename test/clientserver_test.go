@@ -20,7 +20,7 @@ import (
 
 func TestClientServer(t *testing.T) {
 	// start a server
-	s := httptest.NewServer(server.FindProvidersAsyncHandler(testFindProvidersAsyncFunc))
+	s := httptest.NewServer(server.DelegatedRoutingAsyncHandler(testDelegatedRoutingService{}))
 	defer s.Close()
 
 	// start a client
@@ -122,7 +122,25 @@ func TestMain(m *testing.M) {
 	os.Exit(code)
 }
 
-func testFindProvidersAsyncFunc(key cid.Cid, ch chan<- client.FindProvidersAsyncResult) error {
+type testDelegatedRoutingService struct{}
+
+func (testDelegatedRoutingService) GetIPNS(id []byte, ch chan<- client.GetIPNSAsyncResult) error {
+	go func() {
+		ch <- client.GetIPNSAsyncResult{Record: []byte{1, 2, 3}}
+		close(ch)
+	}()
+	return nil
+}
+
+func (testDelegatedRoutingService) PutIPNS(id []byte, record []byte, ch chan<- client.PutIPNSAsyncResult) error {
+	go func() {
+		ch <- client.PutIPNSAsyncResult{}
+		close(ch)
+	}()
+	return nil
+}
+
+func (testDelegatedRoutingService) FindProviders(key cid.Cid, ch chan<- client.FindProvidersAsyncResult) error {
 	go func() {
 		ch <- client.FindProvidersAsyncResult{AddrInfo: []peer.AddrInfo{*testAddrInfo}}
 		close(ch)
