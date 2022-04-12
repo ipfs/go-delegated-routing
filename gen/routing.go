@@ -49,7 +49,7 @@ var proto = defs.Defs{
 				defs.Field{
 					Name:   "Key",
 					GoName: "Key",
-					Type:   defs.Link{To: defs.Any{}},
+					Type:   defs.Ref{Name: "LinkToAny"},
 				},
 			},
 		},
@@ -110,6 +110,11 @@ var proto = defs.Defs{
 	},
 
 	// general routing types
+	defs.Named{
+		Name: "LinkToAny",
+		Type: defs.Link{To: defs.Any{}},
+	},
+
 	defs.Named{
 		Name: "Provider",
 		Type: defs.Structure{
@@ -176,7 +181,7 @@ var proto = defs.Defs{
 		Name: "GraphSyncFILv1Protocol",
 		Type: defs.Structure{
 			Fields: defs.Fields{
-				defs.Field{Name: "PieceCID", GoName: "PieceCID", Type: defs.Link{To: defs.Any{}}},
+				defs.Field{Name: "PieceCID", GoName: "PieceCID", Type: defs.Ref{Name: "LinkToAny"}},
 				defs.Field{Name: "VerifiedDeal", GoName: "VerifiedDeal", Type: defs.Bool{}},
 				defs.Field{Name: "FastRetrieval", GoName: "FastRetrieval", Type: defs.Bool{}},
 			},
