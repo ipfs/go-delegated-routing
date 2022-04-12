@@ -127,10 +127,15 @@ var proto = defs.Defs{
 				defs.Field{
 					Name:   "Proto",
 					GoName: "ProviderProto",
-					Type:   defs.List{Element: defs.Ref{Name: "TransferProtocol"}},
+					Type:   defs.Ref{Name: "TransferProtocolList"},
 				},
 			},
 		},
+	},
+
+	defs.Named{
+		Name: "TransferProtocolList",
+		Type: defs.List{Element: defs.Ref{Name: "TransferProtocol"}},
 	},
 
 	defs.Named{

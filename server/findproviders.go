@@ -2,6 +2,7 @@ package server
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 
 	"github.com/ipfs/go-cid"
@@ -15,7 +16,7 @@ import (
 
 var logger = logging.Logger("service/server/DelegatedRouting")
 
-// FindProvidersAsyncHandler implements a higher-level interface to GetP2PProvide, used in DHT and Hydra.
+// FindProvidersAsyncHandler implements a higher-level interface to FindProviders, used in DHT and Hydra.
 
 type FindProvidersAsyncFunc func(cid.Cid, chan<- client.FindProvidersAsyncResult) error
 
@@ -28,10 +29,18 @@ type findProvidersServer struct {
 	FindProvidersAsyncFunc
 }
 
-func (fps *findProvidersServer) GetP2PProvide(ctx context.Context, req *proto.GetP2PProvideRequest, rch chan<- *proto.GetP2PProvideResponse) error {
+func (fps *findProvidersServer) GetIPNS(ctx context.Context, req *proto.GetIPNSRequest, respCh chan<- *proto.DelegatedRouting_GetIPNS_AsyncResult) error {
+	return fmt.Errorf("GetIPNS not supported")
+}
+
+func (fps *findProvidersServer) PutIPNS(ctx context.Context, req *proto.PutIPNSRequest, respCh chan<- *proto.DelegatedRouting_PutIPNS_AsyncResult) error {
+	return fmt.Errorf("PutIPNS not supported")
+}
+
+func (fps *findProvidersServer) FindProviders(ctx context.Context, req *proto.FindProvidersRequest, rch chan<- *proto.DelegatedRouting_FindProviders_AsyncResult) error {
 	go func() {
 		defer close(rch)
-		pcids := parseCidsFromGetP2PProvideRequest(req)
+		pcids := parseCidsFromFindProvidersRequest(req)
 		for _, c := range pcids {
 			ch := make(chan client.FindProvidersAsyncResult)
 			if err := fps.FindProvidersAsyncFunc(c, ch); err != nil {
@@ -43,39 +52,28 @@ func (fps *findProvidersServer) GetP2PProvide(ctx context.Context, req *proto.Ge
 					logger.Errorf("find providers function returned error (%w)", x.Err)
 					continue
 				}
-				rch <- buildGetP2PProvideResponse(c, x.AddrInfo)
+				rch <- buildFindProvidersResponse(c, x.AddrInfo)
 			}
 		}
 	}()
 	return nil
 }
 
-func parseCidsFromGetP2PProvideRequest(req *proto.GetP2PProvideRequest) []cid.Cid {
-	cids := []cid.Cid{}
-	for _, key := range req.Keys {
-		c, err := client.ParseProtoCid(&key)
-		if err != nil {
-			continue
-		}
-		cids = append(cids, c)
-	}
-	return cids
+func parseCidsFromFindProvidersRequest(req *proto.FindProvidersRequest) []cid.Cid {
+	return []cid.Cid{cid.Cid(req.Key)}
 }
 
-func buildGetP2PProvideResponse(key cid.Cid, addrInfo []peer.AddrInfo) *proto.GetP2PProvideResponse {
-	nodes := make([]proto.Node, len(addrInfo))
+func buildFindProvidersResponse(key cid.Cid, addrInfo []peer.AddrInfo) *proto.DelegatedRouting_FindProviders_AsyncResult {
+	provs := make(proto.ProvidersList, len(addrInfo))
+	bitswapProto := proto.TransferProtocol{Bitswap: &proto.BitswapProtocol{}}
 	for i, addrInfo := range addrInfo {
-		nodes[i] = proto.Node{Peer: buildPeerFromAddrInfo(addrInfo)}
+		provs[i] = proto.Provider{
+			ProviderNode:  proto.Node{Peer: buildPeerFromAddrInfo(addrInfo)},
+			ProviderProto: proto.TransferProtocolList{bitswapProto},
+		}
 	}
-	return &proto.GetP2PProvideResponse{
-		ProvidersByKey: proto.ProvidersByKeyList{
-			proto.ProvidersByKey{
-				Key: client.BuildProtoMultihashFromCid(key),
-				Provider: proto.Provider{
-					Nodes: nodes,
-				},
-			},
-		},
+	return &proto.DelegatedRouting_FindProviders_AsyncResult{
+		Resp: &proto.FindProvidersResponse{Providers: provs},
 	}
 }
 

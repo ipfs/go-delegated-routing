@@ -4,18 +4,18 @@ import(
 	pd1 "github.com/ipld/edelweiss/values"
 	pd2 "github.com/ipld/go-ipld-prime/datamodel"
 	pd3 "fmt"
-	pd4 "net/http"
-	pd5 "net/url"
+	pd4 "io"
+	pd5 "github.com/ipld/edelweiss/services"
 	pd6 "bytes"
-	pd7 "errors"
-	pd8 "io"
-	pd9 "context"
-	pd10 "github.com/ipld/go-ipld-prime"
-	pd11 "github.com/ipld/go-ipld-prime/codec/dagjson"
-	pd12 "github.com/ipld/edelweiss/services"
+	pd7 "github.com/ipld/go-ipld-prime/codec/dagjson"
+	pd8 "errors"
+	pd9 "github.com/ipld/go-ipld-prime"
+	pd10 "net/url"
+	pd11 "context"
+	pd12 "net/http"
 	pd13 "github.com/ipfs/go-log"
-	pd14 "github.com/ipld/go-ipld-prime/linking/cid"
-	pd15 "github.com/ipfs/go-cid"
+	pd14 "github.com/ipfs/go-cid"
+	pd15 "github.com/ipld/go-ipld-prime/linking/cid"
 )
 
 
@@ -1026,22 +1026,22 @@ var logger_client_DelegatedRouting = pd13.Logger("service/client/DelegatedRoutin
 
 type DelegatedRouting_Client interface {
 
-Identify(ctx pd9.Context, req *DelegatedRouting_IdentifyArg) ([]*DelegatedRouting_IdentifyResult, error)
+Identify(ctx pd11.Context, req *DelegatedRouting_IdentifyArg) ([]*DelegatedRouting_IdentifyResult, error)
 
-FindProviders(ctx pd9.Context, req *FindProvidersRequest) ([]*FindProvidersResponse, error)
+FindProviders(ctx pd11.Context, req *FindProvidersRequest) ([]*FindProvidersResponse, error)
 
-GetIPNS(ctx pd9.Context, req *GetIPNSRequest) ([]*GetIPNSResponse, error)
+GetIPNS(ctx pd11.Context, req *GetIPNSRequest) ([]*GetIPNSResponse, error)
 
-PutIPNS(ctx pd9.Context, req *PutIPNSRequest) ([]*PutIPNSResponse, error)
+PutIPNS(ctx pd11.Context, req *PutIPNSRequest) ([]*PutIPNSResponse, error)
 
 
-Identify_Async(ctx pd9.Context, req *DelegatedRouting_IdentifyArg) (<-chan DelegatedRouting_Identify_AsyncResult, error)
+Identify_Async(ctx pd11.Context, req *DelegatedRouting_IdentifyArg) (<-chan DelegatedRouting_Identify_AsyncResult, error)
 
-FindProviders_Async(ctx pd9.Context, req *FindProvidersRequest) (<-chan DelegatedRouting_FindProviders_AsyncResult, error)
+FindProviders_Async(ctx pd11.Context, req *FindProvidersRequest) (<-chan DelegatedRouting_FindProviders_AsyncResult, error)
 
-GetIPNS_Async(ctx pd9.Context, req *GetIPNSRequest) (<-chan DelegatedRouting_GetIPNS_AsyncResult, error)
+GetIPNS_Async(ctx pd11.Context, req *GetIPNSRequest) (<-chan DelegatedRouting_GetIPNS_AsyncResult, error)
 
-PutIPNS_Async(ctx pd9.Context, req *PutIPNSRequest) (<-chan DelegatedRouting_PutIPNS_AsyncResult, error)
+PutIPNS_Async(ctx pd11.Context, req *PutIPNSRequest) (<-chan DelegatedRouting_PutIPNS_AsyncResult, error)
 
 }
 
@@ -1070,11 +1070,11 @@ type DelegatedRouting_PutIPNS_AsyncResult struct {
 type DelegatedRouting_ClientOption func(*client_DelegatedRouting) error
 
 type client_DelegatedRouting struct {
-	httpClient       *pd4.Client
-	endpoint     *pd5.URL
+	httpClient       *pd12.Client
+	endpoint     *pd10.URL
 }
 
-func DelegatedRouting_Client_WithHTTPClient(hc *pd4.Client) DelegatedRouting_ClientOption {
+func DelegatedRouting_Client_WithHTTPClient(hc *pd12.Client) DelegatedRouting_ClientOption {
 	return func(c *client_DelegatedRouting) error {
 		c.httpClient = hc
 		return nil
@@ -1082,11 +1082,11 @@ func DelegatedRouting_Client_WithHTTPClient(hc *pd4.Client) DelegatedRouting_Cli
 }
 
 func New_DelegatedRouting_Client(endpoint string, opts ...DelegatedRouting_ClientOption) (*client_DelegatedRouting, error) {
-	u, err := pd5.Parse(endpoint)
+	u, err := pd10.Parse(endpoint)
 	if err != nil {
 		return nil, err
 	}
-	c := &client_DelegatedRouting{endpoint: u, httpClient: pd4.DefaultClient}
+	c := &client_DelegatedRouting{endpoint: u, httpClient: pd12.DefaultClient}
 	for _, o := range opts {
 		if err := o(c); err != nil {
 			return nil, err
@@ -1097,8 +1097,8 @@ func New_DelegatedRouting_Client(endpoint string, opts ...DelegatedRouting_Clien
 
 
 
-func (c *client_DelegatedRouting) Identify(ctx pd9.Context, req *DelegatedRouting_IdentifyArg) ([]*DelegatedRouting_IdentifyResult, error) {
-	ctx, cancel := pd9.WithCancel(ctx)
+func (c *client_DelegatedRouting) Identify(ctx pd11.Context, req *DelegatedRouting_IdentifyArg) ([]*DelegatedRouting_IdentifyResult, error) {
+	ctx, cancel := pd11.WithCancel(ctx)
 	defer cancel()
 	ch, err := c.Identify_Async(ctx, req)
 	if err != nil {
@@ -1126,22 +1126,22 @@ func (c *client_DelegatedRouting) Identify(ctx pd9.Context, req *DelegatedRoutin
 	}
 }
 
-func (c *client_DelegatedRouting) Identify_Async(ctx pd9.Context, req *DelegatedRouting_IdentifyArg) (<-chan DelegatedRouting_Identify_AsyncResult, error) {
+func (c *client_DelegatedRouting) Identify_Async(ctx pd11.Context, req *DelegatedRouting_IdentifyArg) (<-chan DelegatedRouting_Identify_AsyncResult, error) {
 	envelope := &AnonInductive4{
 		Identify: req,
 	}
 
-	buf, err := pd10.Encode(envelope, pd11.Encode)
+	buf, err := pd9.Encode(envelope, pd7.Encode)
 	if err != nil {
 		return nil, pd3.Errorf("unexpected serialization error (%v)", err)
 	}
 
 	// encode request in URL
 	u := *c.endpoint
-	q := pd5.Values{}
+	q := pd10.Values{}
 	q.Set("q", string(buf))
 	u.RawQuery = q.Encode()
-	httpReq, err := pd4.NewRequestWithContext(ctx, "POST", u.String(), pd6.NewReader(buf))
+	httpReq, err := pd12.NewRequestWithContext(ctx, "POST", u.String(), pd6.NewReader(buf))
 	if err != nil {
 		return nil, err
 	}
@@ -1161,30 +1161,30 @@ func (c *client_DelegatedRouting) Identify_Async(ctx pd9.Context, req *Delegated
 	return ch, nil
 }
 
-func process_DelegatedRouting_Identify_AsyncResult(ctx pd9.Context, ch chan<- DelegatedRouting_Identify_AsyncResult, r pd8.Reader) {
+func process_DelegatedRouting_Identify_AsyncResult(ctx pd11.Context, ch chan<- DelegatedRouting_Identify_AsyncResult, r pd4.Reader) {
 	defer close(ch)
 	for {
 		if ctx.Err() != nil {
-			ch <- DelegatedRouting_Identify_AsyncResult{Err: pd12.ErrContext{Cause: ctx.Err()}} // context cancelled
+			ch <- DelegatedRouting_Identify_AsyncResult{Err: pd5.ErrContext{Cause: ctx.Err()}} // context cancelled
 			return
 		}
 
-		n, err := pd10.DecodeStreaming(r, pd11.Decode)
-		if pd7.Is(err, pd8.EOF) || pd7.Is(err, pd8.ErrUnexpectedEOF) {
+		n, err := pd9.DecodeStreaming(r, pd7.Decode)
+		if pd8.Is(err, pd4.EOF) || pd8.Is(err, pd4.ErrUnexpectedEOF) {
 			return
 		}
 		if err != nil {
-			ch <- DelegatedRouting_Identify_AsyncResult{Err: pd12.ErrProto{Cause: err}} // IPLD decode error
+			ch <- DelegatedRouting_Identify_AsyncResult{Err: pd5.ErrProto{Cause: err}} // IPLD decode error
 			return
 		}
 		env := &AnonInductive5{}
 		if err = env.Parse(n); err != nil {
-			ch <- DelegatedRouting_Identify_AsyncResult{Err: pd12.ErrProto{Cause: err}} // schema decode error
+			ch <- DelegatedRouting_Identify_AsyncResult{Err: pd5.ErrProto{Cause: err}} // schema decode error
 			return
 		}
 
 		if env.Error != nil {
-			ch <- DelegatedRouting_Identify_AsyncResult{Err: pd12.ErrService{Cause: pd7.New(string(env.Error.Code))}} // service-level error
+			ch <- DelegatedRouting_Identify_AsyncResult{Err: pd5.ErrService{Cause: pd8.New(string(env.Error.Code))}} // service-level error
 			return
 		}
 		if env.Identify == nil {
@@ -1195,8 +1195,8 @@ func process_DelegatedRouting_Identify_AsyncResult(ctx pd9.Context, ch chan<- De
 }
 
 
-func (c *client_DelegatedRouting) FindProviders(ctx pd9.Context, req *FindProvidersRequest) ([]*FindProvidersResponse, error) {
-	ctx, cancel := pd9.WithCancel(ctx)
+func (c *client_DelegatedRouting) FindProviders(ctx pd11.Context, req *FindProvidersRequest) ([]*FindProvidersResponse, error) {
+	ctx, cancel := pd11.WithCancel(ctx)
 	defer cancel()
 	ch, err := c.FindProviders_Async(ctx, req)
 	if err != nil {
@@ -1224,22 +1224,22 @@ func (c *client_DelegatedRouting) FindProviders(ctx pd9.Context, req *FindProvid
 	}
 }
 
-func (c *client_DelegatedRouting) FindProviders_Async(ctx pd9.Context, req *FindProvidersRequest) (<-chan DelegatedRouting_FindProviders_AsyncResult, error) {
+func (c *client_DelegatedRouting) FindProviders_Async(ctx pd11.Context, req *FindProvidersRequest) (<-chan DelegatedRouting_FindProviders_AsyncResult, error) {
 	envelope := &AnonInductive4{
 		FindProviders: req,
 	}
 
-	buf, err := pd10.Encode(envelope, pd11.Encode)
+	buf, err := pd9.Encode(envelope, pd7.Encode)
 	if err != nil {
 		return nil, pd3.Errorf("unexpected serialization error (%v)", err)
 	}
 
 	// encode request in URL
 	u := *c.endpoint
-	q := pd5.Values{}
+	q := pd10.Values{}
 	q.Set("q", string(buf))
 	u.RawQuery = q.Encode()
-	httpReq, err := pd4.NewRequestWithContext(ctx, "POST", u.String(), pd6.NewReader(buf))
+	httpReq, err := pd12.NewRequestWithContext(ctx, "POST", u.String(), pd6.NewReader(buf))
 	if err != nil {
 		return nil, err
 	}
@@ -1259,30 +1259,30 @@ func (c *client_DelegatedRouting) FindProviders_Async(ctx pd9.Context, req *Find
 	return ch, nil
 }
 
-func process_DelegatedRouting_FindProviders_AsyncResult(ctx pd9.Context, ch chan<- DelegatedRouting_FindProviders_AsyncResult, r pd8.Reader) {
+func process_DelegatedRouting_FindProviders_AsyncResult(ctx pd11.Context, ch chan<- DelegatedRouting_FindProviders_AsyncResult, r pd4.Reader) {
 	defer close(ch)
 	for {
 		if ctx.Err() != nil {
-			ch <- DelegatedRouting_FindProviders_AsyncResult{Err: pd12.ErrContext{Cause: ctx.Err()}} // context cancelled
+			ch <- DelegatedRouting_FindProviders_AsyncResult{Err: pd5.ErrContext{Cause: ctx.Err()}} // context cancelled
 			return
 		}
 
-		n, err := pd10.DecodeStreaming(r, pd11.Decode)
-		if pd7.Is(err, pd8.EOF) || pd7.Is(err, pd8.ErrUnexpectedEOF) {
+		n, err := pd9.DecodeStreaming(r, pd7.Decode)
+		if pd8.Is(err, pd4.EOF) || pd8.Is(err, pd4.ErrUnexpectedEOF) {
 			return
 		}
 		if err != nil {
-			ch <- DelegatedRouting_FindProviders_AsyncResult{Err: pd12.ErrProto{Cause: err}} // IPLD decode error
+			ch <- DelegatedRouting_FindProviders_AsyncResult{Err: pd5.ErrProto{Cause: err}} // IPLD decode error
 			return
 		}
 		env := &AnonInductive5{}
 		if err = env.Parse(n); err != nil {
-			ch <- DelegatedRouting_FindProviders_AsyncResult{Err: pd12.ErrProto{Cause: err}} // schema decode error
+			ch <- DelegatedRouting_FindProviders_AsyncResult{Err: pd5.ErrProto{Cause: err}} // schema decode error
 			return
 		}
 
 		if env.Error != nil {
-			ch <- DelegatedRouting_FindProviders_AsyncResult{Err: pd12.ErrService{Cause: pd7.New(string(env.Error.Code))}} // service-level error
+			ch <- DelegatedRouting_FindProviders_AsyncResult{Err: pd5.ErrService{Cause: pd8.New(string(env.Error.Code))}} // service-level error
 			return
 		}
 		if env.FindProviders == nil {
@@ -1293,8 +1293,8 @@ func process_DelegatedRouting_FindProviders_AsyncResult(ctx pd9.Context, ch chan
 }
 
 
-func (c *client_DelegatedRouting) GetIPNS(ctx pd9.Context, req *GetIPNSRequest) ([]*GetIPNSResponse, error) {
-	ctx, cancel := pd9.WithCancel(ctx)
+func (c *client_DelegatedRouting) GetIPNS(ctx pd11.Context, req *GetIPNSRequest) ([]*GetIPNSResponse, error) {
+	ctx, cancel := pd11.WithCancel(ctx)
 	defer cancel()
 	ch, err := c.GetIPNS_Async(ctx, req)
 	if err != nil {
@@ -1322,22 +1322,22 @@ func (c *client_DelegatedRouting) GetIPNS(ctx pd9.Context, req *GetIPNSRequest) 
 	}
 }
 
-func (c *client_DelegatedRouting) GetIPNS_Async(ctx pd9.Context, req *GetIPNSRequest) (<-chan DelegatedRouting_GetIPNS_AsyncResult, error) {
+func (c *client_DelegatedRouting) GetIPNS_Async(ctx pd11.Context, req *GetIPNSRequest) (<-chan DelegatedRouting_GetIPNS_AsyncResult, error) {
 	envelope := &AnonInductive4{
 		GetIPNS: req,
 	}
 
-	buf, err := pd10.Encode(envelope, pd11.Encode)
+	buf, err := pd9.Encode(envelope, pd7.Encode)
 	if err != nil {
 		return nil, pd3.Errorf("unexpected serialization error (%v)", err)
 	}
 
 	// encode request in URL
 	u := *c.endpoint
-	q := pd5.Values{}
+	q := pd10.Values{}
 	q.Set("q", string(buf))
 	u.RawQuery = q.Encode()
-	httpReq, err := pd4.NewRequestWithContext(ctx, "POST", u.String(), pd6.NewReader(buf))
+	httpReq, err := pd12.NewRequestWithContext(ctx, "POST", u.String(), pd6.NewReader(buf))
 	if err != nil {
 		return nil, err
 	}
@@ -1357,30 +1357,30 @@ func (c *client_DelegatedRouting) GetIPNS_Async(ctx pd9.Context, req *GetIPNSReq
 	return ch, nil
 }
 
-func process_DelegatedRouting_GetIPNS_AsyncResult(ctx pd9.Context, ch chan<- DelegatedRouting_GetIPNS_AsyncResult, r pd8.Reader) {
+func process_DelegatedRouting_GetIPNS_AsyncResult(ctx pd11.Context, ch chan<- DelegatedRouting_GetIPNS_AsyncResult, r pd4.Reader) {
 	defer close(ch)
 	for {
 		if ctx.Err() != nil {
-			ch <- DelegatedRouting_GetIPNS_AsyncResult{Err: pd12.ErrContext{Cause: ctx.Err()}} // context cancelled
+			ch <- DelegatedRouting_GetIPNS_AsyncResult{Err: pd5.ErrContext{Cause: ctx.Err()}} // context cancelled
 			return
 		}
 
-		n, err := pd10.DecodeStreaming(r, pd11.Decode)
-		if pd7.Is(err, pd8.EOF) || pd7.Is(err, pd8.ErrUnexpectedEOF) {
+		n, err := pd9.DecodeStreaming(r, pd7.Decode)
+		if pd8.Is(err, pd4.EOF) || pd8.Is(err, pd4.ErrUnexpectedEOF) {
 			return
 		}
 		if err != nil {
-			ch <- DelegatedRouting_GetIPNS_AsyncResult{Err: pd12.ErrProto{Cause: err}} // IPLD decode error
+			ch <- DelegatedRouting_GetIPNS_AsyncResult{Err: pd5.ErrProto{Cause: err}} // IPLD decode error
 			return
 		}
 		env := &AnonInductive5{}
 		if err = env.Parse(n); err != nil {
-			ch <- DelegatedRouting_GetIPNS_AsyncResult{Err: pd12.ErrProto{Cause: err}} // schema decode error
+			ch <- DelegatedRouting_GetIPNS_AsyncResult{Err: pd5.ErrProto{Cause: err}} // schema decode error
 			return
 		}
 
 		if env.Error != nil {
-			ch <- DelegatedRouting_GetIPNS_AsyncResult{Err: pd12.ErrService{Cause: pd7.New(string(env.Error.Code))}} // service-level error
+			ch <- DelegatedRouting_GetIPNS_AsyncResult{Err: pd5.ErrService{Cause: pd8.New(string(env.Error.Code))}} // service-level error
 			return
 		}
 		if env.GetIPNS == nil {
@@ -1391,8 +1391,8 @@ func process_DelegatedRouting_GetIPNS_AsyncResult(ctx pd9.Context, ch chan<- Del
 }
 
 
-func (c *client_DelegatedRouting) PutIPNS(ctx pd9.Context, req *PutIPNSRequest) ([]*PutIPNSResponse, error) {
-	ctx, cancel := pd9.WithCancel(ctx)
+func (c *client_DelegatedRouting) PutIPNS(ctx pd11.Context, req *PutIPNSRequest) ([]*PutIPNSResponse, error) {
+	ctx, cancel := pd11.WithCancel(ctx)
 	defer cancel()
 	ch, err := c.PutIPNS_Async(ctx, req)
 	if err != nil {
@@ -1420,22 +1420,22 @@ func (c *client_DelegatedRouting) PutIPNS(ctx pd9.Context, req *PutIPNSRequest) 
 	}
 }
 
-func (c *client_DelegatedRouting) PutIPNS_Async(ctx pd9.Context, req *PutIPNSRequest) (<-chan DelegatedRouting_PutIPNS_AsyncResult, error) {
+func (c *client_DelegatedRouting) PutIPNS_Async(ctx pd11.Context, req *PutIPNSRequest) (<-chan DelegatedRouting_PutIPNS_AsyncResult, error) {
 	envelope := &AnonInductive4{
 		PutIPNS: req,
 	}
 
-	buf, err := pd10.Encode(envelope, pd11.Encode)
+	buf, err := pd9.Encode(envelope, pd7.Encode)
 	if err != nil {
 		return nil, pd3.Errorf("unexpected serialization error (%v)", err)
 	}
 
 	// encode request in URL
 	u := *c.endpoint
-	q := pd5.Values{}
+	q := pd10.Values{}
 	q.Set("q", string(buf))
 	u.RawQuery = q.Encode()
-	httpReq, err := pd4.NewRequestWithContext(ctx, "POST", u.String(), pd6.NewReader(buf))
+	httpReq, err := pd12.NewRequestWithContext(ctx, "POST", u.String(), pd6.NewReader(buf))
 	if err != nil {
 		return nil, err
 	}
@@ -1455,30 +1455,30 @@ func (c *client_DelegatedRouting) PutIPNS_Async(ctx pd9.Context, req *PutIPNSReq
 	return ch, nil
 }
 
-func process_DelegatedRouting_PutIPNS_AsyncResult(ctx pd9.Context, ch chan<- DelegatedRouting_PutIPNS_AsyncResult, r pd8.Reader) {
+func process_DelegatedRouting_PutIPNS_AsyncResult(ctx pd11.Context, ch chan<- DelegatedRouting_PutIPNS_AsyncResult, r pd4.Reader) {
 	defer close(ch)
 	for {
 		if ctx.Err() != nil {
-			ch <- DelegatedRouting_PutIPNS_AsyncResult{Err: pd12.ErrContext{Cause: ctx.Err()}} // context cancelled
+			ch <- DelegatedRouting_PutIPNS_AsyncResult{Err: pd5.ErrContext{Cause: ctx.Err()}} // context cancelled
 			return
 		}
 
-		n, err := pd10.DecodeStreaming(r, pd11.Decode)
-		if pd7.Is(err, pd8.EOF) || pd7.Is(err, pd8.ErrUnexpectedEOF) {
+		n, err := pd9.DecodeStreaming(r, pd7.Decode)
+		if pd8.Is(err, pd4.EOF) || pd8.Is(err, pd4.ErrUnexpectedEOF) {
 			return
 		}
 		if err != nil {
-			ch <- DelegatedRouting_PutIPNS_AsyncResult{Err: pd12.ErrProto{Cause: err}} // IPLD decode error
+			ch <- DelegatedRouting_PutIPNS_AsyncResult{Err: pd5.ErrProto{Cause: err}} // IPLD decode error
 			return
 		}
 		env := &AnonInductive5{}
 		if err = env.Parse(n); err != nil {
-			ch <- DelegatedRouting_PutIPNS_AsyncResult{Err: pd12.ErrProto{Cause: err}} // schema decode error
+			ch <- DelegatedRouting_PutIPNS_AsyncResult{Err: pd5.ErrProto{Cause: err}} // schema decode error
 			return
 		}
 
 		if env.Error != nil {
-			ch <- DelegatedRouting_PutIPNS_AsyncResult{Err: pd12.ErrService{Cause: pd7.New(string(env.Error.Code))}} // service-level error
+			ch <- DelegatedRouting_PutIPNS_AsyncResult{Err: pd5.ErrService{Cause: pd8.New(string(env.Error.Code))}} // service-level error
 			return
 		}
 		if env.PutIPNS == nil {
@@ -1493,16 +1493,16 @@ var logger_server_DelegatedRouting = pd13.Logger("service/server/DelegatedRoutin
 
 type DelegatedRouting_Server interface {
 
-	FindProviders(ctx pd9.Context, req *FindProvidersRequest, respCh chan<- *DelegatedRouting_FindProviders_AsyncResult) error
-	GetIPNS(ctx pd9.Context, req *GetIPNSRequest, respCh chan<- *DelegatedRouting_GetIPNS_AsyncResult) error
-	PutIPNS(ctx pd9.Context, req *PutIPNSRequest, respCh chan<- *DelegatedRouting_PutIPNS_AsyncResult) error
+	FindProviders(ctx pd11.Context, req *FindProvidersRequest, respCh chan<- *DelegatedRouting_FindProviders_AsyncResult) error
+	GetIPNS(ctx pd11.Context, req *GetIPNSRequest, respCh chan<- *DelegatedRouting_GetIPNS_AsyncResult) error
+	PutIPNS(ctx pd11.Context, req *PutIPNSRequest, respCh chan<- *DelegatedRouting_PutIPNS_AsyncResult) error
 }
 
-func DelegatedRouting_AsyncHandler(s DelegatedRouting_Server) pd4.HandlerFunc {
-	return func(writer pd4.ResponseWriter, request *pd4.Request) {
+func DelegatedRouting_AsyncHandler(s DelegatedRouting_Server) pd12.HandlerFunc {
+	return func(writer pd12.ResponseWriter, request *pd12.Request) {
 		// parse request
 		msg := request.URL.Query().Get("q")
-		n, err := pd10.Decode([]byte(msg), pd11.Decode)
+		n, err := pd9.Decode([]byte(msg), pd7.Decode)
 		if err != nil {
 			logger_server_DelegatedRouting.Errorf("received request not decodeable (%v)", err)
 			writer.WriteHeader(400)
@@ -1524,7 +1524,7 @@ func DelegatedRouting_AsyncHandler(s DelegatedRouting_Server) pd4.HandlerFunc {
 
 		case env.FindProviders != nil:
 			ch := make(chan *DelegatedRouting_FindProviders_AsyncResult)
-			if err = s.FindProviders(pd9.Background(), env.FindProviders, ch); err != nil {
+			if err = s.FindProviders(pd11.Background(), env.FindProviders, ch); err != nil {
 				logger_server_DelegatedRouting.Errorf("get p2p provider rejected request (%v)", err)
 				writer.WriteHeader(500)
 				return
@@ -1537,7 +1537,7 @@ func DelegatedRouting_AsyncHandler(s DelegatedRouting_Server) pd4.HandlerFunc {
 					env = &AnonInductive5{ FindProviders: resp.Resp }
 				}
 				var buf pd6.Buffer
-				if err = pd10.EncodeStreaming(&buf, env, pd11.Encode); err != nil {
+				if err = pd9.EncodeStreaming(&buf, env, pd7.Encode); err != nil {
 					logger_server_DelegatedRouting.Errorf("cannot encode response (%v)", err)
 					continue
 				}
@@ -1547,7 +1547,7 @@ func DelegatedRouting_AsyncHandler(s DelegatedRouting_Server) pd4.HandlerFunc {
 
 		case env.GetIPNS != nil:
 			ch := make(chan *DelegatedRouting_GetIPNS_AsyncResult)
-			if err = s.GetIPNS(pd9.Background(), env.GetIPNS, ch); err != nil {
+			if err = s.GetIPNS(pd11.Background(), env.GetIPNS, ch); err != nil {
 				logger_server_DelegatedRouting.Errorf("get p2p provider rejected request (%v)", err)
 				writer.WriteHeader(500)
 				return
@@ -1560,7 +1560,7 @@ func DelegatedRouting_AsyncHandler(s DelegatedRouting_Server) pd4.HandlerFunc {
 					env = &AnonInductive5{ GetIPNS: resp.Resp }
 				}
 				var buf pd6.Buffer
-				if err = pd10.EncodeStreaming(&buf, env, pd11.Encode); err != nil {
+				if err = pd9.EncodeStreaming(&buf, env, pd7.Encode); err != nil {
 					logger_server_DelegatedRouting.Errorf("cannot encode response (%v)", err)
 					continue
 				}
@@ -1570,7 +1570,7 @@ func DelegatedRouting_AsyncHandler(s DelegatedRouting_Server) pd4.HandlerFunc {
 
 		case env.PutIPNS != nil:
 			ch := make(chan *DelegatedRouting_PutIPNS_AsyncResult)
-			if err = s.PutIPNS(pd9.Background(), env.PutIPNS, ch); err != nil {
+			if err = s.PutIPNS(pd11.Background(), env.PutIPNS, ch); err != nil {
 				logger_server_DelegatedRouting.Errorf("get p2p provider rejected request (%v)", err)
 				writer.WriteHeader(500)
 				return
@@ -1583,7 +1583,7 @@ func DelegatedRouting_AsyncHandler(s DelegatedRouting_Server) pd4.HandlerFunc {
 					env = &AnonInductive5{ PutIPNS: resp.Resp }
 				}
 				var buf pd6.Buffer
-				if err = pd10.EncodeStreaming(&buf, env, pd11.Encode); err != nil {
+				if err = pd9.EncodeStreaming(&buf, env, pd7.Encode); err != nil {
 					logger_server_DelegatedRouting.Errorf("cannot encode response (%v)", err)
 					continue
 				}
@@ -1605,7 +1605,7 @@ func DelegatedRouting_AsyncHandler(s DelegatedRouting_Server) pd4.HandlerFunc {
 				},
 			}
 			var buf pd6.Buffer
-			if err = pd10.EncodeStreaming(&buf, env, pd11.Encode); err != nil {
+			if err = pd9.EncodeStreaming(&buf, env, pd7.Encode); err != nil {
 				logger_server_DelegatedRouting.Errorf("cannot encode identify response (%v)", err)
 				writer.WriteHeader(500)
 				return
@@ -2741,7 +2741,7 @@ func (x PutIPNSResponse) Prototype() pd2.NodePrototype {
 
 // -- protocol type LinkToAny --
 
-type LinkToAny pd15.Cid
+type LinkToAny pd14.Cid
 
 func (v *LinkToAny) Parse(n pd2.Node) error {
 	if n.Kind() != pd2.Kind_Link {
@@ -2749,7 +2749,7 @@ func (v *LinkToAny) Parse(n pd2.Node) error {
 	} else {
 		ipldLink, _ := n.AsLink()
 		// TODO: Is there a more general way to convert ipld.Link interface into a concrete user object?
-		cidLink, ok := ipldLink.(pd14.Link)
+		cidLink, ok := ipldLink.(pd15.Link)
 		if !ok {
 			return pd3.Errorf("only cid links are supported")
 		} else {
@@ -2824,140 +2824,17 @@ func (LinkToAny) AsBytes() ([]byte, error) {
 }
 
 func (v LinkToAny) AsLink() (pd2.Link, error) {
-	return pd14.Link{Cid: pd15.Cid(v)}, nil
+	return pd15.Link{Cid: pd14.Cid(v)}, nil
 }
 
 func (LinkToAny) Prototype() pd2.NodePrototype {
 	return nil // not needed
 }
-// -- protocol type AnonList15 --
-
-type AnonList15 []TransferProtocol
-
-func (v AnonList15) Node() pd2.Node {
-	return v
-}
-
-func (v *AnonList15) Parse(n pd2.Node) error {
-	if n.Kind() == pd2.Kind_Null {
-		*v = nil
-		return nil
-	}
-	if n.Kind() != pd2.Kind_List {
-		return pd1.ErrNA
-	} else {
-		*v = make(AnonList15, n.Length())
-		iter := n.ListIterator()
-		for !iter.Done() {
-			if i, n, err := iter.Next(); err != nil {
-				return pd1.ErrNA
-			} else if err = (*v)[i].Parse(n); err != nil {
-				return err
-			}
-		}
-		return nil
-	}
-}
-
-func (AnonList15) Kind() pd2.Kind {
-	return pd2.Kind_List
-}
-
-func (AnonList15) LookupByString(string) (pd2.Node, error) {
-	return nil, pd1.ErrNA
-}
-
-func (AnonList15) LookupByNode(key pd2.Node) (pd2.Node, error) {
-	return nil, pd1.ErrNA
-}
-
-func (v AnonList15) LookupByIndex(i int64) (pd2.Node, error) {
-	if i < 0 || i >= v.Length() {
-		return nil, pd1.ErrBounds
-	} else {
-		return v[i].Node(), nil
-	}
-}
-
-func (v AnonList15) LookupBySegment(seg pd2.PathSegment) (pd2.Node, error) {
-	if i, err := seg.Index(); err != nil {
-		return nil, pd1.ErrNA
-	} else {
-		return v.LookupByIndex(i)
-	}
-}
-
-func (AnonList15) MapIterator() pd2.MapIterator {
-	return nil
-}
-
-func (v AnonList15) ListIterator() pd2.ListIterator {
-	return &AnonList15_ListIterator{v, 0}
-}
-
-func (v AnonList15) Length() int64 {
-	return int64(len(v))
-}
-
-func (AnonList15) IsAbsent() bool {
-	return false
-}
-
-func (AnonList15) IsNull() bool {
-	return false
-}
-
-func (v AnonList15) AsBool() (bool, error) {
-	return false, pd1.ErrNA
-}
-
-func (AnonList15) AsInt() (int64, error) {
-	return 0, pd1.ErrNA
-}
-
-func (AnonList15) AsFloat() (float64, error) {
-	return 0, pd1.ErrNA
-}
-
-func (AnonList15) AsString() (string, error) {
-	return "", pd1.ErrNA
-}
-
-func (AnonList15) AsBytes() ([]byte, error) {
-	return nil, pd1.ErrNA
-}
-
-func (AnonList15) AsLink() (pd2.Link, error) {
-	return nil, pd1.ErrNA
-}
-
-func (AnonList15) Prototype() pd2.NodePrototype {
-	return nil // not needed
-}
-
-type AnonList15_ListIterator struct {
-	list AnonList15
-	at   int64
-}
-
-func (iter *AnonList15_ListIterator) Next() (int64, pd2.Node, error) {
-	if iter.Done() {
-		return -1, nil, pd1.ErrBounds
-	}
-	v := iter.list[iter.at]
-	i := int64(iter.at)
-	iter.at++
-	return i, v.Node(), nil
-}
-
-func (iter *AnonList15_ListIterator) Done() bool {
-	return iter.at >= iter.list.Length()
-}
 // -- protocol type Provider --
 
 type Provider struct {
 		ProviderNode Node
-		ProviderProto AnonList15
+		ProviderProto TransferProtocolList
 
 }
 
@@ -3137,6 +3014,129 @@ func (x Provider) Prototype() pd2.NodePrototype {
 	return nil
 }
 
+// -- protocol type TransferProtocolList --
+
+type TransferProtocolList []TransferProtocol
+
+func (v TransferProtocolList) Node() pd2.Node {
+	return v
+}
+
+func (v *TransferProtocolList) Parse(n pd2.Node) error {
+	if n.Kind() == pd2.Kind_Null {
+		*v = nil
+		return nil
+	}
+	if n.Kind() != pd2.Kind_List {
+		return pd1.ErrNA
+	} else {
+		*v = make(TransferProtocolList, n.Length())
+		iter := n.ListIterator()
+		for !iter.Done() {
+			if i, n, err := iter.Next(); err != nil {
+				return pd1.ErrNA
+			} else if err = (*v)[i].Parse(n); err != nil {
+				return err
+			}
+		}
+		return nil
+	}
+}
+
+func (TransferProtocolList) Kind() pd2.Kind {
+	return pd2.Kind_List
+}
+
+func (TransferProtocolList) LookupByString(string) (pd2.Node, error) {
+	return nil, pd1.ErrNA
+}
+
+func (TransferProtocolList) LookupByNode(key pd2.Node) (pd2.Node, error) {
+	return nil, pd1.ErrNA
+}
+
+func (v TransferProtocolList) LookupByIndex(i int64) (pd2.Node, error) {
+	if i < 0 || i >= v.Length() {
+		return nil, pd1.ErrBounds
+	} else {
+		return v[i].Node(), nil
+	}
+}
+
+func (v TransferProtocolList) LookupBySegment(seg pd2.PathSegment) (pd2.Node, error) {
+	if i, err := seg.Index(); err != nil {
+		return nil, pd1.ErrNA
+	} else {
+		return v.LookupByIndex(i)
+	}
+}
+
+func (TransferProtocolList) MapIterator() pd2.MapIterator {
+	return nil
+}
+
+func (v TransferProtocolList) ListIterator() pd2.ListIterator {
+	return &TransferProtocolList_ListIterator{v, 0}
+}
+
+func (v TransferProtocolList) Length() int64 {
+	return int64(len(v))
+}
+
+func (TransferProtocolList) IsAbsent() bool {
+	return false
+}
+
+func (TransferProtocolList) IsNull() bool {
+	return false
+}
+
+func (v TransferProtocolList) AsBool() (bool, error) {
+	return false, pd1.ErrNA
+}
+
+func (TransferProtocolList) AsInt() (int64, error) {
+	return 0, pd1.ErrNA
+}
+
+func (TransferProtocolList) AsFloat() (float64, error) {
+	return 0, pd1.ErrNA
+}
+
+func (TransferProtocolList) AsString() (string, error) {
+	return "", pd1.ErrNA
+}
+
+func (TransferProtocolList) AsBytes() ([]byte, error) {
+	return nil, pd1.ErrNA
+}
+
+func (TransferProtocolList) AsLink() (pd2.Link, error) {
+	return nil, pd1.ErrNA
+}
+
+func (TransferProtocolList) Prototype() pd2.NodePrototype {
+	return nil // not needed
+}
+
+type TransferProtocolList_ListIterator struct {
+	list TransferProtocolList
+	at   int64
+}
+
+func (iter *TransferProtocolList_ListIterator) Next() (int64, pd2.Node, error) {
+	if iter.Done() {
+		return -1, nil, pd1.ErrBounds
+	}
+	v := iter.list[iter.at]
+	i := int64(iter.at)
+	iter.at++
+	return i, v.Node(), nil
+}
+
+func (iter *TransferProtocolList_ListIterator) Done() bool {
+	return iter.at >= iter.list.Length()
+}
 // -- protocol type Node --
 
 type Node struct {
