@@ -71,9 +71,21 @@ func cidsToFindProvidersRequest(cid cid.Cid) *proto.FindProvidersRequest {
 func parseFindProvidersResponse(resp *proto.FindProvidersResponse) []peer.AddrInfo {
 	infos := []peer.AddrInfo{}
 	for _, prov := range resp.Providers {
+		if !providerSupportsBitswap(prov.ProviderProto) {
+			continue
+		}
 		infos = append(infos, parseProtoNodeToAddrInfo(prov.ProviderNode)...)
 	}
 	return infos
+}
+
+func providerSupportsBitswap(supported proto.TransferProtocolList) bool {
+	for _, p := range supported {
+		if p.Bitswap != nil {
+			return true
+		}
+	}
+	return false
 }
 
 func parseProtoNodeToAddrInfo(n proto.Node) []peer.AddrInfo {
