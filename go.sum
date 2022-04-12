@@ -42,6 +42,8 @@ github.com/ipld/edelweiss v0.0.0-20220307233227-6894fe7ab382 h1:U00IXbti7LNs7QX/
 github.com/ipld/edelweiss v0.0.0-20220307233227-6894fe7ab382/go.mod h1:IqIzc4cQmoXWnY8AacVC0BQt3IBEu4usbh9DkWEz+xg=
 github.com/ipld/edelweiss v0.0.0-20220411194050-dfa96ab4b706 h1:iciLxHfWW6y0YVfJ1XRESbzsZWwx4/PzVm+WUVMxBWk=
 github.com/ipld/edelweiss v0.0.0-20220411194050-dfa96ab4b706/go.mod h1:14NnBVHgrPO8cqDnKg7vc69LGI0aCAcax6mj21+99ec=
+github.com/ipld/edelweiss v0.0.0-20220412145311-5f52b6ad82ea h1:e8JvEs/OGnGze1P/XRgfp17zmclZyvoBoINmwLVfgSI=
+github.com/ipld/edelweiss v0.0.0-20220412145311-5f52b6ad82ea/go.mod h1:14NnBVHgrPO8cqDnKg7vc69LGI0aCAcax6mj21+99ec=
 github.com/ipld/go-ipld-prime v0.12.3 h1:furVobw7UBLQZwlEwfE26tYORy3PAK8VYSgZOSr3JMQ=
 github.com/ipld/go-ipld-prime v0.12.3/go.mod h1:PaeLYq8k6dJLmDUSLrzkEpoGV4PEfe/1OtFN/eALOc8=
 github.com/ipld/go-ipld-prime v0.14.4-0.20211217152141-008fd70fc96f h1:6ISKbCjgF2pR2W/YRNBeTV7XL0+d+r6h9vRoer0zFm8=
