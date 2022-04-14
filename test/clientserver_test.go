@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"fmt"
+	"math"
 	"net/http/httptest"
 	"os"
 	"runtime"
@@ -19,7 +20,7 @@ import (
 	"github.com/multiformats/go-multihash"
 )
 
-func TestClientServer(t *testing.T) {
+func testClientServer(t *testing.T, numIter int) (avgLatency time.Duration, deltaGo int, deltaMem uint64) {
 	// start a server
 	s := httptest.NewServer(server.DelegatedRoutingAsyncHandler(testDelegatedRoutingService{}))
 	defer s.Close()
@@ -42,8 +43,7 @@ func TestClientServer(t *testing.T) {
 
 	timeStart := time.Now()
 
-	const N = 1e5
-	for i := 0; i < N; i++ {
+	for i := 0; i < numIter; i++ {
 		// exercise FindProviders
 		infos, err := c.FindProviders(context.Background(), cid.NewCidV1(cid.Libp2pKey, h))
 		if err != nil {
@@ -83,33 +83,109 @@ func TestClientServer(t *testing.T) {
 	}
 
 	timeEnd := time.Now()
-	avgLatency := timeEnd.Sub(timeStart) / N
+	avgLatency = timeEnd.Sub(timeStart) / time.Duration(numIter)
 	fmt.Printf("average roundtrip latency: %v\n", avgLatency)
 
 	ngoEnd, allocEnd := snapUtilizations()
 	fmt.Printf("end: goroutines=%d allocated=%d\n", ngoEnd, allocEnd)
-	fmt.Printf("diff: goroutines=%d allocated=%d\n", ngoEnd-ngoStart, allocEnd-allocStart)
+	deltaGo, deltaMem = ngoEnd-ngoStart, allocEnd-allocStart
+	fmt.Printf("diff: goroutines=%d allocated=%d\n", deltaGo, deltaMem)
 
-	// we have ran this test with increasing number of iterations (N = 1e3, 1e4, 1e5, 1e6, 1e7)
-	// in all cases, the number of excess goroutines and memory allocation does not increase with the number of test iterations.
-	// we have observed that excess goroutines (ngoEnd-ngoStart) always equal 3, and
-	// excess memory allocation (allocEnd-allocStart) closely varies around 290K.
-	// these observations are codified in the regression checks below.
+	return
+}
 
-	if ngoEnd-ngoStart > 3 {
-		t.Errorf("goroutine leakage")
+type testStatistic struct {
+	total        float64
+	totalSquared float64
+	count        int64
+	max          float64
+	min          float64
+}
+
+func (s *testStatistic) Add(sample float64) {
+	s.total += sample
+	s.totalSquared += sample * sample
+	if s.count == 0 {
+		s.max = sample
+		s.min = sample
+	} else {
+		s.max = max64(s.max, sample)
+		s.min = min64(s.min, sample)
 	}
-	if allocEnd-allocStart > 300e3 {
-		t.Errorf("memory leakage")
+	s.count++
+}
+
+func max64(x, y float64) float64 {
+	if x > y {
+		return x
+	}
+	return y
+}
+
+func min64(x, y float64) float64 {
+	if x < y {
+		return x
+	}
+	return y
+}
+
+func (s testStatistic) Mean() float64 {
+	return s.total / float64(s.count)
+}
+
+func (s testStatistic) Variance() float64 {
+	mean := s.Mean()
+	return s.totalSquared/float64(s.count) - mean*mean
+}
+
+func (s testStatistic) Stddev() float64 {
+	return math.Sqrt(s.Variance())
+}
+
+func (s testStatistic) MaxDeviation() float64 {
+	mean := s.Mean()
+	return max64(math.Abs(s.max-mean), math.Abs(s.min-mean))
+}
+
+func (s testStatistic) DeviatesBy(numStddev float64) bool {
+	return s.MaxDeviation()/s.Stddev() > numStddev
+}
+
+func TestClientServer(t *testing.T) {
+
+	var numIter []int = []int{1e3, 1e4, 1e5}
+	avgLatency := make([]time.Duration, len(numIter))
+	deltaGo := make([]int, len(numIter))
+	deltaMem := make([]uint64, len(numIter))
+	for i, n := range numIter {
+		avgLatency[i], deltaGo[i], deltaMem[i] = testClientServer(t, n)
 	}
 
-	// on a MacBook 2.6 GHz 6-Core Intel Core i7
-	// the average latency is concentrated around 150µs, independently of the iteration count N
-	// we are codifying a regression check for this,
-	// with the caveat that this may result in flakiness since it depends on the ci runtime environment.
+	// compute means and standard deviations of all statistics
+	var avgLatencyStat, deltaGoStat, deltaMemStat testStatistic
+	for i := range numIter {
+		avgLatencyStat.Add(float64(avgLatency[i]))
+		deltaGoStat.Add(float64(deltaGo[i]))
+		deltaMemStat.Add(float64(deltaMem[i]))
+	}
 
-	if avgLatency > time.Microsecond*400 {
-		t.Errorf("average latency too large")
+	// each test instance executes with a different number of iterations (1e3, 1e4, 1e5).
+	// for each iteration, we measure three statistics:
+	//	- latency of average iteration (i.e. an rpc network call)
+	//	- excess/remaining number of goroutines after the test instance runs
+	//	- excess/remaining allocated memory after the test instance runs
+	// we then verify that no statistic regresses beyond 2 standard deviations across the different test runs.
+	// this ensures that none of the statistics grow with the increase in test iterations.
+	// in turn, this implies that there are no leakages of memory or goroutines.
+	const deviationFactor = 2
+	if avgLatencyStat.DeviatesBy(deviationFactor) {
+		t.Errorf("average latency is not stable")
+	}
+	if deltaGoStat.DeviatesBy(deviationFactor) {
+		t.Errorf("allocated goroutines count is not stable")
+	}
+	if deltaMemStat.DeviatesBy(deviationFactor) {
+		t.Errorf("allocated memory is not stable")
 	}
 }
 
