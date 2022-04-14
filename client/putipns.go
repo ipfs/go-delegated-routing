@@ -35,9 +35,6 @@ func (fp *Client) PutIPNSAsync(ctx context.Context, id []byte, record []byte) (<
 		}
 		var r1 PutIPNSAsyncResult
 		r1.Err = r0.Err
-		if r0.Resp != nil {
-			// currently, succesful responses hold no data
-		}
 		ch1 <- r1
 	}()
 	return ch1, nil

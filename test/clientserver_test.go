@@ -71,7 +71,7 @@ func testClientServer(t *testing.T, numIter int) (avgLatency time.Duration, delt
 		if len(record) != 1 {
 			t.Fatalf("expecting 1 result, got %d", len(record))
 		}
-		if bytes.Compare(record[0], testIPNSRecord) != 0 {
+		if !bytes.Equal(record[0], testIPNSRecord) {
 			t.Errorf("expecting %#v, got %#v", testIPNSRecord, record[0])
 		}
 
