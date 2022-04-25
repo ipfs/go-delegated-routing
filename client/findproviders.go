@@ -12,6 +12,13 @@ import (
 
 var logger = logging.Logger("service/client/delegatedrouting")
 
+type DelegatedRoutingClient interface {
+	FindProviders(ctx context.Context, key cid.Cid) ([]peer.AddrInfo, error)
+	FindProvidersAsync(ctx context.Context, key cid.Cid) (<-chan FindProvidersAsyncResult, error)
+	GetIPNS(ctx context.Context, id []byte) ([][]byte, error)
+	PutIPNSAsync(ctx context.Context, id []byte, record []byte) (<-chan PutIPNSAsyncResult, error)
+}
+
 type Client struct {
 	client proto.DelegatedRouting_Client
 }
@@ -57,7 +64,7 @@ func (fp *Client) FindProvidersAsync(ctx context.Context, key cid.Cid) (<-chan F
 		var parsedAsyncResp FindProvidersAsyncResult
 		parsedAsyncResp.Err = protoAsyncResp.Err
 		if protoAsyncResp.Resp != nil {
-			parsedAsyncResp.AddrInfo = parseFindProvidersResponse(r0.Resp)
+			parsedAsyncResp.AddrInfo = parseFindProvidersResponse(protoAsyncResp.Resp)
 		}
 		parsedRespCh <- parsedAsyncResp
 	}()
