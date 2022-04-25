@@ -13,7 +13,7 @@ import (
 	"github.com/multiformats/go-multiaddr"
 )
 
-var logger = logging.Logger("service/server/DelegatedRouting")
+var logger = logging.Logger("service/server/delegatedrouting")
 
 type DelegatedRoutingService interface {
 	FindProviders(key cid.Cid, rch chan<- client.FindProvidersAsyncResult) error
@@ -42,7 +42,7 @@ func (drs *delegatedRoutingServer) GetIPNS(ctx context.Context, req *proto.GetIP
 		for x := range ch {
 			var resp *proto.DelegatedRouting_GetIPNS_AsyncResult
 			if x.Err != nil {
-				logger.Errorf("get ipns function returned error (%w)", x.Err)
+				logger.Infof("get ipns function returned error (%w)", x.Err)
 				resp = &proto.DelegatedRouting_GetIPNS_AsyncResult{Err: x.Err}
 			} else {
 				resp = &proto.DelegatedRouting_GetIPNS_AsyncResult{Resp: &proto.GetIPNSResponse{Record: x.Record}}
@@ -65,7 +65,7 @@ func (drs *delegatedRoutingServer) PutIPNS(ctx context.Context, req *proto.PutIP
 		for x := range ch {
 			var resp *proto.DelegatedRouting_PutIPNS_AsyncResult
 			if x.Err != nil {
-				logger.Errorf("put ipns function returned error (%w)", x.Err)
+				logger.Infof("put ipns function returned error (%w)", x.Err)
 				resp = &proto.DelegatedRouting_PutIPNS_AsyncResult{Err: x.Err}
 			} else {
 				resp = &proto.DelegatedRouting_PutIPNS_AsyncResult{Resp: &proto.PutIPNSResponse{}}
@@ -89,7 +89,7 @@ func (drs *delegatedRoutingServer) FindProviders(ctx context.Context, req *proto
 			for x := range ch {
 				var resp *proto.DelegatedRouting_FindProviders_AsyncResult
 				if x.Err != nil {
-					logger.Errorf("find providers function returned error (%w)", x.Err)
+					logger.Infof("find providers function returned error (%w)", x.Err)
 					resp = &proto.DelegatedRouting_FindProviders_AsyncResult{Err: x.Err}
 				} else {
 					resp = buildFindProvidersResponse(c, x.AddrInfo)

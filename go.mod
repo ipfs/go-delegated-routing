@@ -5,7 +5,7 @@ go 1.17
 require (
 	github.com/ipfs/go-cid v0.0.7
 	github.com/ipfs/go-log v1.0.5
-	github.com/ipld/edelweiss v0.0.0-20220414232330-8248e7016450
+	github.com/ipld/edelweiss v0.0.0-20220425163933-8d8eb03ff313
 	github.com/ipld/go-ipld-prime v0.14.4-0.20211217152141-008fd70fc96f
 	github.com/libp2p/go-libp2p-core v0.9.0
 	github.com/multiformats/go-multiaddr v0.2.2

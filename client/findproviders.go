@@ -10,7 +10,7 @@ import (
 	"github.com/multiformats/go-multiaddr"
 )
 
-var logger = logging.Logger("service/client/DelegatedRouting")
+var logger = logging.Logger("service/client/delegatedrouting")
 
 type Client struct {
 	client proto.DelegatedRouting_Client
@@ -37,29 +37,31 @@ type FindProvidersAsyncResult struct {
 	Err      error
 }
 
+// FindProvidersAsync processes the stream of raw protocol async results into a stream of parsed results.
+// Specifically, FindProvidersAsync converts protocol-level provider descriptions into peer address infos.
 func (fp *Client) FindProvidersAsync(ctx context.Context, key cid.Cid) (<-chan FindProvidersAsyncResult, error) {
-	ch0, err := fp.client.FindProviders_Async(ctx, cidsToFindProvidersRequest(key))
+	protoRespCh, err := fp.client.FindProviders_Async(ctx, cidsToFindProvidersRequest(key))
 	if err != nil {
 		return nil, err
 	}
-	ch1 := make(chan FindProvidersAsyncResult, 1)
+	parsedRespCh := make(chan FindProvidersAsyncResult, 1)
 	go func() {
-		defer close(ch1)
+		defer close(parsedRespCh)
 		if ctx.Err() != nil {
 			return
 		}
-		r0, ok := <-ch0
+		protoAsyncResp, ok := <-protoRespCh
 		if !ok {
 			return
 		}
-		var r1 FindProvidersAsyncResult
-		r1.Err = r0.Err
-		if r0.Resp != nil {
-			r1.AddrInfo = parseFindProvidersResponse(r0.Resp)
+		var parsedAsyncResp FindProvidersAsyncResult
+		parsedAsyncResp.Err = protoAsyncResp.Err
+		if protoAsyncResp.Resp != nil {
+			parsedAsyncResp.AddrInfo = parseFindProvidersResponse(r0.Resp)
 		}
-		ch1 <- r1
+		parsedRespCh <- parsedAsyncResp
 	}()
-	return ch1, nil
+	return parsedRespCh, nil
 }
 
 func cidsToFindProvidersRequest(cid cid.Cid) *proto.FindProvidersRequest {
