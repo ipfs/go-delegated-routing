@@ -22,9 +22,7 @@ func (t TestDelegatedRoutingClient) FindProvidersAsync(ctx context.Context, key 
 		defer close(ch)
 		for i := 0; i < t.NumResults; i++ {
 			ch <- FindProvidersAsyncResult{
-				AddrInfo: []peer.AddrInfo{
-					peer.AddrInfo{},
-				},
+				AddrInfo: []peer.AddrInfo{{}},
 			}
 		}
 	}()
