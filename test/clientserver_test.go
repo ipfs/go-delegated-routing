@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"math"
 	"net/http/httptest"
-	"os"
 	"runtime"
 	"testing"
 	"time"
@@ -203,22 +202,14 @@ const (
 )
 
 var (
-	testMultiaddr  = multiaddr.StringCast(testPeerAddr + "/p2p/" + testPeerID)
-	testAddrInfo   *peer.AddrInfo
+	testMultiaddr = multiaddr.StringCast(testPeerAddr)
+	testAddrInfo  = &peer.AddrInfo{
+		ID:    peer.ID(testPeerID),
+		Addrs: []multiaddr.Multiaddr{testMultiaddr},
+	}
 	testIPNSID     = []byte{1, 2, 3}
 	testIPNSRecord = []byte{4, 5, 6}
 )
-
-func TestMain(m *testing.M) {
-	var err error
-	testAddrInfo, err = peer.AddrInfoFromP2pAddr(testMultiaddr)
-	if err != nil {
-		fmt.Printf("address info creation (%v)", err)
-		os.Exit(-1)
-	}
-	code := m.Run()
-	os.Exit(code)
-}
 
 type testDelegatedRoutingService struct{}
 

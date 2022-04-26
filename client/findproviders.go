@@ -106,28 +106,24 @@ func parseProtoNodeToAddrInfo(n proto.Node) []peer.AddrInfo {
 	return infos
 }
 
+// ParseNodeAddresses parses peer node addresses from the protocol structure Peer.
+// XXX: Adin, please, verify this is as intended.
 func ParseNodeAddresses(n *proto.Peer) []peer.AddrInfo {
+	peerID := peer.ID(n.ID)
 	infos := []peer.AddrInfo{}
 	for _, addrBytes := range n.Multiaddresses {
 		ma, err := multiaddr.NewMultiaddrBytes(addrBytes)
 		if err != nil {
-			logger.Infof("cannot parse multiaddress (%w)", err)
+			logger.Infof("cannot parse multiaddress (%v)", err)
 			continue
 		}
-
 		// drop multiaddrs that end in /p2p/peerID
 		_, last := multiaddr.SplitLast(ma)
 		if last != nil && last.Protocol().Code == multiaddr.P_P2P {
 			logger.Infof("dropping provider multiaddress %v ending in /p2p/peerid", ma)
 			continue
 		}
-
-		ai, err := peer.AddrInfoFromP2pAddr(ma)
-		if err != nil {
-			logger.Infof("cannot parse peer from multiaddress (%w)", err)
-			continue
-		}
-		infos = append(infos, *ai)
+		infos = append(infos, peer.AddrInfo{ID: peerID, Addrs: []multiaddr.Multiaddr{ma}})
 	}
 	return infos
 }
