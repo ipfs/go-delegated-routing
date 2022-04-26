@@ -114,6 +114,14 @@ func ParseNodeAddresses(n *proto.Peer) []peer.AddrInfo {
 			logger.Infof("cannot parse multiaddress (%w)", err)
 			continue
 		}
+
+		// drop multiaddrs that end in /p2p/peerID
+		_, last := multiaddr.SplitLast(ma)
+		if last != nil && last.Protocol().Code == multiaddr.P_P2P {
+			logger.Infof("dropping provider multiaddress %v ending in /p2p/peerid", ma)
+			continue
+		}
+
 		ai, err := peer.AddrInfoFromP2pAddr(ma)
 		if err != nil {
 			logger.Infof("cannot parse peer from multiaddress (%w)", err)
