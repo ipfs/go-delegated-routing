@@ -222,26 +222,29 @@ func TestMain(m *testing.M) {
 
 type testDelegatedRoutingService struct{}
 
-func (testDelegatedRoutingService) GetIPNS(id []byte, ch chan<- client.GetIPNSAsyncResult) error {
+func (testDelegatedRoutingService) GetIPNS(id []byte) (<-chan client.GetIPNSAsyncResult, error) {
+	ch := make(chan client.GetIPNSAsyncResult)
 	go func() {
 		ch <- client.GetIPNSAsyncResult{Record: testIPNSRecord}
 		close(ch)
 	}()
-	return nil
+	return ch, nil
 }
 
-func (testDelegatedRoutingService) PutIPNS(id []byte, record []byte, ch chan<- client.PutIPNSAsyncResult) error {
+func (testDelegatedRoutingService) PutIPNS(id []byte, record []byte) (<-chan client.PutIPNSAsyncResult, error) {
+	ch := make(chan client.PutIPNSAsyncResult)
 	go func() {
 		ch <- client.PutIPNSAsyncResult{}
 		close(ch)
 	}()
-	return nil
+	return ch, nil
 }
 
-func (testDelegatedRoutingService) FindProviders(key cid.Cid, ch chan<- client.FindProvidersAsyncResult) error {
+func (testDelegatedRoutingService) FindProviders(key cid.Cid) (<-chan client.FindProvidersAsyncResult, error) {
+	ch := make(chan client.FindProvidersAsyncResult)
 	go func() {
 		ch <- client.FindProvidersAsyncResult{AddrInfo: []peer.AddrInfo{*testAddrInfo}}
 		close(ch)
 	}()
-	return nil
+	return ch, nil
 }

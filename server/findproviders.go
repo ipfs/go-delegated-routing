@@ -16,9 +16,9 @@ import (
 var logger = logging.Logger("service/server/delegatedrouting")
 
 type DelegatedRoutingService interface {
-	FindProviders(key cid.Cid, rch chan<- client.FindProvidersAsyncResult) error
-	GetIPNS(id []byte, rch chan<- client.GetIPNSAsyncResult) error
-	PutIPNS(id []byte, record []byte, rch chan<- client.PutIPNSAsyncResult) error
+	FindProviders(key cid.Cid) (<-chan client.FindProvidersAsyncResult, error)
+	GetIPNS(id []byte) (<-chan client.GetIPNSAsyncResult, error)
+	PutIPNS(id []byte, record []byte) (<-chan client.PutIPNSAsyncResult, error)
 }
 
 func DelegatedRoutingAsyncHandler(svc DelegatedRoutingService) http.HandlerFunc {
@@ -30,12 +30,13 @@ type delegatedRoutingServer struct {
 	service DelegatedRoutingService
 }
 
-func (drs *delegatedRoutingServer) GetIPNS(ctx context.Context, req *proto.GetIPNSRequest, rch chan<- *proto.DelegatedRouting_GetIPNS_AsyncResult) error {
+func (drs *delegatedRoutingServer) GetIPNS(ctx context.Context, req *proto.GetIPNSRequest) (<-chan *proto.DelegatedRouting_GetIPNS_AsyncResult, error) {
+	rch := make(chan *proto.DelegatedRouting_GetIPNS_AsyncResult)
 	go func() {
 		defer close(rch)
 		id := req.ID
-		ch := make(chan client.GetIPNSAsyncResult)
-		if err := drs.service.GetIPNS(id, ch); err != nil {
+		ch, err := drs.service.GetIPNS(id)
+		if err != nil {
 			logger.Errorf("get ipns function rejected request (%w)", err)
 			return
 		}
@@ -50,15 +51,16 @@ func (drs *delegatedRoutingServer) GetIPNS(ctx context.Context, req *proto.GetIP
 			rch <- resp
 		}
 	}()
-	return nil
+	return rch, nil
 }
 
-func (drs *delegatedRoutingServer) PutIPNS(ctx context.Context, req *proto.PutIPNSRequest, rch chan<- *proto.DelegatedRouting_PutIPNS_AsyncResult) error {
+func (drs *delegatedRoutingServer) PutIPNS(ctx context.Context, req *proto.PutIPNSRequest) (<-chan *proto.DelegatedRouting_PutIPNS_AsyncResult, error) {
+	rch := make(chan *proto.DelegatedRouting_PutIPNS_AsyncResult)
 	go func() {
 		defer close(rch)
 		id, record := req.ID, req.Record
-		ch := make(chan client.PutIPNSAsyncResult)
-		if err := drs.service.PutIPNS(id, record, ch); err != nil {
+		ch, err := drs.service.PutIPNS(id, record)
+		if err != nil {
 			logger.Errorf("put ipns function rejected request (%w)", err)
 			return
 		}
@@ -73,16 +75,17 @@ func (drs *delegatedRoutingServer) PutIPNS(ctx context.Context, req *proto.PutIP
 			rch <- resp
 		}
 	}()
-	return nil
+	return rch, nil
 }
 
-func (drs *delegatedRoutingServer) FindProviders(ctx context.Context, req *proto.FindProvidersRequest, rch chan<- *proto.DelegatedRouting_FindProviders_AsyncResult) error {
+func (drs *delegatedRoutingServer) FindProviders(ctx context.Context, req *proto.FindProvidersRequest) (<-chan *proto.DelegatedRouting_FindProviders_AsyncResult, error) {
+	rch := make(chan *proto.DelegatedRouting_FindProviders_AsyncResult)
 	go func() {
 		defer close(rch)
 		pcids := parseCidsFromFindProvidersRequest(req)
 		for _, c := range pcids {
-			ch := make(chan client.FindProvidersAsyncResult)
-			if err := drs.service.FindProviders(c, ch); err != nil {
+			ch, err := drs.service.FindProviders(c)
+			if err != nil {
 				logger.Errorf("find providers function rejected request (%w)", err)
 				continue
 			}
@@ -98,7 +101,7 @@ func (drs *delegatedRoutingServer) FindProviders(ctx context.Context, req *proto
 			}
 		}
 	}()
-	return nil
+	return rch, nil
 }
 
 func parseCidsFromFindProvidersRequest(req *proto.FindProvidersRequest) []cid.Cid {

@@ -43,7 +43,8 @@ func TestClientWithServerReturningUnknownValues(t *testing.T) {
 
 type testServiceWithUnknown struct{}
 
-func (testServiceWithUnknown) FindProviders(ctx context.Context, req *proto.FindProvidersRequest, respCh chan<- *proto.DelegatedRouting_FindProviders_AsyncResult) error {
+func (testServiceWithUnknown) FindProviders(ctx context.Context, req *proto.FindProvidersRequest) (<-chan *proto.DelegatedRouting_FindProviders_AsyncResult, error) {
+	respCh := make(chan *proto.DelegatedRouting_FindProviders_AsyncResult)
 	go func() {
 		defer close(respCh)
 		respCh <- &proto.DelegatedRouting_FindProviders_AsyncResult{
@@ -65,13 +66,13 @@ func (testServiceWithUnknown) FindProviders(ctx context.Context, req *proto.Find
 			},
 		}
 	}()
-	return nil
+	return respCh, nil
 }
 
-func (testServiceWithUnknown) GetIPNS(ctx context.Context, req *proto.GetIPNSRequest, respCh chan<- *proto.DelegatedRouting_GetIPNS_AsyncResult) error {
-	return fmt.Errorf("GetIPNS not supported by test service")
+func (testServiceWithUnknown) GetIPNS(ctx context.Context, req *proto.GetIPNSRequest) (<-chan *proto.DelegatedRouting_GetIPNS_AsyncResult, error) {
+	return nil, fmt.Errorf("GetIPNS not supported by test service")
 }
 
-func (testServiceWithUnknown) PutIPNS(ctx context.Context, req *proto.PutIPNSRequest, respCh chan<- *proto.DelegatedRouting_PutIPNS_AsyncResult) error {
-	return fmt.Errorf("PutIPNS not supported by test service")
+func (testServiceWithUnknown) PutIPNS(ctx context.Context, req *proto.PutIPNSRequest) (<-chan *proto.DelegatedRouting_PutIPNS_AsyncResult, error) {
+	return nil, fmt.Errorf("PutIPNS not supported by test service")
 }
