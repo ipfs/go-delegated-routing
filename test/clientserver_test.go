@@ -60,7 +60,6 @@ func testClientServer(t *testing.T, numIter int) (avgLatency time.Duration, delt
 		if !infos[0].Addrs[0].Equal(testAddrInfo.Addrs[0]) {
 			t.Errorf("expecting %#v, got %#v", testAddrInfo.Addrs[0], infos[0].Addrs[0])
 		}
-		// fmt.Println(infos)
 
 		// exercise GetIPNS
 		record, err := c.GetIPNS(context.Background(), testIPNSID)

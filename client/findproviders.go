@@ -16,6 +16,8 @@ type DelegatedRoutingClient interface {
 	FindProviders(ctx context.Context, key cid.Cid) ([]peer.AddrInfo, error)
 	FindProvidersAsync(ctx context.Context, key cid.Cid) (<-chan FindProvidersAsyncResult, error)
 	GetIPNS(ctx context.Context, id []byte) ([][]byte, error)
+	GetIPNSAsync(ctx context.Context, id []byte) (<-chan GetIPNSAsyncResult, error)
+	PutIPNS(ctx context.Context, id []byte, record []byte) error
 	PutIPNSAsync(ctx context.Context, id []byte, record []byte) (<-chan PutIPNSAsyncResult, error)
 }
 
@@ -107,7 +109,6 @@ func parseProtoNodeToAddrInfo(n proto.Node) []peer.AddrInfo {
 }
 
 // ParseNodeAddresses parses peer node addresses from the protocol structure Peer.
-// XXX: Adin, please, verify this is as intended.
 func ParseNodeAddresses(n *proto.Peer) []peer.AddrInfo {
 	peerID := peer.ID(n.ID)
 	infos := []peer.AddrInfo{}

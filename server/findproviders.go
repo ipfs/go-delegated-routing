@@ -10,7 +10,6 @@ import (
 	logging "github.com/ipfs/go-log"
 	"github.com/ipld/edelweiss/values"
 	"github.com/libp2p/go-libp2p-core/peer"
-	"github.com/multiformats/go-multiaddr"
 )
 
 var logger = logging.Logger("service/server/delegatedrouting")
@@ -125,14 +124,7 @@ func buildFindProvidersResponse(key cid.Cid, addrInfo []peer.AddrInfo) *proto.De
 func buildPeerFromAddrInfo(addrInfo peer.AddrInfo) *proto.Peer {
 	pm := make([]values.Bytes, len(addrInfo.Addrs))
 	for i, addr := range addrInfo.Addrs {
-		// XXX: Adin, please, verify this is as intended.
-		// strip /p2p/peerID suffix to conform to the spec
-		prefix, last := multiaddr.SplitLast(addr)
-		if last != nil && last.Protocol().Code == multiaddr.P_P2P {
-			pm[i] = prefix.Bytes()
-		} else {
-			pm[i] = addr.Bytes()
-		}
+		pm[i] = addr.Bytes()
 	}
 	return &proto.Peer{
 		ID:             []byte(addrInfo.ID),

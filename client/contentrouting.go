@@ -2,22 +2,24 @@ package client
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/ipfs/go-cid"
 	"github.com/libp2p/go-libp2p-core/peer"
+	"github.com/libp2p/go-libp2p-core/routing"
 )
 
 type ContentRoutingClient struct {
 	client DelegatedRoutingClient
 }
 
+var _ routing.ContentRouting = (*ContentRoutingClient)(nil)
+
 func NewContentRoutingClient(c DelegatedRoutingClient) *ContentRoutingClient {
 	return &ContentRoutingClient{client: c}
 }
 
 func (c *ContentRoutingClient) Provide(context.Context, cid.Cid, bool) error {
-	return fmt.Errorf("content providing is not supported by this version of delegated routing")
+	return routing.ErrNotSupported
 }
 
 func (c *ContentRoutingClient) FindProvidersAsync(ctx context.Context, key cid.Cid, numResults int) <-chan peer.AddrInfo {
