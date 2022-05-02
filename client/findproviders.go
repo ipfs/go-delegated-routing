@@ -5,8 +5,10 @@ import (
 
 	"github.com/ipfs/go-cid"
 	proto "github.com/ipfs/go-delegated-routing/gen/proto"
+	ipns "github.com/ipfs/go-ipns"
 	logging "github.com/ipfs/go-log"
 	"github.com/libp2p/go-libp2p-core/peer"
+	record "github.com/libp2p/go-libp2p-record"
 	"github.com/multiformats/go-multiaddr"
 )
 
@@ -22,11 +24,12 @@ type DelegatedRoutingClient interface {
 }
 
 type Client struct {
-	client proto.DelegatedRouting_Client
+	client    proto.DelegatedRouting_Client
+	validator record.Validator
 }
 
 func NewClient(c proto.DelegatedRouting_Client) *Client {
-	return &Client{client: c}
+	return &Client{client: c, validator: ipns.Validator{}}
 }
 
 func (fp *Client) FindProviders(ctx context.Context, key cid.Cid) ([]peer.AddrInfo, error) {

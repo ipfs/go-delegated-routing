@@ -7,15 +7,25 @@ import (
 )
 
 func (fp *Client) GetIPNS(ctx context.Context, id []byte) ([][]byte, error) {
-	resps, err := fp.client.GetIPNS(ctx, &proto.GetIPNSRequest{ID: id})
+	resps, err := fp.GetIPNSAsync(ctx, id)
 	if err != nil {
 		return nil, err
 	}
 	records := [][]byte{}
-	for _, resp := range resps {
-		records = append(records, resp.Record)
+	for resp := range resps {
+		if resp.Err != nil {
+			records = append(records, resp.Record)
+		}
 	}
-	return records, nil
+	if fp.validator != nil {
+		best, err := fp.validator.Select(string(id), records)
+		if err != nil {
+			return nil, err
+		}
+		return [][]byte{records[best]}, nil
+	} else {
+		return records, nil
+	}
 }
 
 type GetIPNSAsyncResult struct {
@@ -39,11 +49,22 @@ func (fp *Client) GetIPNSAsync(ctx context.Context, id []byte) (<-chan GetIPNSAs
 			return
 		}
 		var r1 GetIPNSAsyncResult
-		r1.Err = r0.Err
-		if r0.Resp != nil {
-			r1.Record = r0.Resp.Record
+		if r0.Err != nil {
+			r1.Err = r0.Err
+			ch1 <- r1
+		} else if r0.Resp != nil {
+			if fp.validator != nil {
+				if err = fp.validator.Validate(string(id), r0.Resp.Record); err != nil {
+					logger.Infof("received invalid ipns record (%v)", err)
+				} else {
+					r1.Record = r0.Resp.Record
+					ch1 <- r1
+				}
+			} else {
+				r1.Record = r0.Resp.Record
+				ch1 <- r1
+			}
 		}
-		ch1 <- r1
 	}()
 	return ch1, nil
 }
