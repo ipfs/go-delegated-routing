@@ -32,7 +32,7 @@ func TestClientWithServerReturningUnknownValues(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	infos, err := c.FindProviders(context.Background(), cid.NewCidV1(cid.Libp2pKey, h))
+	infos, err := c.FindProviders(context.Background(), cid.NewCidV1(cid.Raw, h))
 	if err != nil {
 		t.Fatal(err)
 	}

@@ -44,7 +44,7 @@ func testClientServer(t *testing.T, numIter int) (avgLatency time.Duration, delt
 
 	for i := 0; i < numIter; i++ {
 		// exercise FindProviders
-		infos, err := c.FindProviders(context.Background(), cid.NewCidV1(cid.Libp2pKey, h))
+		infos, err := c.FindProviders(context.Background(), cid.NewCidV1(cid.Raw, h))
 		if err != nil {
 			t.Fatal(err)
 		}

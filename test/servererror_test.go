@@ -31,7 +31,7 @@ func TestClientWithServerReturningErrors(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	chFindProviders, err := c.FindProvidersAsync(context.Background(), cid.NewCidV1(cid.Libp2pKey, h))
+	chFindProviders, err := c.FindProvidersAsync(context.Background(), cid.NewCidV1(cid.Raw, h))
 	if err != nil {
 		t.Fatal(err)
 	}
