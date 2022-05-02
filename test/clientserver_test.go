@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"math"
 	"net/http/httptest"
+	"os"
 	"runtime"
 	"testing"
 	"time"
@@ -14,6 +15,8 @@ import (
 	"github.com/ipfs/go-delegated-routing/client"
 	proto "github.com/ipfs/go-delegated-routing/gen/proto"
 	"github.com/ipfs/go-delegated-routing/server"
+	ipns "github.com/ipfs/go-ipns"
+	"github.com/libp2p/go-libp2p-core/crypto"
 	"github.com/libp2p/go-libp2p-core/peer"
 	multiaddr "github.com/multiformats/go-multiaddr"
 	"github.com/multiformats/go-multihash"
@@ -201,14 +204,41 @@ const (
 )
 
 var (
+	// provider record
 	testMultiaddr = multiaddr.StringCast(testPeerAddr)
 	testAddrInfo  = &peer.AddrInfo{
 		ID:    peer.ID(testPeerID),
 		Addrs: []multiaddr.Multiaddr{testMultiaddr},
 	}
-	testIPNSID     = []byte{1, 2, 3}
-	testIPNSRecord = []byte{4, 5, 6}
+	// IPNS
+	testIPNSID     []byte
+	testIPNSRecord []byte
 )
+
+// TestMain generates a valid IPNS key and record for testing purposes.
+func TestMain(m *testing.M) {
+	privateKey, publicKey, err := crypto.GenerateKeyPair(crypto.RSA, 2048)
+	if err != nil {
+		panic(err)
+	}
+	peerID, err := peer.IDFromPublicKey(publicKey)
+	if err != nil {
+		panic(err)
+	}
+	testIPNSID = []byte(ipns.RecordKey(peerID))
+	entry, err := ipns.Create(privateKey, testIPNSID, 0, time.Now(), time.Hour)
+	if err != nil {
+		panic(err)
+	}
+	if err = ipns.EmbedPublicKey(publicKey, entry); err != nil {
+		panic(err)
+	}
+	testIPNSRecord, err = entry.Marshal()
+	if err != nil {
+		panic(err)
+	}
+	os.Exit(m.Run())
+}
 
 type testDelegatedRoutingService struct{}
 
