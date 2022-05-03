@@ -29,7 +29,7 @@ func (t TestDelegatedRoutingClient) FindProvidersAsync(ctx context.Context, key 
 	return ch, nil
 }
 
-func (t TestDelegatedRoutingClient) GetIPNS(ctx context.Context, id []byte) ([][]byte, error) {
+func (t TestDelegatedRoutingClient) GetIPNS(ctx context.Context, id []byte) ([]byte, error) {
 	panic("not supported")
 }
 
