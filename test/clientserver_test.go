@@ -151,7 +151,7 @@ func (s testStatistic) DeviatesBy(numStddev float64) bool {
 
 func TestClientServer(t *testing.T) {
 
-	var numIter []int = []int{1e3, 1e4, 1e5}
+	var numIter []int = []int{1e2, 1e3, 1e4}
 	avgLatency := make([]time.Duration, len(numIter))
 	deltaGo := make([]int, len(numIter))
 	deltaMem := make([]uint64, len(numIter))
