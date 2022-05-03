@@ -4,13 +4,13 @@ go 1.17
 
 require (
 	github.com/ipfs/go-cid v0.0.7
-	github.com/ipfs/go-ipns v0.1.1
+	github.com/ipfs/go-ipns v0.1.2
 	github.com/ipfs/go-log v1.0.5
 	github.com/ipld/edelweiss v0.0.0-20220427172557-84a2ab5f76fb
 	github.com/ipld/go-ipld-prime v0.16.0
 	github.com/libp2p/go-libp2p-core v0.9.0
-	github.com/libp2p/go-libp2p-record v0.1.2
-	github.com/multiformats/go-multiaddr v0.3.3
+	github.com/libp2p/go-libp2p-record v0.1.3
+	github.com/multiformats/go-multiaddr v0.5.0
 	github.com/multiformats/go-multihash v0.1.0
 )
 

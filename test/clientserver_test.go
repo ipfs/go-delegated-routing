@@ -226,7 +226,7 @@ func TestMain(m *testing.M) {
 		panic(err)
 	}
 	testIPNSID = []byte(ipns.RecordKey(peerID))
-	entry, err := ipns.Create(privateKey, testIPNSID, 0, time.Now(), time.Hour)
+	entry, err := ipns.Create(privateKey, testIPNSID, 0, time.Now().Add(time.Hour), time.Hour)
 	if err != nil {
 		panic(err)
 	}
