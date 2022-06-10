@@ -8,14 +8,17 @@ require (
 	github.com/ipfs/go-log v1.0.5
 	github.com/ipld/edelweiss v0.1.3-0.20220610182123-8f900960562b
 	github.com/ipld/go-ipld-prime v0.16.1-0.20220607160121-f0c1fdf6c6ad
-	github.com/libp2p/go-libp2p-core v0.9.0
+	github.com/libp2p/go-libp2p-core v0.16.1
 	github.com/libp2p/go-libp2p-record v0.1.3
 	github.com/multiformats/go-multiaddr v0.5.0
 	github.com/multiformats/go-multihash v0.1.0
 )
 
 require (
-	github.com/btcsuite/btcd v0.20.1-beta // indirect
+	github.com/btcsuite/btcd v0.22.1 // indirect
+	github.com/btcsuite/btcd/btcec/v2 v2.1.3 // indirect
+	github.com/btcsuite/btcd/chaincfg/chainhash v1.0.1 // indirect
+	github.com/decred/dcrd/dcrec/secp256k1/v4 v4.0.1 // indirect
 	github.com/gogo/protobuf v1.3.2 // indirect
 	github.com/ipfs/go-ipfs-util v0.0.1 // indirect
 	github.com/ipfs/go-log/v2 v2.1.3 // indirect
