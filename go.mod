@@ -6,7 +6,7 @@ require (
 	github.com/ipfs/go-cid v0.2.0
 	github.com/ipfs/go-ipns v0.1.2
 	github.com/ipfs/go-log v1.0.5
-	github.com/ipld/edelweiss v0.1.3-0.20220610182123-8f900960562b
+	github.com/ipld/edelweiss v0.1.3-0.20220613204122-55af0600c7ba
 	github.com/ipld/go-ipld-prime v0.16.1-0.20220607160121-f0c1fdf6c6ad
 	github.com/libp2p/go-libp2p-core v0.16.1
 	github.com/libp2p/go-libp2p-record v0.1.3
