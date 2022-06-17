@@ -6,8 +6,8 @@ require (
 	github.com/ipfs/go-cid v0.2.0
 	github.com/ipfs/go-ipns v0.1.2
 	github.com/ipfs/go-log v1.0.5
-	github.com/ipld/edelweiss v0.1.3-0.20220613204122-55af0600c7ba
-	github.com/ipld/go-ipld-prime v0.16.1-0.20220607160121-f0c1fdf6c6ad
+	github.com/ipld/edelweiss v0.1.3
+	github.com/ipld/go-ipld-prime v0.17.0
 	github.com/libp2p/go-libp2p-core v0.16.1
 	github.com/libp2p/go-libp2p-record v0.1.3
 	github.com/multiformats/go-multiaddr v0.5.0
@@ -31,7 +31,7 @@ require (
 	github.com/multiformats/go-base32 v0.0.3 // indirect
 	github.com/multiformats/go-base36 v0.1.0 // indirect
 	github.com/multiformats/go-multibase v0.0.3 // indirect
-	github.com/multiformats/go-multicodec v0.4.1 // indirect
+	github.com/multiformats/go-multicodec v0.5.0 // indirect
 	github.com/multiformats/go-varint v0.0.6 // indirect
 	github.com/opentracing/opentracing-go v1.2.0 // indirect
 	github.com/pkg/errors v0.8.1 // indirect
