@@ -98,8 +98,8 @@ github.com/ipfs/go-log/v2 v2.0.5/go.mod h1:eZs4Xt4ZUJQFM3DlanGhy7TkwwawCZcSByscw
 github.com/ipfs/go-log/v2 v2.1.3/go.mod h1:/8d0SH3Su5Ooc31QlL1WysJhvyOTDCjcCZ9Axpmri6g=
 github.com/ipfs/go-log/v2 v2.5.1 h1:1XdUzF7048prq4aBjDQQ4SL5RxftpRGdXhNRwKSAlcY=
 github.com/ipfs/go-log/v2 v2.5.1/go.mod h1:prSpmC1Gpllc9UYWxDiZDreBYw7zp4Iqp1kOLU9U5UI=
-github.com/ipld/edelweiss v0.1.5-0.20220726225605-625345fdc3f8 h1:iOaL/iDAlElElZEIpEz7zHe6+rJS3JPCd7po39+2vdg=
-github.com/ipld/edelweiss v0.1.5-0.20220726225605-625345fdc3f8/go.mod h1:MyVN0QE28uDtwE8z5KqBrlk/SJVfqn8upVq18wPRlMk=
+github.com/ipld/edelweiss v0.1.5 h1:NxsTAuaB2R+k7NweBWtUauMIRrQVjvwoyS7N9Qi+v/o=
+github.com/ipld/edelweiss v0.1.5/go.mod h1:IVSfo5e7vJrTKKRjR1lrtfgc2UbEMvvatNycfH9fRfY=
 github.com/ipld/go-ipld-prime v0.9.0/go.mod h1:KvBLMr4PX1gWptgkzRjVZCrLmSGcZCb/jioOQwCqZN8=
 github.com/ipld/go-ipld-prime v0.17.0 h1:+U2peiA3aQsE7mrXjD2nYZaZrCcakoz2Wge8K42Ld8g=
 github.com/ipld/go-ipld-prime v0.17.0/go.mod h1:aYcKm5TIvGfY8P3QBKz/2gKcLxzJ1zDaD+o0bOowhgs=
