@@ -10,15 +10,14 @@ import (
 )
 
 func (fp *Client) GetIPNS(ctx context.Context, id []byte) ([]byte, error) {
-	resps, err := fp.GetIPNSAsync(ctx, id)
+	resps, err := fp.client.GetIPNS(ctx, &proto.GetIPNSRequest{ID: id})
 	if err != nil {
 		return nil, err
 	}
+
 	records := [][]byte{}
-	for resp := range resps {
-		if resp.Err == nil {
-			records = append(records, resp.Record)
-		}
+	for _, resp := range resps {
+		records = append(records, resp.Record)
 	}
 	if len(records) == 0 {
 		return nil, routing.ErrNotFound
