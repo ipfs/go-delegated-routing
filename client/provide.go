@@ -109,7 +109,7 @@ type ProvideRequest struct {
 // Sign a provide request
 func (pr *ProvideRequest) Sign(key crypto.PrivKey) error {
 	if pr.IsSigned() {
-		return errors.New("Already Signed")
+		return errors.New("already Signed")
 	}
 	pr.signature = struct {
 		At    time.Time
@@ -144,7 +144,7 @@ func (pr *ProvideRequest) Sign(key crypto.PrivKey) error {
 
 func (pr *ProvideRequest) Verify() error {
 	if !pr.IsSigned() {
-		return errors.New("Not Signed")
+		return errors.New("not signed")
 	}
 	sig := pr.signature.Bytes
 	pr.signature.Bytes = []byte{}
