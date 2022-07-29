@@ -2,11 +2,13 @@ package client
 
 import (
 	"context"
+	"time"
 
 	"github.com/ipfs/go-cid"
 	proto "github.com/ipfs/go-delegated-routing/gen/proto"
 	ipns "github.com/ipfs/go-ipns"
 	logging "github.com/ipfs/go-log/v2"
+	"github.com/ipld/edelweiss/values"
 	"github.com/libp2p/go-libp2p-core/peer"
 	record "github.com/libp2p/go-libp2p-record"
 	"github.com/multiformats/go-multiaddr"
@@ -21,6 +23,7 @@ type DelegatedRoutingClient interface {
 	GetIPNSAsync(ctx context.Context, id []byte) (<-chan GetIPNSAsyncResult, error)
 	PutIPNS(ctx context.Context, id []byte, record []byte) error
 	PutIPNSAsync(ctx context.Context, id []byte, record []byte) (<-chan PutIPNSAsyncResult, error)
+	Provide(ctx context.Context, key cid.Cid, provider peer.AddrInfo, ttl time.Duration) (<-chan time.Duration, error)
 }
 
 type Client struct {
@@ -143,4 +146,18 @@ func ParseNodeAddresses(n *proto.Peer) []peer.AddrInfo {
 		infos = append(infos, peer.AddrInfo{ID: peerID, Addrs: []multiaddr.Multiaddr{ma}})
 	}
 	return infos
+}
+
+// ToProtoPeer creates a protocol Peer structure from address info.
+func ToProtoPeer(ai peer.AddrInfo) *proto.Peer {
+	p := proto.Peer{
+		ID:             values.Bytes(ai.ID),
+		Multiaddresses: make(proto.AnonList20, 0),
+	}
+
+	for _, addr := range ai.Addrs {
+		p.Multiaddresses = append(p.Multiaddresses, addr.Bytes())
+	}
+
+	return &p
 }

@@ -76,3 +76,7 @@ func (testServiceWithUnknown) GetIPNS(ctx context.Context, req *proto.GetIPNSReq
 func (testServiceWithUnknown) PutIPNS(ctx context.Context, req *proto.PutIPNSRequest) (<-chan *proto.DelegatedRouting_PutIPNS_AsyncResult, error) {
 	return nil, fmt.Errorf("PutIPNS not supported by test service")
 }
+
+func (testServiceWithUnknown) Provide(ctx context.Context, req *proto.ProvideRequest) (<-chan *proto.DelegatedRouting_Provide_AsyncResult, error) {
+	return nil, fmt.Errorf("Provide not supported by test service")
+}

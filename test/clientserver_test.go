@@ -354,6 +354,15 @@ func (testDelegatedRoutingService) FindProviders(ctx context.Context, key cid.Ci
 	return ch, nil
 }
 
+func (testDelegatedRoutingService) Provide(ctx context.Context, key cid.Cid, provider peer.AddrInfo, ttl time.Duration) (<-chan client.ProvideAsyncResult, error) {
+	ch := make(chan client.ProvideAsyncResult)
+	go func() {
+		ch <- client.ProvideAsyncResult{AdvisoryTTL: time.Hour}
+		close(ch)
+	}()
+	return ch, nil
+}
+
 // hangingDelegatedRoutingService hangs on every request until the context is canceled, returning nothing.
 type hangingDelegatedRoutingService struct {
 }
@@ -378,6 +387,15 @@ func (s *hangingDelegatedRoutingService) PutIPNS(ctx context.Context, id []byte,
 
 func (s *hangingDelegatedRoutingService) FindProviders(ctx context.Context, key cid.Cid) (<-chan client.FindProvidersAsyncResult, error) {
 	ch := make(chan client.FindProvidersAsyncResult)
+	go func() {
+		<-ctx.Done()
+		close(ch)
+	}()
+	return ch, nil
+}
+
+func (s *hangingDelegatedRoutingService) Provide(ctx context.Context, key cid.Cid, provider peer.AddrInfo, ttl time.Duration) (<-chan client.ProvideAsyncResult, error) {
+	ch := make(chan client.ProvideAsyncResult)
 	go func() {
 		<-ctx.Done()
 		close(ch)
