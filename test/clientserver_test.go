@@ -354,7 +354,7 @@ func (testDelegatedRoutingService) FindProviders(ctx context.Context, key cid.Ci
 	return ch, nil
 }
 
-func (testDelegatedRoutingService) Provide(ctx context.Context, key cid.Cid, provider peer.AddrInfo, ttl time.Duration) (<-chan client.ProvideAsyncResult, error) {
+func (testDelegatedRoutingService) Provide(ctx context.Context, pr *client.ProvideRequest) (<-chan client.ProvideAsyncResult, error) {
 	ch := make(chan client.ProvideAsyncResult)
 	go func() {
 		ch <- client.ProvideAsyncResult{AdvisoryTTL: time.Hour}
@@ -394,7 +394,7 @@ func (s *hangingDelegatedRoutingService) FindProviders(ctx context.Context, key 
 	return ch, nil
 }
 
-func (s *hangingDelegatedRoutingService) Provide(ctx context.Context, key cid.Cid, provider peer.AddrInfo, ttl time.Duration) (<-chan client.ProvideAsyncResult, error) {
+func (s *hangingDelegatedRoutingService) Provide(ctx context.Context, pr *client.ProvideRequest) (<-chan client.ProvideAsyncResult, error) {
 	ch := make(chan client.ProvideAsyncResult)
 	go func() {
 		<-ctx.Done()

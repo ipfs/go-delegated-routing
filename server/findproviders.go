@@ -3,7 +3,6 @@ package server
 import (
 	"context"
 	"net/http"
-	"time"
 
 	"github.com/ipfs/go-cid"
 	"github.com/ipfs/go-delegated-routing/client"
@@ -19,7 +18,7 @@ type DelegatedRoutingService interface {
 	FindProviders(ctx context.Context, key cid.Cid) (<-chan client.FindProvidersAsyncResult, error)
 	GetIPNS(ctx context.Context, id []byte) (<-chan client.GetIPNSAsyncResult, error)
 	PutIPNS(ctx context.Context, id []byte, record []byte) (<-chan client.PutIPNSAsyncResult, error)
-	Provide(ctx context.Context, key cid.Cid, provider peer.AddrInfo, ttl time.Duration) (<-chan client.ProvideAsyncResult, error)
+	Provide(ctx context.Context, req *client.ProvideRequest) (<-chan client.ProvideAsyncResult, error)
 }
 
 func DelegatedRoutingAsyncHandler(svc DelegatedRoutingService) http.HandlerFunc {
@@ -156,7 +155,7 @@ func (drs *delegatedRoutingServer) Provide(ctx context.Context, req *proto.Provi
 			logger.Errorf("Provide function rejected request (%w)", err)
 			return
 		}
-		ch, err := drs.service.Provide(ctx, pr.Key, pr.Peer, pr.TTL)
+		ch, err := drs.service.Provide(ctx, pr)
 		if err != nil {
 			logger.Errorf("Provide function rejected request (%w)", err)
 			return
