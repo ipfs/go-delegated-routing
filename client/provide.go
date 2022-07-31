@@ -5,15 +5,18 @@ import (
 	"context"
 	"crypto/sha256"
 	"errors"
+	"fmt"
 	"time"
 
 	"github.com/ipfs/go-cid"
 	"github.com/ipfs/go-delegated-routing/gen/proto"
 	"github.com/ipld/edelweiss/values"
+	"github.com/ipld/go-ipld-prime"
 	"github.com/ipld/go-ipld-prime/codec/dagjson"
 	"github.com/ipld/go-ipld-prime/node/bindnode"
 	"github.com/libp2p/go-libp2p-core/crypto"
 	"github.com/libp2p/go-libp2p-core/peer"
+	"github.com/multiformats/go-multiaddr"
 	"github.com/multiformats/go-multicodec"
 	"github.com/polydawn/refmt/cbor"
 )
@@ -99,11 +102,41 @@ func parseProtocol(tp *proto.TransferProtocol) TransferProtocol {
 type ProvideRequest struct {
 	Key cid.Cid
 	Provider
-	TTL       time.Duration
-	signature struct {
-		At    time.Time
-		Bytes []byte
+	Timestamp   int64
+	AdvisoryTTL time.Duration
+	Signature   []byte
+}
+
+var provideSchema, _ = ipld.LoadSchemaBytes([]byte(`
+		type ProvideRequest struct {
+			Key    &Any
+			Provider  Provider
+			Timestamp Int
+			AdvisoryTTL Int
+			Signature Bytes
+		}
+		type Provider struct {
+			Peer          Peer
+			ProviderProto [TransferProtocol]
+		}
+		type Peer struct {
+			ID   String
+			Multiaddresses [Bytes]
+		}
+		type TransferProtocol struct {
+			Codec Int
+			Payload Bytes
+		}
+	`))
+
+func bytesToMA(b []byte) (interface{}, error) {
+	return multiaddr.NewMultiaddrBytes(b)
+}
+func maToBytes(iface interface{}) ([]byte, error) {
+	if ma, ok := iface.(multiaddr.Multiaddr); ok {
+		return ma.Bytes(), nil
 	}
+	return nil, fmt.Errorf("did not get expected MA type")
 }
 
 // Sign a provide request
@@ -111,13 +144,8 @@ func (pr *ProvideRequest) Sign(key crypto.PrivKey) error {
 	if pr.IsSigned() {
 		return errors.New("already Signed")
 	}
-	pr.signature = struct {
-		At    time.Time
-		Bytes []byte
-	}{
-		At:    time.Now(),
-		Bytes: []byte{},
-	}
+	pr.Timestamp = time.Now().Unix()
+	pr.Signature = []byte{}
 
 	sid, err := peer.IDFromPrivateKey(key)
 	if err != nil {
@@ -127,7 +155,12 @@ func (pr *ProvideRequest) Sign(key crypto.PrivKey) error {
 		return errors.New("not the correct signing key")
 	}
 
-	node := bindnode.Wrap(pr, nil)
+	ma, _ := multiaddr.NewMultiaddr("/")
+	opts := []bindnode.Option{
+		bindnode.TypedBytesConverter(&ma, bytesToMA, maToBytes),
+	}
+
+	node := bindnode.Wrap(pr, provideSchema.TypeByName("ProvideRequest"), opts...)
 	nodeRepr := node.Representation()
 	outBuf := bytes.NewBuffer(nil)
 	if err = dagjson.Encode(nodeRepr, outBuf); err != nil {
@@ -138,7 +171,7 @@ func (pr *ProvideRequest) Sign(key crypto.PrivKey) error {
 	if err != nil {
 		return err
 	}
-	pr.signature.Bytes = sig
+	pr.Signature = sig
 	return nil
 }
 
@@ -146,13 +179,18 @@ func (pr *ProvideRequest) Verify() error {
 	if !pr.IsSigned() {
 		return errors.New("not signed")
 	}
-	sig := pr.signature.Bytes
-	pr.signature.Bytes = []byte{}
+	sig := pr.Signature
+	pr.Signature = []byte{}
 	defer func() {
-		pr.signature.Bytes = sig
+		pr.Signature = sig
 	}()
 
-	node := bindnode.Wrap(pr, nil)
+	ma, _ := multiaddr.NewMultiaddr("/")
+	opts := []bindnode.Option{
+		bindnode.TypedBytesConverter(&ma, bytesToMA, maToBytes),
+	}
+
+	node := bindnode.Wrap(pr, provideSchema.TypeByName("ProvideRequest"), opts...)
 	nodeRepr := node.Representation()
 	outBuf := bytes.NewBuffer(nil)
 	if err := dagjson.Encode(nodeRepr, outBuf); err != nil {
@@ -178,21 +216,16 @@ func (pr *ProvideRequest) Verify() error {
 
 // IsSigned indicates if the ProvideRequest has been signed
 func (pr *ProvideRequest) IsSigned() bool {
-	return pr.signature.Bytes != nil
+	return pr.Signature != nil
 }
 
 func ParseProvideRequest(req *proto.ProvideRequest) (*ProvideRequest, error) {
 	pr := ProvideRequest{
-		Key:      cid.Cid(req.Key),
-		Provider: parseProvider(&req.Provider),
-		TTL:      time.Duration(req.AdvisoryTTL),
-		signature: struct {
-			At    time.Time
-			Bytes []byte
-		}{
-			At:    time.Unix(int64(req.Timestamp), 0),
-			Bytes: req.Signature,
-		},
+		Key:         cid.Cid(req.Key),
+		Provider:    parseProvider(&req.Provider),
+		AdvisoryTTL: time.Duration(req.AdvisoryTTL),
+		Timestamp:   int64(req.Timestamp),
+		Signature:   req.Signature,
 	}
 
 	if err := pr.Verify(); err != nil {
@@ -225,9 +258,9 @@ func (fp *Client) Provide(ctx context.Context, req *ProvideRequest) (<-chan Prov
 	ch0, err := fp.client.Provide_Async(ctx, &proto.ProvideRequest{
 		Key:         proto.LinkToAny(req.Key),
 		Provider:    *req.Provider.ToProto(),
-		Timestamp:   values.Int(req.signature.At.Unix()),
-		AdvisoryTTL: values.Int(req.TTL),
-		Signature:   req.signature.Bytes,
+		Timestamp:   values.Int(req.Timestamp),
+		AdvisoryTTL: values.Int(req.AdvisoryTTL),
+		Signature:   req.Signature,
 	})
 	if err != nil {
 		return nil, err

@@ -145,6 +145,9 @@ func ParseNodeAddresses(n *proto.Peer) []peer.AddrInfo {
 		}
 		infos = append(infos, peer.AddrInfo{ID: peerID, Addrs: []multiaddr.Multiaddr{ma}})
 	}
+	if len(n.Multiaddresses) == 0 {
+		infos = append(infos, peer.AddrInfo{ID: peerID})
+	}
 	return infos
 }
 
