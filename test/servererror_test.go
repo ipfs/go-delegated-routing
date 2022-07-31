@@ -76,3 +76,7 @@ func (testServiceWithErrors) GetIPNS(ctx context.Context, req *proto.GetIPNSRequ
 func (testServiceWithErrors) PutIPNS(ctx context.Context, req *proto.PutIPNSRequest) (<-chan *proto.DelegatedRouting_PutIPNS_AsyncResult, error) {
 	return nil, fmt.Errorf(testSyncError)
 }
+
+func (testServiceWithErrors) Provide(ctx context.Context, req *proto.ProvideRequest) (<-chan *proto.DelegatedRouting_Provide_AsyncResult, error) {
+	return nil, fmt.Errorf(testSyncError)
+}
