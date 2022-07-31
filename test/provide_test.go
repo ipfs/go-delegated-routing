@@ -35,15 +35,15 @@ func TestProvideRoundtrip(t *testing.T) {
 		},
 		AdvisoryTTL: time.Hour,
 	}
-	rc, err := c.Provide(context.Background(), &req)
-	if err == nil {
+	if _, err = c.Provide(context.Background(), &req); err == nil {
 		t.Fatal("should get sync error on unsigned provide request.")
 	}
 
 	if err = req.Sign(priv); err != nil {
 		t.Fatal(err)
 	}
-	if rc, err = c.Provide(context.Background(), &req); err != nil {
+	rc, err := c.Provide(context.Background(), &req)
+	if err != nil {
 		t.Fatal(err)
 	}
 
