@@ -10,6 +10,7 @@ import (
 	"github.com/ipfs/go-delegated-routing/client"
 	"github.com/libp2p/go-libp2p-core/crypto"
 	"github.com/libp2p/go-libp2p-core/peer"
+	multiaddr "github.com/multiformats/go-multiaddr"
 	"github.com/multiformats/go-multihash"
 )
 
@@ -28,27 +29,26 @@ func TestProvideRoundtrip(t *testing.T) {
 
 	testMH, _ := multihash.Encode([]byte("test"), multihash.IDENTITY)
 	testCid := cid.NewCidV1(cid.Raw, testMH)
-	req := client.ProvideRequest{
-		Key: testCid,
-		Provider: client.Provider{
-			Peer: peer.AddrInfo{ID: pID},
-		},
-		AdvisoryTTL: time.Hour,
-	}
-	if _, err = c.Provide(context.Background(), &req); err == nil {
+
+	if _, err = c.Provide(context.Background(), testCid, time.Hour); err == nil {
 		t.Fatal("should get sync error on unsigned provide request.")
 	}
 
-	if err = req.Sign(priv); err != nil {
+	if err := c.SetIdentity(&client.Provider{
+		Peer: peer.AddrInfo{
+			ID:    pID,
+			Addrs: []multiaddr.Multiaddr{},
+		},
+		ProviderProto: []client.TransferProtocol{},
+	}, priv); err != nil {
 		t.Fatal(err)
 	}
-	rc, err := c.Provide(context.Background(), &req)
+	rc, err := c.Provide(context.Background(), testCid, 2*time.Hour)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	res := <-rc
-	if res.Err != nil {
-		t.Fatal(err)
+	if rc != time.Hour {
+		t.Fatal("should have gotten back the the fixed server ttl")
 	}
 }

@@ -77,9 +77,9 @@ func (tp *TransferProtocol) ToProto() proto.TransferProtocol {
 	}
 }
 
-func parseProtocol(tp *proto.TransferProtocol) TransferProtocol {
+func parseProtocol(tp *proto.TransferProtocol) (TransferProtocol, error) {
 	if tp.Bitswap != nil {
-		return TransferProtocol{Codec: multicodec.TransportBitswap}
+		return TransferProtocol{Codec: multicodec.TransportBitswap}, nil
 	} else if tp.GraphSyncFILv1 != nil {
 		pl := GraphSyncFILv1{
 			PieceCID:      cid.Cid(tp.GraphSyncFILv1.PieceCID),
@@ -88,26 +88,26 @@ func parseProtocol(tp *proto.TransferProtocol) TransferProtocol {
 		}
 		plBytes, err := cbor.Marshal(&pl)
 		if err != nil {
-			return TransferProtocol{}
+			return TransferProtocol{}, err
 		}
 		return TransferProtocol{
 			Codec:   multicodec.TransportGraphsyncFilecoinv1,
 			Payload: plBytes,
-		}
+		}, nil
 	}
-	return TransferProtocol{}
+	return TransferProtocol{}, nil
 }
 
 // ProvideRequest is a message indicating a provider can provide a Key for a given TTL
 type ProvideRequest struct {
 	Key cid.Cid
-	Provider
+	*Provider
 	Timestamp   int64
 	AdvisoryTTL time.Duration
 	Signature   []byte
 }
 
-var provideSchema, _ = ipld.LoadSchemaBytes([]byte(`
+var provideSchema, provideSchemaErr = ipld.LoadSchemaBytes([]byte(`
 		type ProvideRequest struct {
 			Key    &Any
 			Provider  Provider
@@ -147,6 +147,10 @@ func (pr *ProvideRequest) Sign(key crypto.PrivKey) error {
 	pr.Timestamp = time.Now().Unix()
 	pr.Signature = []byte{}
 
+	if key == nil {
+		return errors.New("no key provided")
+	}
+
 	sid, err := peer.IDFromPrivateKey(key)
 	if err != nil {
 		return err
@@ -158,6 +162,10 @@ func (pr *ProvideRequest) Sign(key crypto.PrivKey) error {
 	ma, _ := multiaddr.NewMultiaddr("/")
 	opts := []bindnode.Option{
 		bindnode.TypedBytesConverter(&ma, bytesToMA, maToBytes),
+	}
+
+	if provideSchemaErr != nil {
+		return provideSchemaErr
 	}
 
 	node := bindnode.Wrap(pr, provideSchema.TypeByName("ProvideRequest"), opts...)
@@ -190,6 +198,10 @@ func (pr *ProvideRequest) Verify() error {
 		bindnode.TypedBytesConverter(&ma, bytesToMA, maToBytes),
 	}
 
+	if provideSchemaErr != nil {
+		return provideSchemaErr
+	}
+
 	node := bindnode.Wrap(pr, provideSchema.TypeByName("ProvideRequest"), opts...)
 	nodeRepr := node.Representation()
 	outBuf := bytes.NewBuffer(nil)
@@ -220,9 +232,13 @@ func (pr *ProvideRequest) IsSigned() bool {
 }
 
 func ParseProvideRequest(req *proto.ProvideRequest) (*ProvideRequest, error) {
+	prov, err := parseProvider(&req.Provider)
+	if err != nil {
+		return nil, err
+	}
 	pr := ProvideRequest{
 		Key:         cid.Cid(req.Key),
-		Provider:    parseProvider(&req.Provider),
+		Provider:    prov,
 		AdvisoryTTL: time.Duration(req.AdvisoryTTL),
 		Timestamp:   int64(req.Timestamp),
 		Signature:   req.Signature,
@@ -234,15 +250,19 @@ func ParseProvideRequest(req *proto.ProvideRequest) (*ProvideRequest, error) {
 	return &pr, nil
 }
 
-func parseProvider(p *proto.Provider) Provider {
+func parseProvider(p *proto.Provider) (*Provider, error) {
 	prov := Provider{
 		Peer:          parseProtoNodeToAddrInfo(p.ProviderNode)[0],
 		ProviderProto: make([]TransferProtocol, 0),
 	}
 	for _, tp := range p.ProviderProto {
-		prov.ProviderProto = append(prov.ProviderProto, parseProtocol(&tp))
+		proto, err := parseProtocol(&tp)
+		if err != nil {
+			return nil, err
+		}
+		prov.ProviderProto = append(prov.ProviderProto, proto)
 	}
-	return prov
+	return &prov, nil
 }
 
 type ProvideAsyncResult struct {
@@ -250,8 +270,77 @@ type ProvideAsyncResult struct {
 	Err         error
 }
 
-// Provide makes a provide request to a delegated router
-func (fp *Client) Provide(ctx context.Context, req *ProvideRequest) (<-chan ProvideAsyncResult, error) {
+func (fp *Client) Provide(ctx context.Context, key cid.Cid, ttl time.Duration) (time.Duration, error) {
+	req := ProvideRequest{
+		Key:         key,
+		Provider:    fp.provider,
+		AdvisoryTTL: ttl,
+		Timestamp:   time.Now().Unix(),
+	}
+	if err := req.Sign(fp.identity); err != nil {
+		return 0, err
+	}
+
+	record, err := fp.ProvideSignedRecord(ctx, &req)
+	if err != nil {
+		return 0, err
+	}
+
+	var d time.Duration
+	var set bool
+	for resp := range record {
+		if resp.Err == nil {
+			set = true
+			if resp.AdvisoryTTL > d {
+				d = resp.AdvisoryTTL
+			}
+		} else if resp.Err != nil {
+			err = resp.Err
+		}
+	}
+
+	if set {
+		return d, nil
+	} else if err == nil {
+		return 0, fmt.Errorf("no response")
+	}
+	return 0, err
+}
+
+func (fp *Client) ProvideAsync(ctx context.Context, key cid.Cid, ttl time.Duration) (<-chan time.Duration, error) {
+	req := ProvideRequest{
+		Key:         key,
+		Provider:    fp.provider,
+		AdvisoryTTL: ttl,
+		Timestamp:   time.Now().Unix(),
+	}
+	ch := make(chan time.Duration, 1)
+
+	if err := req.Sign(fp.identity); err != nil {
+		close(ch)
+		return ch, err
+	}
+
+	record, err := fp.ProvideSignedRecord(ctx, &req)
+	if err != nil {
+		close(ch)
+		return ch, err
+	}
+	go func() {
+		defer close(ch)
+		for resp := range record {
+			if resp.Err != nil {
+				logger.Infof("dropping partial provide failure (%v)", err)
+			} else {
+				ch <- resp.AdvisoryTTL
+			}
+		}
+	}()
+	return ch, nil
+}
+
+// ProvideAsync makes a provide request to a delegated router
+func (fp *Client) ProvideSignedRecord(ctx context.Context, req *ProvideRequest) (<-chan ProvideAsyncResult, error) {
 	if !req.IsSigned() {
 		return nil, errors.New("request is not signed")
 	}

@@ -2,6 +2,7 @@ package client
 
 import (
 	"context"
+	"errors"
 	"time"
 
 	"github.com/ipfs/go-cid"
@@ -9,6 +10,7 @@ import (
 	ipns "github.com/ipfs/go-ipns"
 	logging "github.com/ipfs/go-log/v2"
 	"github.com/ipld/edelweiss/values"
+	"github.com/libp2p/go-libp2p-core/crypto"
 	"github.com/libp2p/go-libp2p-core/peer"
 	record "github.com/libp2p/go-libp2p-record"
 	"github.com/multiformats/go-multiaddr"
@@ -23,16 +25,32 @@ type DelegatedRoutingClient interface {
 	GetIPNSAsync(ctx context.Context, id []byte) (<-chan GetIPNSAsyncResult, error)
 	PutIPNS(ctx context.Context, id []byte, record []byte) error
 	PutIPNSAsync(ctx context.Context, id []byte, record []byte) (<-chan PutIPNSAsyncResult, error)
-	Provide(ctx context.Context, key cid.Cid, provider peer.AddrInfo, ttl time.Duration) (<-chan time.Duration, error)
+	Provide(ctx context.Context, key cid.Cid, ttl time.Duration) (time.Duration, error)
+	ProvideAsync(ctx context.Context, key cid.Cid, ttl time.Duration) (<-chan time.Duration, error)
 }
 
 type Client struct {
 	client    proto.DelegatedRouting_Client
 	validator record.Validator
+
+	provider *Provider
+	identity crypto.PrivKey
 }
+
+var _ DelegatedRoutingClient = (*Client)(nil)
 
 func NewClient(c proto.DelegatedRouting_Client) *Client {
 	return &Client{client: c, validator: ipns.Validator{}}
+}
+
+// SetIdentity sets an identity for providing content. the `Provide` methods will not work without it set.
+func (c *Client) SetIdentity(p *Provider, identity crypto.PrivKey) error {
+	if !p.Peer.ID.MatchesPublicKey(identity.GetPublic()) {
+		return errors.New("identity does not match provider")
+	}
+	c.provider = p
+	c.identity = identity
+	return nil
 }
 
 func (fp *Client) FindProviders(ctx context.Context, key cid.Cid) ([]peer.AddrInfo, error) {
