@@ -39,18 +39,19 @@ type Client struct {
 
 var _ DelegatedRoutingClient = (*Client)(nil)
 
-func NewClient(c proto.DelegatedRouting_Client) *Client {
-	return &Client{client: c, validator: ipns.Validator{}}
-}
-
-// SetIdentity sets an identity for providing content. the `Provide` methods will not work without it set.
-func (c *Client) SetIdentity(p *Provider, identity crypto.PrivKey) error {
-	if !p.Peer.ID.MatchesPublicKey(identity.GetPublic()) {
-		return errors.New("identity does not match provider")
+// NewClient creates a client.
+// The Provider and identity parameters are option. If they are nil, the `Provide` method will not function.
+func NewClient(c proto.DelegatedRouting_Client, p *Provider, identity crypto.PrivKey) (*Client, error) {
+	if p != nil && !p.Peer.ID.MatchesPublicKey(identity.GetPublic()) {
+		return nil, errors.New("identity does not match provider")
 	}
-	c.provider = p
-	c.identity = identity
-	return nil
+
+	return &Client{
+		client:    c,
+		validator: ipns.Validator{},
+		provider:  p,
+		identity:  identity,
+	}, nil
 }
 
 func (fp *Client) FindProviders(ctx context.Context, key cid.Cid) ([]peer.AddrInfo, error) {

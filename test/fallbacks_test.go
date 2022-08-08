@@ -24,7 +24,10 @@ func TestClientWithServerReturningUnknownValues(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	c := client.NewClient(q)
+	c, err := client.NewClient(q, nil, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	// verify no result arrive
 	h, err := multihash.Sum([]byte("TEST"), multihash.SHA3, 4)

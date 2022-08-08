@@ -129,6 +129,12 @@ var provideSchema, provideSchemaErr = ipld.LoadSchemaBytes([]byte(`
 		}
 	`))
 
+func init() {
+	if provideSchemaErr != nil {
+		panic(provideSchemaErr)
+	}
+}
+
 func bytesToMA(b []byte) (interface{}, error) {
 	return multiaddr.NewMultiaddrBytes(b)
 }
@@ -164,10 +170,6 @@ func (pr *ProvideRequest) Sign(key crypto.PrivKey) error {
 		bindnode.TypedBytesConverter(&ma, bytesToMA, maToBytes),
 	}
 
-	if provideSchemaErr != nil {
-		return provideSchemaErr
-	}
-
 	node := bindnode.Wrap(pr, provideSchema.TypeByName("ProvideRequest"), opts...)
 	nodeRepr := node.Representation()
 	outBuf := bytes.NewBuffer(nil)
@@ -196,10 +198,6 @@ func (pr *ProvideRequest) Verify() error {
 	ma, _ := multiaddr.NewMultiaddr("/")
 	opts := []bindnode.Option{
 		bindnode.TypedBytesConverter(&ma, bytesToMA, maToBytes),
-	}
-
-	if provideSchemaErr != nil {
-		return provideSchemaErr
 	}
 
 	node := bindnode.Wrap(pr, provideSchema.TypeByName("ProvideRequest"), opts...)

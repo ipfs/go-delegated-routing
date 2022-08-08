@@ -22,7 +22,7 @@ import (
 	"github.com/multiformats/go-multihash"
 )
 
-func createClientAndServer(t *testing.T, service server.DelegatedRoutingService) (*client.Client, *httptest.Server) {
+func createClientAndServer(t *testing.T, service server.DelegatedRoutingService, p *client.Provider, identity crypto.PrivKey) (*client.Client, *httptest.Server) {
 	// start a server
 	s := httptest.NewServer(server.DelegatedRoutingAsyncHandler(service))
 
@@ -31,7 +31,10 @@ func createClientAndServer(t *testing.T, service server.DelegatedRoutingService)
 	if err != nil {
 		t.Fatal(err)
 	}
-	c := client.NewClient(q)
+	c, err := client.NewClient(q, p, identity)
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	return c, s
 }
@@ -39,7 +42,7 @@ func createClientAndServer(t *testing.T, service server.DelegatedRoutingService)
 func testClientServer(t *testing.T, numIter int) (avgLatency time.Duration, deltaGo int, deltaMem uint64) {
 	t.Helper()
 
-	c, s := createClientAndServer(t, testDelegatedRoutingService{})
+	c, s := createClientAndServer(t, testDelegatedRoutingService{}, nil, nil)
 	defer s.Close()
 
 	// verify result
@@ -184,7 +187,7 @@ func (s testStatistic) DeviatesBy(numStddev float64) bool {
 
 func TestCancelContext(t *testing.T) {
 	drService := &hangingDelegatedRoutingService{}
-	c, s := createClientAndServer(t, drService)
+	c, s := createClientAndServer(t, drService, nil, nil)
 	defer s.Close()
 
 	ctx, cancel := context.WithCancel(context.Background())
