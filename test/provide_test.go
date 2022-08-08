@@ -24,6 +24,16 @@ func TestProvideRoundtrip(t *testing.T) {
 		t.Fatal(err)
 	}
 
+	c1, s1 := createClientAndServer(t, testDelegatedRoutingService{}, nil, nil)
+	defer s1.Close()
+
+	testMH, _ := multihash.Encode([]byte("test"), multihash.IDENTITY)
+	testCid := cid.NewCidV1(cid.Raw, testMH)
+
+	if _, err = c1.Provide(context.Background(), testCid, time.Hour); err == nil {
+		t.Fatal("should get sync error on unsigned provide request.")
+	}
+
 	c, s := createClientAndServer(t, testDelegatedRoutingService{}, &client.Provider{
 		Peer: peer.AddrInfo{
 			ID:    pID,
@@ -32,13 +42,6 @@ func TestProvideRoundtrip(t *testing.T) {
 		ProviderProto: []client.TransferProtocol{},
 	}, priv)
 	defer s.Close()
-
-	testMH, _ := multihash.Encode([]byte("test"), multihash.IDENTITY)
-	testCid := cid.NewCidV1(cid.Raw, testMH)
-
-	if _, err = c.Provide(context.Background(), testCid, time.Hour); err == nil {
-		t.Fatal("should get sync error on unsigned provide request.")
-	}
 
 	rc, err := c.Provide(context.Background(), testCid, 2*time.Hour)
 	if err != nil {
