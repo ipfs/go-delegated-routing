@@ -275,8 +275,11 @@ func (fp *Client) Provide(ctx context.Context, key cid.Cid, ttl time.Duration) (
 		AdvisoryTTL: ttl,
 		Timestamp:   time.Now().Unix(),
 	}
-	if err := req.Sign(fp.identity); err != nil {
-		return 0, err
+
+	if fp.identity != nil {
+		if err := req.Sign(fp.identity); err != nil {
+			return 0, err
+		}
 	}
 
 	record, err := fp.ProvideSignedRecord(ctx, &req)
@@ -314,9 +317,11 @@ func (fp *Client) ProvideAsync(ctx context.Context, key cid.Cid, ttl time.Durati
 	}
 	ch := make(chan time.Duration, 1)
 
-	if err := req.Sign(fp.identity); err != nil {
-		close(ch)
-		return ch, err
+	if fp.identity != nil {
+		if err := req.Sign(fp.identity); err != nil {
+			close(ch)
+			return ch, err
+		}
 	}
 
 	record, err := fp.ProvideSignedRecord(ctx, &req)
@@ -342,9 +347,14 @@ func (fp *Client) ProvideSignedRecord(ctx context.Context, req *ProvideRequest) 
 	if !req.IsSigned() {
 		return nil, errors.New("request is not signed")
 	}
+
+	var providerProto proto.Provider
+	if req.Provider != nil {
+		providerProto = *req.Provider.ToProto()
+	}
 	ch0, err := fp.client.Provide_Async(ctx, &proto.ProvideRequest{
 		Key:         proto.LinkToAny(req.Key),
-		Provider:    *req.Provider.ToProto(),
+		Provider:    providerProto,
 		Timestamp:   values.Int(req.Timestamp),
 		AdvisoryTTL: values.Int(req.AdvisoryTTL),
 		Signature:   req.Signature,
