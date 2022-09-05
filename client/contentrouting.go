@@ -35,7 +35,7 @@ func (c *ContentRoutingClient) Provide(ctx context.Context, key cid.Cid, announc
 func (c *ContentRoutingClient) ProvideMany(ctx context.Context, keys []multihash.Multihash) error {
 	keysAsCids := make([]cid.Cid, 0, len(keys))
 	for _, m := range keys {
-		keysAsCids = append(keysAsCids, cid.NewCidV0(m))
+		keysAsCids = append(keysAsCids, cid.NewCidV1(cid.Raw, m))
 	}
 	_, err := c.client.Provide(ctx, keysAsCids, 24*time.Hour)
 	return err
