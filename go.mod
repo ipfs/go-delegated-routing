@@ -7,7 +7,7 @@ require (
 	github.com/ipfs/go-ipns v0.1.2
 	github.com/ipfs/go-log/v2 v2.5.1
 	github.com/ipld/edelweiss v0.2.0
-	github.com/ipld/go-ipld-prime v0.17.1-0.20220627233435-adf99676901e
+	github.com/ipld/go-ipld-prime v0.18.0
 	github.com/libp2p/go-libp2p-core v0.16.1
 	github.com/libp2p/go-libp2p-record v0.1.3
 	github.com/multiformats/go-multiaddr v0.5.0
