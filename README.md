@@ -1,14 +1,29 @@
-Repository Name
+go-delegated-routing
 =======================
-Documentation is needed in this Readme, but in the meantime this blog post is a good starting point: https://blog.ipfs.tech/2022-09-02-introducing-reframe/
+
+> Delegated routing Client and Server over Reframe RPC
+
+This package provides delegated routing implementation in Go:
+- Client (for IPFS nodes like [Kubo](https://github.com/ipfs/kubo/blob/master/docs/config.md#routingrouters-parameters)),
+- Server (for public indexers such as https://cid.contact)
 
 ## Documentation
 
-[Insert link to documentation]() or expand with Install, Build, Usage sections.
+- Go docs: https://pkg.go.dev/github.com/ipfs/go-delegated-routing
+- What is Reframe? https://blog.ipfs.tech/2022-09-02-introducing-reframe/
+  - Reframe Specs: https://github.com/ipfs/specs/blob/main/reframe/
 
 ## Lead Maintainer
 
-[Your name](https://github.com/alinktoyourname)
+🦗🎶
+
+## Generating
+
+Client and Server code can be (re-)generated via:
+
+```console
+go generate -v ./...
+```
 
 ## Contributing
 
