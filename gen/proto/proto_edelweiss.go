@@ -7,11 +7,6 @@ import (
 	pd7 "context"
 	pd10 "errors"
 	pd2 "fmt"
-	pd11 "io"
-	pd4 "net/http"
-	pd13 "net/url"
-	pd15 "sync"
-
 	pd16 "github.com/ipfs/go-cid"
 	pd5 "github.com/ipfs/go-log/v2"
 	pd14 "github.com/ipld/edelweiss/services"
@@ -21,6 +16,10 @@ import (
 	pd9 "github.com/ipld/go-ipld-prime/codec/dagjson"
 	pd3 "github.com/ipld/go-ipld-prime/datamodel"
 	pd17 "github.com/ipld/go-ipld-prime/linking/cid"
+	pd11 "io"
+	pd4 "net/http"
+	pd13 "net/url"
+	pd15 "sync"
 )
 
 // -- protocol type DelegatedRouting_IdentifyArg --
