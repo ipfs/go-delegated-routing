@@ -5,8 +5,8 @@ import (
 	"fmt"
 
 	"github.com/ipfs/go-ipns"
-	"github.com/libp2p/go-libp2p-core/routing"
 	record "github.com/libp2p/go-libp2p-record"
+	"github.com/libp2p/go-libp2p/core/routing"
 )
 
 var _ routing.ValueStore = &Client{}

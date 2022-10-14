@@ -10,9 +10,9 @@ import (
 	ipns "github.com/ipfs/go-ipns"
 	logging "github.com/ipfs/go-log/v2"
 	"github.com/ipld/edelweiss/values"
-	"github.com/libp2p/go-libp2p-core/crypto"
-	"github.com/libp2p/go-libp2p-core/peer"
 	record "github.com/libp2p/go-libp2p-record"
+	"github.com/libp2p/go-libp2p/core/crypto"
+	"github.com/libp2p/go-libp2p/core/peer"
 	"github.com/multiformats/go-multiaddr"
 )
 

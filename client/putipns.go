@@ -5,7 +5,7 @@ import (
 	"fmt"
 
 	"github.com/ipfs/go-delegated-routing/gen/proto"
-	"github.com/libp2p/go-libp2p-core/peer"
+	"github.com/libp2p/go-libp2p/core/peer"
 )
 
 func (fp *Client) PutIPNS(ctx context.Context, id []byte, record []byte) error {
