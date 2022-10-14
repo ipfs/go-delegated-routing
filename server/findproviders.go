@@ -9,7 +9,7 @@ import (
 	proto "github.com/ipfs/go-delegated-routing/gen/proto"
 	logging "github.com/ipfs/go-log/v2"
 	"github.com/ipld/edelweiss/values"
-	"github.com/libp2p/go-libp2p-core/peer"
+	"github.com/libp2p/go-libp2p/core/peer"
 )
 
 var logger = logging.Logger("service/server/delegatedrouting")
