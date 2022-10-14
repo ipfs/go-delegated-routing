@@ -17,6 +17,14 @@ This package provides delegated routing implementation in Go:
 
 🦗🎶
 
+## Generating
+
+Client and Server code can be (re-)generated via:
+
+```console
+go generate -v ./...
+```
+
 ## Contributing
 
 Contributions are welcome! This repository is part of the IPFS project and therefore governed by our [contributing guidelines](https://github.com/ipfs/community/blob/master/CONTRIBUTING.md).
