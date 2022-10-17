@@ -21,6 +21,10 @@ func NewContentRoutingClient(c DelegatedRoutingClient) *ContentRoutingClient {
 }
 
 func (c *ContentRoutingClient) Provide(ctx context.Context, key cid.Cid, announce bool) error {
+	var err error
+	recordMetrics := startMetrics(ctx, "ContentRoutingClient.Provide")
+	defer recordMetrics(err)
+
 	// If 'true' is
 	// passed, it also announces it, otherwise it is just kept in the local
 	// accounting of which objects are being provided.
@@ -28,16 +32,20 @@ func (c *ContentRoutingClient) Provide(ctx context.Context, key cid.Cid, announc
 		return nil
 	}
 
-	_, err := c.client.Provide(ctx, []cid.Cid{key}, 24*time.Hour)
+	_, err = c.client.Provide(ctx, []cid.Cid{key}, 24*time.Hour)
 	return err
 }
 
 func (c *ContentRoutingClient) ProvideMany(ctx context.Context, keys []multihash.Multihash) error {
+	var err error
+	recordMetrics := startMetrics(ctx, "ContentRoutingClient.ProvideMany")
+	defer recordMetrics(err)
+
 	keysAsCids := make([]cid.Cid, 0, len(keys))
 	for _, m := range keys {
 		keysAsCids = append(keysAsCids, cid.NewCidV1(cid.Raw, m))
 	}
-	_, err := c.client.Provide(ctx, keysAsCids, 24*time.Hour)
+	_, err = c.client.Provide(ctx, keysAsCids, 24*time.Hour)
 	return err
 }
 
@@ -51,13 +59,18 @@ func (c *ContentRoutingClient) Ready() bool {
 }
 
 func (c *ContentRoutingClient) FindProvidersAsync(ctx context.Context, key cid.Cid, numResults int) <-chan peer.AddrInfo {
+	var err error
+	recordMetrics := startMetrics(ctx, "ContentRoutingClient.FindProvidersAsync")
+
 	addrInfoCh := make(chan peer.AddrInfo)
 	resultCh, err := c.client.FindProvidersAsync(ctx, key)
 	if err != nil {
 		close(addrInfoCh)
+		recordMetrics(err)
 		return addrInfoCh
 	}
 	go func() {
+		defer recordMetrics(nil)
 		numProcessed := 0
 		closed := false
 		for asyncResult := range resultCh {
