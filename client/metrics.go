@@ -3,8 +3,10 @@ package client
 import (
 	"context"
 	"errors"
+	"net"
 	"time"
 
+	"github.com/ipld/edelweiss/services"
 	"go.opencensus.io/stats"
 	"go.opencensus.io/stats/view"
 	"go.opencensus.io/tag"
@@ -47,13 +49,7 @@ func startMetrics(ctx context.Context, name string) (done func(err error)) {
 		errStr := "None"
 		if err != nil {
 			logger.Warnw("received delegated routing error", "Error", err)
-			if errors.Is(err, context.Canceled) {
-				errStr = "Canceled"
-			} else if errors.Is(err, context.DeadlineExceeded) {
-				errStr = "DeadlineExceeded"
-			} else {
-				errStr = "Unknown"
-			}
+			errStr = metricsErrStr(err)
 		}
 
 		stats.RecordWithTags(ctx,
@@ -65,4 +61,50 @@ func startMetrics(ctx context.Context, name string) (done func(err error)) {
 			measureRequests.M(1),
 		)
 	}
+}
+
+// metricsErrStr returns a string to use for recording metrics from an error.
+// We shouldn't use the error string itself as that can result in high-cardinality metrics.
+// For more specific root causing, check the logs.
+func metricsErrStr(err error) string {
+	if errors.Is(err, context.DeadlineExceeded) {
+		return "DeadlineExceeded"
+	}
+	if errors.Is(err, context.Canceled) {
+		return "Canceled"
+	}
+	if errors.Is(err, services.ErrSchema) {
+		return "Schema"
+	}
+
+	var serviceErr *services.ErrService
+	if errors.As(err, &serviceErr) {
+		return "Service"
+	}
+
+	var protoErr *services.ErrProto
+	if errors.As(err, &protoErr) {
+		return "Proto"
+	}
+
+	var dnsErr *net.DNSError
+	if errors.As(err, &dnsErr) {
+		if dnsErr.IsNotFound {
+			return "DNSNotFound"
+		}
+		if dnsErr.IsTimeout {
+			return "DNSTimeout"
+		}
+		return "DNS"
+	}
+
+	var netErr net.Error
+	if errors.As(err, &netErr) {
+		if netErr.Timeout() {
+			return "NetTimeout"
+		}
+		return "Net"
+	}
+
+	return "Other"
 }
