@@ -14,6 +14,7 @@ require (
 	github.com/multiformats/go-multicodec v0.6.0
 	github.com/multiformats/go-multihash v0.2.1
 	github.com/polydawn/refmt v0.0.0-20201211092308-30ac6d18308e
+	go.opencensus.io v0.23.0
 )
 
 require (
