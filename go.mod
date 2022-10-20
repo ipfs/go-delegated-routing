@@ -3,6 +3,7 @@ module github.com/ipfs/go-delegated-routing
 go 1.18
 
 require (
+	github.com/gorilla/mux v1.8.0
 	github.com/ipfs/go-cid v0.2.0
 	github.com/ipfs/go-ipns v0.1.2
 	github.com/ipfs/go-log/v2 v2.5.1
@@ -21,7 +22,6 @@ require (
 	github.com/btcsuite/btcd/chaincfg/chainhash v1.0.1 // indirect
 	github.com/decred/dcrd/dcrec/secp256k1/v4 v4.0.1 // indirect
 	github.com/gogo/protobuf v1.3.2 // indirect
-	github.com/gorilla/mux v1.8.0 // indirect
 	github.com/ipfs/go-ipfs-util v0.0.1 // indirect
 	github.com/ipfs/go-log v1.0.5 // indirect
 	github.com/ipld/go-ipld-prime v0.18.0 // indirect
