@@ -31,23 +31,44 @@ type Client struct {
 	client    proto.DelegatedRouting_Client
 	validator record.Validator
 
-	provider *Provider
-	identity crypto.PrivKey
+	provider          *Provider
+	providerBatchSize int
+	identity          crypto.PrivKey
+}
+
+type Config struct {
+	Provider         *Provider
+	Identity         crypto.PrivKey
+	ProvideBatchSize int
+}
+
+// Validate validates the current config, and also sets defaults values when needed.
+func (c *Config) Validate() error {
+	if c.Provider != nil && !c.Provider.Peer.ID.MatchesPublicKey(c.Identity.GetPublic()) {
+		return errors.New("identity does not match provider")
+	}
+
+	if c.ProvideBatchSize == 0 {
+		c.ProvideBatchSize = 30000 // this will generate payloads of ~1MB in size
+	}
+
+	return nil
 }
 
 var _ DelegatedRoutingClient = (*Client)(nil)
 
 // NewClient creates a client.
 // The Provider and identity parameters are option. If they are nil, the `Provide` method will not function.
-func NewClient(c proto.DelegatedRouting_Client, p *Provider, identity crypto.PrivKey) (*Client, error) {
-	if p != nil && !p.Peer.ID.MatchesPublicKey(identity.GetPublic()) {
-		return nil, errors.New("identity does not match provider")
+func NewClient(c proto.DelegatedRouting_Client, cfg *Config) (*Client, error) {
+	if err := cfg.Validate(); err != nil {
+		return nil, err
 	}
 
 	return &Client{
-		client:    c,
-		validator: ipns.Validator{},
-		provider:  p,
-		identity:  identity,
+		client:            c,
+		validator:         ipns.Validator{},
+		provider:          cfg.Provider,
+		providerBatchSize: cfg.ProvideBatchSize,
+		identity:          cfg.Identity,
 	}, nil
 }

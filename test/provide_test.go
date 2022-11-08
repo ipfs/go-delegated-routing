@@ -25,7 +25,7 @@ func TestProvideRoundtrip(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	c1, s1 := createClientAndServer(t, testDelegatedRoutingService{}, nil, nil)
+	c1, s1 := createClientAndServer(t, testDelegatedRoutingService{}, &client.Config{})
 	defer s1.Close()
 
 	testMH, _ := multihash.Encode([]byte("test"), multihash.IDENTITY)
@@ -45,13 +45,74 @@ func TestProvideRoundtrip(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	c, s := createClientAndServer(t, testDelegatedRoutingService{}, &client.Provider{
+	prov := &client.Provider{
 		Peer: peer.AddrInfo{
 			ID:    pID,
 			Addrs: []multiaddr.Multiaddr{ma1, ma2},
 		},
 		ProviderProto: []client.TransferProtocol{{Codec: multicodec.TransportBitswap}},
-	}, priv)
+	}
+
+	c, s := createClientAndServer(t, testDelegatedRoutingService{}, &client.Config{
+		Provider: prov,
+		Identity: priv,
+	})
+	defer s.Close()
+
+	rc, err := c.Provide(context.Background(), []cid.Cid{testCid}, 2*time.Hour)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if rc != time.Hour {
+		t.Fatal("should have gotten back the the fixed server ttl")
+	}
+}
+
+func TestProvideRoundtripTwoBatches(t *testing.T) {
+	priv, _, err := crypto.GenerateEd25519Key(rand.Reader)
+	if err != nil {
+		t.Fatal(err)
+	}
+	pID, err := peer.IDFromPrivateKey(priv)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	c1, s1 := createClientAndServer(t, testDelegatedRoutingService{}, &client.Config{ProvideBatchSize: 1})
+	defer s1.Close()
+
+	testMH, _ := multihash.Encode([]byte("test"), multihash.IDENTITY)
+	testCid := cid.NewCidV1(cid.Raw, testMH)
+	testMH2, _ := multihash.Encode([]byte("test2"), multihash.IDENTITY)
+	testCid2 := cid.NewCidV1(cid.Raw, testMH2)
+
+	if _, err = c1.Provide(context.Background(), []cid.Cid{testCid, testCid2}, time.Hour); err == nil {
+		t.Fatal("should get sync error on unsigned provide request.")
+	}
+
+	ma1, err := multiaddr.NewMultiaddr("/ip4/0.0.0.0/tcp/4001")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	ma2, err := multiaddr.NewMultiaddr("/ip4/0.0.0.0/tcp/4002")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	prov := &client.Provider{
+		Peer: peer.AddrInfo{
+			ID:    pID,
+			Addrs: []multiaddr.Multiaddr{ma1, ma2},
+		},
+		ProviderProto: []client.TransferProtocol{{Codec: multicodec.TransportBitswap}},
+	}
+
+	c, s := createClientAndServer(t, testDelegatedRoutingService{}, &client.Config{
+		Provider: prov,
+		Identity: priv,
+	})
 	defer s.Close()
 
 	rc, err := c.Provide(context.Background(), []cid.Cid{testCid}, 2*time.Hour)

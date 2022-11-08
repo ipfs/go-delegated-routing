@@ -24,7 +24,7 @@ func TestClientWithServerReturningUnknownValues(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	c, err := client.NewClient(q, nil, nil)
+	c, err := client.NewClient(q, &client.Config{})
 	if err != nil {
 		t.Fatal(err)
 	}

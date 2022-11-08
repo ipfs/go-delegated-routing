@@ -6,6 +6,7 @@ import (
 	"crypto/sha256"
 	"errors"
 	"fmt"
+	"sync"
 	"time"
 
 	"github.com/ipfs/go-cid"
@@ -272,77 +273,114 @@ type ProvideAsyncResult struct {
 	Err         error
 }
 
-func (fp *Client) Provide(ctx context.Context, keys []cid.Cid, ttl time.Duration) (time.Duration, error) {
-	req := ProvideRequest{
-		Key:         keys,
-		Provider:    fp.provider,
-		AdvisoryTTL: ttl,
-		Timestamp:   time.Now().Unix(),
+func chunks(slice []cid.Cid, size int) [][]cid.Cid {
+	if size == 0 {
+		return [][]cid.Cid{slice}
 	}
 
-	if fp.identity != nil {
-		if err := req.Sign(fp.identity); err != nil {
-			return 0, err
+	var chunks [][]cid.Cid
+	for i := 0; i < len(slice); i += size {
+		end := i + size
+
+		if end > len(slice) {
+			end = len(slice)
 		}
+
+		chunks = append(chunks, slice[i:end])
 	}
 
-	record, err := fp.ProvideSignedRecord(ctx, &req)
-	if err != nil {
-		return 0, err
-	}
+	return chunks
+}
+
+func (fp *Client) Provide(ctx context.Context, allKeys []cid.Cid, ttl time.Duration) (time.Duration, error) {
+	slices := chunks(allKeys, fp.providerBatchSize)
 
 	var d time.Duration
 	var set bool
-	for resp := range record {
-		if resp.Err == nil {
-			set = true
-			if resp.AdvisoryTTL > d {
-				d = resp.AdvisoryTTL
+	var finalErr error
+	for _, keys := range slices {
+		req := ProvideRequest{
+			Key:         keys,
+			Provider:    fp.provider,
+			AdvisoryTTL: ttl,
+			Timestamp:   time.Now().Unix(),
+		}
+
+		if fp.identity != nil {
+			if err := req.Sign(fp.identity); err != nil {
+				return 0, err
 			}
-		} else if resp.Err != nil {
-			err = resp.Err
+		}
+
+		record, err := fp.ProvideSignedRecord(ctx, &req)
+		if err != nil {
+			return 0, err
+		}
+
+		for resp := range record {
+			if resp.Err == nil {
+				set = true
+				if resp.AdvisoryTTL > d {
+					d = resp.AdvisoryTTL
+				}
+			} else if resp.Err != nil {
+				finalErr = resp.Err
+			}
 		}
 	}
 
 	if set {
 		return d, nil
-	} else if err == nil {
+	} else if finalErr == nil {
 		return 0, fmt.Errorf("no response")
 	}
-	return 0, err
+
+	return 0, finalErr
 }
 
-func (fp *Client) ProvideAsync(ctx context.Context, keys []cid.Cid, ttl time.Duration) (<-chan time.Duration, error) {
-	req := ProvideRequest{
-		Key:         keys,
-		Provider:    fp.provider,
-		AdvisoryTTL: ttl,
-		Timestamp:   time.Now().Unix(),
-	}
-	ch := make(chan time.Duration, 1)
+func (fp *Client) ProvideAsync(ctx context.Context, allKeys []cid.Cid, ttl time.Duration) (<-chan time.Duration, error) {
+	slices := chunks(allKeys, fp.providerBatchSize)
 
-	if fp.identity != nil {
-		if err := req.Sign(fp.identity); err != nil {
+	ch := make(chan time.Duration, 1)
+	var wg sync.WaitGroup
+	for _, keys := range slices {
+		wg.Add(1)
+		req := ProvideRequest{
+			Key:         keys,
+			Provider:    fp.provider,
+			AdvisoryTTL: ttl,
+			Timestamp:   time.Now().Unix(),
+		}
+
+		if fp.identity != nil {
+			if err := req.Sign(fp.identity); err != nil {
+				close(ch)
+				return ch, err
+			}
+		}
+
+		record, err := fp.ProvideSignedRecord(ctx, &req)
+		if err != nil {
 			close(ch)
 			return ch, err
 		}
+		go func() {
+			defer wg.Done()
+			for resp := range record {
+				if resp.Err != nil {
+					logger.Infof("dropping partial provide failure (%v)", err)
+				} else {
+					ch <- resp.AdvisoryTTL
+				}
+			}
+		}()
 	}
 
-	record, err := fp.ProvideSignedRecord(ctx, &req)
-	if err != nil {
-		close(ch)
-		return ch, err
-	}
 	go func() {
-		defer close(ch)
-		for resp := range record {
-			if resp.Err != nil {
-				logger.Infof("dropping partial provide failure (%v)", err)
-			} else {
-				ch <- resp.AdvisoryTTL
-			}
-		}
+		wg.Wait()
+		close(ch)
 	}()
+
 	return ch, nil
 }
 
