@@ -10,8 +10,8 @@ import (
 
 	"github.com/benbjohnson/clock"
 	"github.com/ipfs/go-cid"
-	delegatedrouting "github.com/ipfs/go-delegated-routing"
 	"github.com/ipfs/go-delegated-routing/server"
+	"github.com/ipfs/go-delegated-routing/types"
 	"github.com/libp2p/go-libp2p/core/crypto"
 	"github.com/libp2p/go-libp2p/core/peer"
 	"github.com/multiformats/go-multiaddr"
@@ -24,11 +24,11 @@ import (
 
 type mockContentRouter struct{ mock.Mock }
 
-func (m *mockContentRouter) FindProviders(ctx context.Context, key cid.Cid) ([]delegatedrouting.Provider, error) {
+func (m *mockContentRouter) FindProviders(ctx context.Context, key cid.Cid) ([]types.ProviderResponse, error) {
 	args := m.Called(ctx, key)
-	return args.Get(0).([]delegatedrouting.Provider), args.Error(1)
+	return args.Get(0).([]types.ProviderResponse), args.Error(1)
 }
-func (m *mockContentRouter) Provide(ctx context.Context, req server.ProvideRequest) (time.Duration, error) {
+func (m *mockContentRouter) Provide(ctx context.Context, req server.WriteProvideRequest) (time.Duration, error) {
 	args := m.Called(ctx, req)
 	return args.Get(0).(time.Duration), args.Error(1)
 }
@@ -78,24 +78,24 @@ func makeCID() cid.Cid {
 	return c
 }
 
-func addrsToDRAddrs(addrs []multiaddr.Multiaddr) (drmas []delegatedrouting.Multiaddr) {
+func addrsToDRAddrs(addrs []multiaddr.Multiaddr) (drmas []types.Multiaddr) {
 	for _, a := range addrs {
-		drmas = append(drmas, delegatedrouting.Multiaddr{Multiaddr: a})
+		drmas = append(drmas, types.Multiaddr{Multiaddr: a})
 	}
 	return
 }
 
-func drAddrsToAddrs(drmas []delegatedrouting.Multiaddr) (addrs []multiaddr.Multiaddr) {
+func drAddrsToAddrs(drmas []types.Multiaddr) (addrs []multiaddr.Multiaddr) {
 	for _, a := range drmas {
 		addrs = append(addrs, a.Multiaddr)
 	}
 	return
 }
 
-func makeBSReadProviderResp() delegatedrouting.BitswapReadProviderResponse {
+func makeBSReadProviderResp() types.ReadBitswapProviderRecord {
 	peerID, addrs, _ := makeProviderAndIdentity()
-	return delegatedrouting.BitswapReadProviderResponse{
-		Protocol: "bitswap",
+	return types.ReadBitswapProviderRecord{
+		Protocol: types.BitswapProviderID,
 		ID:       &peerID,
 		Addrs:    addrsToDRAddrs(addrs),
 	}
@@ -125,16 +125,16 @@ func makeProviderAndIdentity() (peer.ID, []multiaddr.Multiaddr, crypto.PrivKey) 
 
 func TestClient_FindProviders(t *testing.T) {
 	bsReadProvResp := makeBSReadProviderResp()
-	bitswapProvs := []delegatedrouting.Provider{&bsReadProvResp}
+	bitswapProvs := []types.ProviderResponse{&bsReadProvResp}
 
 	cases := []struct {
 		name        string
 		manglePath  bool
 		stopServer  bool
-		routerProvs []delegatedrouting.Provider
+		routerProvs []types.ProviderResponse
 		routerErr   error
 
-		expProvs          []delegatedrouting.Provider
+		expProvs          []types.ProviderResponse
 		expErrContains    []string
 		expWinErrContains []string
 	}{
@@ -278,7 +278,7 @@ func TestClient_Provide(t *testing.T) {
 				deps.server.Close()
 			}
 			if c.mangleSignature {
-				client.afterSignCallback = func(req *delegatedrouting.BitswapWriteProviderRequest) {
+				client.afterSignCallback = func(req *types.WriteBitswapProviderRecord) {
 					mh, err := multihash.Encode([]byte("boom"), multihash.SHA2_256)
 					require.NoError(t, err)
 					mb, err := multibase.Encode(multibase.Base64, mh)
@@ -288,7 +288,7 @@ func TestClient_Provide(t *testing.T) {
 				}
 			}
 
-			expectedProvReq := server.ProvideRequest{
+			expectedProvReq := server.WriteProvideRequest{
 				Keys:        c.cids,
 				Timestamp:   clock.Now().Truncate(time.Millisecond),
 				AdvisoryTTL: c.ttl,

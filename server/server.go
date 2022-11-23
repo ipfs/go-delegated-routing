@@ -12,7 +12,7 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/ipfs/go-cid"
-	delegatedrouting "github.com/ipfs/go-delegated-routing"
+	"github.com/ipfs/go-delegated-routing/types"
 	"github.com/libp2p/go-libp2p/core/peer"
 	"github.com/multiformats/go-multiaddr"
 
@@ -21,17 +21,21 @@ import (
 
 var logger = logging.Logger("service/server/delegatedrouting")
 
-type ProvideRequest struct {
+const ProvidePath = "/routing/v1/providers/"
+const FindProvidersPath = "/routing/v1/providers/{cid}"
+
+type ContentRouter interface {
+	FindProviders(ctx context.Context, key cid.Cid) ([]types.ProviderResponse, error)
+	Provide(ctx context.Context, req WriteProvideRequest) (time.Duration, error)
+}
+
+// TODO this is only handling bitswap providers
+type WriteProvideRequest struct {
 	Keys        []cid.Cid
 	Timestamp   time.Time
 	AdvisoryTTL time.Duration
 	ID          peer.ID
 	Addrs       []multiaddr.Multiaddr
-}
-
-type ContentRouter interface {
-	FindProviders(ctx context.Context, key cid.Cid) ([]delegatedrouting.Provider, error)
-	Provide(ctx context.Context, req ProvideRequest) (time.Duration, error)
 }
 
 type serverOption func(s *server)
@@ -46,8 +50,8 @@ func Handler(svc ContentRouter, opts ...serverOption) http.Handler {
 	}
 
 	r := mux.NewRouter()
-	r.HandleFunc("/v1/providers", server.provide).Methods("POST")
-	r.HandleFunc("/v1/providers/{cid}", server.findProviders).Methods("GET")
+	r.HandleFunc(ProvidePath, server.provide).Methods("POST")
+	r.HandleFunc(FindProvidersPath, server.findProviders).Methods("GET")
 
 	return r
 }
@@ -57,18 +61,18 @@ type server struct {
 }
 
 func (s *server) provide(w http.ResponseWriter, httpReq *http.Request) {
-	req := delegatedrouting.WriteProvidersRequest{}
+	req := types.WriteProvidersRequest{}
 	err := json.NewDecoder(httpReq.Body).Decode(&req)
 	if err != nil {
 		writeErr(w, "Provide", http.StatusBadRequest, fmt.Errorf("invalid request: %w", err))
 		return
 	}
 
-	resp := delegatedrouting.WriteProvidersResponse{}
+	resp := types.WriteProvidersResponse{}
 
 	for i, prov := range req.Providers {
 		switch v := prov.(type) {
-		case *delegatedrouting.BitswapWriteProviderRequest:
+		case *types.WriteBitswapProviderRecord:
 			err := v.Verify()
 			if err != nil {
 				logErr("Provide", "signature verification failed", err)
@@ -85,7 +89,7 @@ func (s *server) provide(w http.ResponseWriter, httpReq *http.Request) {
 			for i, a := range v.Payload.Addrs {
 				addrs[i] = a.Multiaddr
 			}
-			advisoryTTL, err := s.svc.Provide(httpReq.Context(), ProvideRequest{
+			advisoryTTL, err := s.svc.Provide(httpReq.Context(), WriteProvideRequest{
 				Keys:        keys,
 				Timestamp:   v.Payload.Timestamp.Time,
 				AdvisoryTTL: v.Payload.AdvisoryTTL.Duration,
@@ -96,10 +100,14 @@ func (s *server) provide(w http.ResponseWriter, httpReq *http.Request) {
 				writeErr(w, "Provide", http.StatusInternalServerError, fmt.Errorf("delegate error: %w", err))
 				return
 			}
-			resp.Protocols = append(resp.Protocols, v.Protocol)
-			resp.ProvideResults = append(resp.ProvideResults, &delegatedrouting.BitswapWriteProviderResponse{AdvisoryTTL: advisoryTTL})
-		case *delegatedrouting.UnknownProvider:
-			resp.Protocols = append(resp.Protocols, v.Protocol)
+			resp.ProvideResults = append(resp.ProvideResults,
+				&types.WriteBitswapProviderRecordResponse{
+					Protocol:    v.Protocol,
+					AdvisoryTTL: &types.Duration{Duration: advisoryTTL},
+				},
+			)
+		case *types.UnknownProviderRecord:
+			// TODO I think this logic is wrong (if the server doesn't know about bitswap, the response will be the same as the request)
 			resp.ProvideResults = append(resp.ProvideResults, v)
 		default:
 			writeErr(w, "Provide", http.StatusBadRequest, fmt.Errorf("provider record %d does not contain a protocol", i))
@@ -122,7 +130,7 @@ func (s *server) findProviders(w http.ResponseWriter, httpReq *http.Request) {
 		writeErr(w, "FindProviders", http.StatusInternalServerError, fmt.Errorf("delegate error: %w", err))
 		return
 	}
-	response := delegatedrouting.FindProvidersResponse{Providers: providers}
+	response := types.ReadProvidersResponse{Providers: providers}
 	writeResult(w, "FindProviders", response)
 }
 
