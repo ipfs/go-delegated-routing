@@ -26,16 +26,22 @@ const FindProvidersPath = "/routing/v1/providers/{cid}"
 
 type ContentRouter interface {
 	FindProviders(ctx context.Context, key cid.Cid) ([]types.ProviderResponse, error)
-	Provide(ctx context.Context, req WriteProvideRequest) (time.Duration, error)
+	ProvideBitswap(ctx context.Context, req *BitswapWriteProvideRequest) (time.Duration, error)
+	Provide(ctx context.Context, req *WriteProvideRequest) (types.ProviderResponse, error)
 }
 
 // TODO this is only handling bitswap providers
-type WriteProvideRequest struct {
+type BitswapWriteProvideRequest struct {
 	Keys        []cid.Cid
 	Timestamp   time.Time
 	AdvisoryTTL time.Duration
 	ID          peer.ID
 	Addrs       []multiaddr.Multiaddr
+}
+
+type WriteProvideRequest struct {
+	Protocol string
+	Bytes    []byte
 }
 
 type serverOption func(s *server)
@@ -89,7 +95,7 @@ func (s *server) provide(w http.ResponseWriter, httpReq *http.Request) {
 			for i, a := range v.Payload.Addrs {
 				addrs[i] = a.Multiaddr
 			}
-			advisoryTTL, err := s.svc.Provide(httpReq.Context(), WriteProvideRequest{
+			advisoryTTL, err := s.svc.ProvideBitswap(httpReq.Context(), &BitswapWriteProvideRequest{
 				Keys:        keys,
 				Timestamp:   v.Payload.Timestamp.Time,
 				AdvisoryTTL: v.Payload.AdvisoryTTL.Duration,
@@ -107,8 +113,15 @@ func (s *server) provide(w http.ResponseWriter, httpReq *http.Request) {
 				},
 			)
 		case *types.UnknownProviderRecord:
-			// TODO I think this logic is wrong (if the server doesn't know about bitswap, the response will be the same as the request)
-			resp.ProvideResults = append(resp.ProvideResults, v)
+			provResp, err := s.svc.Provide(httpReq.Context(), &WriteProvideRequest{
+				Protocol: v.Protocol,
+				Bytes:    v.Bytes,
+			})
+			if err != nil {
+				writeErr(w, "Provide", http.StatusInternalServerError, fmt.Errorf("delegate error: %w", err))
+				return
+			}
+			resp.ProvideResults = append(resp.ProvideResults, provResp)
 		default:
 			writeErr(w, "Provide", http.StatusBadRequest, fmt.Errorf("provider record %d does not contain a protocol", i))
 			return

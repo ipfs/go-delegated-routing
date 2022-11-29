@@ -28,13 +28,14 @@ func (m *mockContentRouter) FindProviders(ctx context.Context, key cid.Cid) ([]t
 	args := m.Called(ctx, key)
 	return args.Get(0).([]types.ProviderResponse), args.Error(1)
 }
-func (m *mockContentRouter) Provide(ctx context.Context, req server.WriteProvideRequest) (time.Duration, error) {
+func (m *mockContentRouter) ProvideBitswap(ctx context.Context, req *server.BitswapWriteProvideRequest) (time.Duration, error) {
 	args := m.Called(ctx, req)
 	return args.Get(0).(time.Duration), args.Error(1)
 }
-func (m *mockContentRouter) Ready() bool {
-	args := m.Called()
-	return args.Bool(0)
+
+func (m *mockContentRouter) Provide(ctx context.Context, req *server.WriteProvideRequest) (types.ProviderResponse, error) {
+	args := m.Called(ctx, req)
+	return args.Get(0).(types.ProviderResponse), args.Error(1)
 }
 
 type testDeps struct {
@@ -288,7 +289,7 @@ func TestClient_Provide(t *testing.T) {
 				}
 			}
 
-			expectedProvReq := server.WriteProvideRequest{
+			expectedProvReq := &server.BitswapWriteProvideRequest{
 				Keys:        c.cids,
 				Timestamp:   clock.Now().Truncate(time.Millisecond),
 				AdvisoryTTL: c.ttl,
@@ -296,7 +297,7 @@ func TestClient_Provide(t *testing.T) {
 				ID:          client.peerID,
 			}
 
-			router.On("Provide", mock.Anything, expectedProvReq).
+			router.On("ProvideBitswap", mock.Anything, expectedProvReq).
 				Return(c.routerAdvisoryTTL, c.routerErr)
 
 			advisoryTTL, err := client.ProvideBitswap(ctx, c.cids, c.ttl)
