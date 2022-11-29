@@ -11,6 +11,7 @@ import (
 
 	"github.com/benbjohnson/clock"
 	"github.com/ipfs/go-cid"
+	"github.com/ipfs/go-delegated-routing/internal/drjson"
 	"github.com/ipfs/go-delegated-routing/server"
 	"github.com/ipfs/go-delegated-routing/types"
 	ipns "github.com/ipfs/go-ipns"
@@ -156,7 +157,7 @@ func (c *client) provideSignedBitswapRecord(ctx context.Context, bswp *types.Wri
 
 	url := c.baseURL + server.ProvidePath
 
-	b, err := json.Marshal(req)
+	b, err := drjson.MarshalJSONBytes(req)
 	if err != nil {
 		return 0, err
 	}

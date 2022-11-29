@@ -4,12 +4,13 @@ import (
 	"encoding/json"
 
 	"github.com/ipfs/go-cid"
+	"github.com/ipfs/go-delegated-routing/internal/drjson"
 	"github.com/multiformats/go-multiaddr"
 )
 
 type CID struct{ cid.Cid }
 
-func (c *CID) MarshalJSON() ([]byte, error) { return json.Marshal(c.String()) }
+func (c *CID) MarshalJSON() ([]byte, error) { return drjson.MarshalJSONBytes(c.String()) }
 func (c *CID) UnmarshalJSON(b []byte) error {
 	var s string
 	err := json.Unmarshal(b, &s)

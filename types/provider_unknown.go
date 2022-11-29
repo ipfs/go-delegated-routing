@@ -1,6 +1,10 @@
 package types
 
-import "encoding/json"
+import (
+	"encoding/json"
+
+	"github.com/ipfs/go-delegated-routing/internal/drjson"
+)
 
 var _ ReadProviderRecord = &UnknownProviderRecord{}
 var _ WriteProviderRecord = &UnknownProviderRecord{}
@@ -43,5 +47,5 @@ func (u UnknownProviderRecord) MarshalJSON() ([]byte, error) {
 	}
 	m["Protocol"] = u.Protocol
 
-	return json.Marshal(m)
+	return drjson.MarshalJSONBytes(m)
 }

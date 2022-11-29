@@ -12,6 +12,7 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/ipfs/go-cid"
+	"github.com/ipfs/go-delegated-routing/internal/drjson"
 	"github.com/ipfs/go-delegated-routing/types"
 	"github.com/libp2p/go-libp2p/core/peer"
 	"github.com/multiformats/go-multiaddr"
@@ -149,7 +150,7 @@ func (s *server) findProviders(w http.ResponseWriter, httpReq *http.Request) {
 func writeResult(w http.ResponseWriter, method string, val any) {
 	// keep the marshaling separate from the writing, so we can distinguish bugs (which surface as 500)
 	// from transient network issues (which surface as transport errors)
-	b, err := json.Marshal(val)
+	b, err := drjson.MarshalJSONBytes(val)
 	if err != nil {
 		writeErr(w, method, http.StatusInternalServerError, fmt.Errorf("marshaling response: %w", err))
 		return

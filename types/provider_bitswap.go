@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 
+	"github.com/ipfs/go-delegated-routing/internal/drjson"
 	"github.com/libp2p/go-libp2p/core/crypto"
 	"github.com/libp2p/go-libp2p/core/peer"
 	"github.com/multiformats/go-multibase"
@@ -56,7 +57,7 @@ func (p *WriteBitswapProviderRecord) IsSigned() bool {
 }
 
 func (p *WriteBitswapProviderRecord) setRawPayload() error {
-	payloadBytes, err := json.Marshal(p.Payload)
+	payloadBytes, err := drjson.MarshalJSONBytes(p.Payload)
 	if err != nil {
 		return fmt.Errorf("marshaling bitswap write provider payload: %w", err)
 	}

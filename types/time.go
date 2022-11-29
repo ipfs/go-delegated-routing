@@ -3,12 +3,14 @@ package types
 import (
 	"encoding/json"
 	"time"
+
+	"github.com/ipfs/go-delegated-routing/internal/drjson"
 )
 
 type Time struct{ time.Time }
 
 func (t *Time) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t.Time.UnixMilli())
+	return drjson.MarshalJSONBytes(t.Time.UnixMilli())
 }
 func (t *Time) UnmarshalJSON(b []byte) error {
 	var timestamp int64
@@ -22,7 +24,7 @@ func (t *Time) UnmarshalJSON(b []byte) error {
 
 type Duration struct{ time.Duration }
 
-func (d *Duration) MarshalJSON() ([]byte, error) { return json.Marshal(d.Duration) }
+func (d *Duration) MarshalJSON() ([]byte, error) { return drjson.MarshalJSONBytes(d.Duration) }
 func (d *Duration) UnmarshalJSON(b []byte) error {
 	var dur int64
 	err := json.Unmarshal(b, &dur)
