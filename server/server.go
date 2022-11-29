@@ -30,7 +30,6 @@ type ContentRouter interface {
 	Provide(ctx context.Context, req *WriteProvideRequest) (types.ProviderResponse, error)
 }
 
-// TODO this is only handling bitswap providers
 type BitswapWriteProvideRequest struct {
 	Keys        []cid.Cid
 	Timestamp   time.Time
