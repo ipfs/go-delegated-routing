@@ -37,7 +37,7 @@ func (drs *delegatedRoutingServer) GetIPNS(ctx context.Context, req *proto.GetIP
 		id := req.ID
 		ch, err := drs.service.GetIPNS(ctx, id)
 		if err != nil {
-			logger.Errorf("get ipns function rejected request (%w)", err)
+			logger.Errorf("get ipns function rejected request (%v)", err)
 			return
 		}
 
@@ -51,7 +51,7 @@ func (drs *delegatedRoutingServer) GetIPNS(ctx context.Context, req *proto.GetIP
 				}
 				var resp *proto.DelegatedRouting_GetIPNS_AsyncResult
 				if x.Err != nil {
-					logger.Infof("get ipns function returned error (%w)", x.Err)
+					logger.Infof("get ipns function returned error (%v)", x.Err)
 					resp = &proto.DelegatedRouting_GetIPNS_AsyncResult{Err: x.Err}
 				} else {
 					resp = &proto.DelegatedRouting_GetIPNS_AsyncResult{Resp: &proto.GetIPNSResponse{Record: x.Record}}
@@ -75,7 +75,7 @@ func (drs *delegatedRoutingServer) PutIPNS(ctx context.Context, req *proto.PutIP
 		id, record := req.ID, req.Record
 		ch, err := drs.service.PutIPNS(ctx, id, record)
 		if err != nil {
-			logger.Errorf("put ipns function rejected request (%w)", err)
+			logger.Errorf("put ipns function rejected request (%v)", err)
 			return
 		}
 
@@ -89,7 +89,7 @@ func (drs *delegatedRoutingServer) PutIPNS(ctx context.Context, req *proto.PutIP
 				}
 				var resp *proto.DelegatedRouting_PutIPNS_AsyncResult
 				if x.Err != nil {
-					logger.Infof("put ipns function returned error (%w)", x.Err)
+					logger.Infof("put ipns function returned error (%v)", x.Err)
 					resp = &proto.DelegatedRouting_PutIPNS_AsyncResult{Err: x.Err}
 				} else {
 					resp = &proto.DelegatedRouting_PutIPNS_AsyncResult{Resp: &proto.PutIPNSResponse{}}
@@ -114,7 +114,7 @@ func (drs *delegatedRoutingServer) FindProviders(ctx context.Context, req *proto
 		for _, c := range pcids {
 			ch, err := drs.service.FindProviders(ctx, c)
 			if err != nil {
-				logger.Errorf("find providers function rejected request (%w)", err)
+				logger.Errorf("find providers function rejected request (%v)", err)
 				continue
 			}
 
@@ -128,7 +128,7 @@ func (drs *delegatedRoutingServer) FindProviders(ctx context.Context, req *proto
 					}
 					var resp *proto.DelegatedRouting_FindProviders_AsyncResult
 					if x.Err != nil {
-						logger.Infof("find providers function returned error (%w)", x.Err)
+						logger.Infof("find providers function returned error (%v)", x.Err)
 						resp = &proto.DelegatedRouting_FindProviders_AsyncResult{Err: x.Err}
 					} else {
 						resp = buildFindProvidersResponse(c, x.AddrInfo)
@@ -152,12 +152,12 @@ func (drs *delegatedRoutingServer) Provide(ctx context.Context, req *proto.Provi
 		defer close(rch)
 		pr, err := client.ParseProvideRequest(req)
 		if err != nil {
-			logger.Errorf("Provide function rejected request (%w)", err)
+			logger.Errorf("Provide function rejected request (%v)", err)
 			return
 		}
 		ch, err := drs.service.Provide(ctx, pr)
 		if err != nil {
-			logger.Errorf("Provide function rejected request (%w)", err)
+			logger.Errorf("Provide function rejected request (%v)", err)
 			return
 		}
 
@@ -171,7 +171,7 @@ func (drs *delegatedRoutingServer) Provide(ctx context.Context, req *proto.Provi
 				}
 				var protoResp *proto.DelegatedRouting_Provide_AsyncResult
 				if resp.Err != nil {
-					logger.Infof("find providers function returned error (%w)", resp.Err)
+					logger.Infof("find providers function returned error (%v)", resp.Err)
 					protoResp = &proto.DelegatedRouting_Provide_AsyncResult{Err: resp.Err}
 				} else {
 					protoResp = &proto.DelegatedRouting_Provide_AsyncResult{Resp: &proto.ProvideResponse{AdvisoryTTL: values.Int(resp.AdvisoryTTL)}}
