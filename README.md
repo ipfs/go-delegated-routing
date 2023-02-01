@@ -1,3 +1,5 @@
+# ⚠️ This repository has been moved to https://github.com/ipfs/go-libipfs/tree/main/routing/http.
+
 go-delegated-routing
 =======================
 
