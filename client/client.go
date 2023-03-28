@@ -5,9 +5,9 @@ import (
 	"errors"
 	"time"
 
+	ipns "github.com/ipfs/boxo/ipns"
 	"github.com/ipfs/go-cid"
 	proto "github.com/ipfs/go-delegated-routing/gen/proto"
-	ipns "github.com/ipfs/go-ipns"
 	logging "github.com/ipfs/go-log/v2"
 	record "github.com/libp2p/go-libp2p-record"
 	"github.com/libp2p/go-libp2p/core/crypto"
